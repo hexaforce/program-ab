@@ -71,7 +71,7 @@ public class MagicStrings {
 	public static String bad_javascript = "JSFAILED";
 	public static String js_enabled = "true";
 	public static String unknown_history_item = "unknown";
-	public static String default_bot_response = "I have no answer for that.";
+	public static String default_bot_response = "会話を理解・認識できません。";
 	public static String error_bot_response = "Something is wrong with my brain.";
 	public static String schedule_error = "I'm unable to schedule that event.";
 	public static String system_failed = "Failed to execute system command.";

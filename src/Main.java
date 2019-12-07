@@ -76,7 +76,7 @@ public class Main {
 		bot.brain.nodeStats();
 		String textLine = "";
 		while (true) {
-			textLine = IOUtils.readInputTextLine("Human");
+			textLine = IOUtils.readInputTextLine("Yuor");
 			if (textLine == null || textLine.length() < 1) {
 				textLine = MagicStrings.null_input;
 			}
@@ -95,7 +95,7 @@ public class Main {
 				while (response.contains("&gt;")) {
 					response = response.replace("&gt;", ">");
 				}
-				IOUtils.writeOutputTextLine("Robot", response);
+				IOUtils.writeOutputTextLine("A.L.I.C.E.", response);
 			}
 		}
 

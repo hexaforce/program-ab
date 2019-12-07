@@ -65,7 +65,7 @@ public class IOUtils {
 	}
 
 	public static void writeOutputTextLine(String prompt, String text) {
-		log.info(prompt + ": " + text);
+		System.out.println(prompt + ": " + text);
 	}
 
 	public static String readInputTextLine() {
