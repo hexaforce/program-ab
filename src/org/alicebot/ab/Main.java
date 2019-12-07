@@ -32,34 +32,16 @@ import lombok.extern.slf4j.Slf4j;
 public class Main {
 
 	public static void main(String[] args) throws IOException {
-		AIMLProcessor.extension = new PCAIMLProcessorExtension();
+		AIMLProcessor.extension = new AIMLProcessorExtensionPC();
 
 //		String botName = "alice1.5";
-//		String botName = "alice2";
-		String botName = "アリス";
+		String botName = "alice2";
+//		String botName = "アリス";
 		String workingDirectory = System.getProperty("user.dir");
-//		String action = "chat";
-		log.info(MagicStrings.program_name_version);
-		for (final String s : args) {
-			// log.info(s);
-			final String[] splitArg = s.split("=");
-			if (splitArg.length >= 2) {
-				final String option = splitArg[0];
-				final String value = splitArg[1];
-				// if (MagicBooleans.trace_mode) log.info(option+"='"+value+"'");
-				if (option.equals("bot")) {
-					botName = value;
-				}
-//				if (option.equals("action")) {
-//					action = value;
-//				}
-			}
-		}
-		log.debug("Working Directory = " + workingDirectory);
-//		Graphmaster.ENABLE_SHORT_CUTS = true;
-		// Timer timer = new Timer();
 
-		// final Bot bot = new Bot(botName, path, action); //
+		log.info(MagicStrings.program_name_version);
+		log.debug("Working Directory = " + workingDirectory);
+
 		final Bot bot = new Bot(workingDirectory, botName); //
 
 		if (bot.brain.getCategories().size() < MagicNumbers.brain_print_size) {

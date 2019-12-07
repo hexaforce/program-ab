@@ -82,17 +82,6 @@ class Chat {
 		log.debug("Chat Session Created for bot " + bot.botName);
 	}
 
-//	/**
-//	 * Load all predicate defaults
-//	 */
-//	void addPredicates() {
-//		try {
-//			predicates.getPredicateDefaults(bot.config_path + "/predicates.txt");
-//		} catch (final Exception ex) {
-//			log.error(ex.getMessage(), ex);
-//		}
-//	}
-
 	/**
 	 * Load Triple Store knowledge base
 	 */

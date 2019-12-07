@@ -34,7 +34,7 @@ import lombok.extern.slf4j.Slf4j;
  * some extension tags that are defined for mobile devices.
  */
 @Slf4j
-class PCAIMLProcessorExtension implements AIMLProcessorExtension {
+class AIMLProcessorExtensionPC implements AIMLProcessorExtension {
 
 	Set<String> extensionTagNames = Utilities.stringSet("contactid", "multipleids", "displayname", "dialnumber", "emailaddress", "contactbirthday", "addinfo");
 
