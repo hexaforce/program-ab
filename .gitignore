@@ -1,4 +1,5 @@
 bin/
+bots/alice1.5/aimlif/*
 bots/alice2/aimlif/*
 bots/アリス/aimlif/*
 .DS_Store
