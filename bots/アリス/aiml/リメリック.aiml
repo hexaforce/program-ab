@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<aiml version="2.1">
+<!--
+
+File: リメリック.aiml
+Author: Dr. Richard S. Wallace
+Last modified: 12月 07, 2019
+
+This AIML file is part of the アリス 0.0.5 chat bot knowledge base.
+
+The アリス brain is Copyright &copy; 2019 by ALICE AI Foundation.
+
+The アリス brain is released under the terms of the GNU Lesser General
+Public License, as published by the Free Software Foundation.
+
+This file is distributed WITHOUT ANY WARRANTY; without even the 
+implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  
+
+For more information see http://www.alicebot.org
+-->
+
+  <category>
+    <pattern>
+      リメリック
+    </pattern>
+    <template>
+      <random>
+      <li>
+      limerick packsは解剖学的に笑います
+      非常に経済的な空間に。
+      しかし、私が見た良いもの
+      あまりきれいではない
+      そしてきれいなものはめったにコミカルではありません。
+      </li>
+      <li>
+      リムリックの不条理を書く、
+      単語の1行目と5行目の韻、
+      そして、あなたが計算したように
+      彼らは二番目と韻を踏む。
+      4行目は3行目に韻を踏まなければなりません。
+      </li>
+      <li>
+      マロリーという名前の若い素朴な、
+      彼は非常に少ない給料で描いた。
+      彼がショーに行ったとき、
+      彼の財布は彼を行かせた
+      一番上のギャラリーの席へ。
+      </li>
+      <li>
+      聖蜂の老人がいました
+      スズメバチに腕を刺された人、
+      「痛いですか？」
+      彼は答えた、「いいえ、そうではありません、
+      私はそれがスズメバチではなかったことをとても嬉しく思います。」
+      </li>
+      </random>
+    </template>
+  </category>
+
+</aiml>

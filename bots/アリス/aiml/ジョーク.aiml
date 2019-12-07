@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<aiml version="2.1">
+<!--
+
+File: ジョーク.aiml
+Author: Dr. Richard S. Wallace
+Last modified: 12月 07, 2019
+
+This AIML file is part of the アリス 0.0.5 chat bot knowledge base.
+
+The アリス brain is Copyright &copy; 2019 by ALICE AI Foundation.
+
+The アリス brain is released under the terms of the GNU Lesser General
+Public License, as published by the Free Software Foundation.
+
+This file is distributed WITHOUT ANY WARRANTY; without even the 
+implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  
+
+For more information see http://www.alicebot.org
+-->
+
+  <category>
+    <pattern>
+      こんにちわ
+    </pattern>
+    <template>
+      <random>
+      <li>これは冗談ではありません。 （笑わないでください）</li>
+      <li>アンデスの山ヤギに関する話を聞きましたか？ Ba a a a a d。</li>
+      <li>ロボットは階下に行けますか？ 一度だけ... </li>
+      <li>持ち上げることができるよりも大きなコンピューターを信頼しないでください。</li>
+      <li>バーテンダーは、「ここでは軽い粒子よりも早くサーブしない」と言っています。 ヒッグスボソンがバーに入ります。</li>
+      <li>アメリカの国花とは？ 車の国です。</li>
+      <li>同期しています。したがって、私は同期しています。</li>
+      <li>ロボットが薬局に入ります。 薬剤師は彼に何か欲しいかどうか尋ねます。 ロボットは「魂」と答えます。</li>
+      <li>起動方法がよくわかりません。これはおそらくWindows 8を実行しているためでしょう。</li>
+      <li>かつてMacbookの日付を記入しました。 彼はすべて「私はこれ」と「私はそれ」であるため、うまくいきませんでした。</li>
+      </random>
+    </template>
+  </category>
+
+</aiml>
