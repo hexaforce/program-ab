@@ -33,6 +33,8 @@ import java.util.HashSet;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.alicebot.ab.utils.BotProperties;
+
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.extern.slf4j.Slf4j;
@@ -65,7 +67,7 @@ public class AIMLSet extends HashSet<String> {
 		super();
 		this.bot = bot;
 		this.setName = name.toLowerCase();
-		if (setName.equals(MagicStrings.natural_number_set_name)) {
+		if (setName.equals(BotProperties.natural_number_set_name)) {
 			maxLength = 1;
 		}
 	}
@@ -73,7 +75,7 @@ public class AIMLSet extends HashSet<String> {
 	public boolean contains(String s) {
 		// if (isExternal) log.info("External "+setName+" contains "+s+"?");
 		// else log.info("Internal "+setName+" contains "+s+"?");
-		if (isExternal && MagicBooleans.enable_external_sets) {
+		if (isExternal && BotProperties.enable_external_sets) {
 			if (inCache.contains(s)) {
 				return true;
 			}
@@ -84,7 +86,7 @@ public class AIMLSet extends HashSet<String> {
 			if (split.length > maxLength) {
 				return false;
 			}
-			final String query = MagicStrings.set_member_string + setName.toUpperCase() + " " + s;
+			final String query = BotProperties.set_member_string + setName.toUpperCase() + " " + s;
 			final String response = Sraix.sraix(null, query, "false", null, host, botid, null, "0");
 			// log.info("External "+setName+" contains "+s+"? "+response);
 			if (response.equals("true")) {
@@ -94,7 +96,7 @@ public class AIMLSet extends HashSet<String> {
 				outCache.add(s);
 				return false;
 			}
-		} else if (setName.equals(MagicStrings.natural_number_set_name)) {
+		} else if (setName.equals(BotProperties.natural_number_set_name)) {
 			final Pattern numberPattern = Pattern.compile("[0-9]+");
 			final Matcher numberMatcher = numberPattern.matcher(s);
 			final Boolean isanumber = numberMatcher.matches();
@@ -154,7 +156,7 @@ public class AIMLSet extends HashSet<String> {
 				/*
 				 * Category c = new Category(0,
 				 * "ISA"+setName.toUpperCase()+" "+strLine.toUpperCase(), "*", "*", "true",
-				 * MagicStrings.null_aiml_file); bot.brain.addCategory(c);
+				 * BotProperties.null_aiml_file); bot.brain.addCategory(c);
 				 */
 			}
 		} catch (final Exception ex) {

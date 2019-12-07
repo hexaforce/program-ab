@@ -26,7 +26,7 @@ package org.alicebot.ab;
  * topicpattern
  */
 public class StarBindings {
-	public Stars inputStars = new Stars();
-	public Stars thatStars = new Stars();
-	public Stars topicStars = new Stars();
+	Stars inputStars = new Stars();
+	Stars thatStars = new Stars();
+	Stars topicStars = new Stars();
 }

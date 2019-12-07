@@ -5,6 +5,8 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.alicebot.ab.utils.BotProperties;
+
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
@@ -99,7 +101,7 @@ public class TripleStore {
 	}
 
 	private String unMapTriple(Triple triple) {
-		String id = MagicStrings.undefined_triple;
+		String id = BotProperties.undefined_triple;
 		String s, p, o;
 		s = triple.subject;
 		p = triple.predicate;
@@ -147,7 +149,7 @@ public class TripleStore {
 			existingTriples.remove(id);
 			objectTriples.put(o, existingTriples);
 		} else {
-			id = MagicStrings.undefined_triple;
+			id = BotProperties.undefined_triple;
 		}
 		return id;
 
@@ -159,7 +161,7 @@ public class TripleStore {
 
 	String addTriple(String subject, String predicate, String object) {
 		if (subject == null || predicate == null || object == null) {
-			return MagicStrings.undefined_triple;
+			return BotProperties.undefined_triple;
 		}
 		final Triple triple = new Triple(subject, predicate, object);
 		final String id = mapTriple(triple);
@@ -168,7 +170,7 @@ public class TripleStore {
 
 	String deleteTriple(String subject, String predicate, String object) {
 		if (subject == null || predicate == null || object == null) {
-			return MagicStrings.undefined_triple;
+			return BotProperties.undefined_triple;
 		}
 		log.debug("Deleting " + subject + " " + predicate + " " + object);
 		final Triple triple = new Triple(subject, predicate, object);
@@ -290,19 +292,19 @@ public class TripleStore {
 		final Clause newClause = new Clause(clause);
 		if (vars.contains(subj)) {
 			final String value = tuple.getValue(subj);
-			if (!value.equals(MagicStrings.unbound_variable)) {
+			if (!value.equals(BotProperties.unbound_variable)) {
 				/* log.info("adjusting "+subj+" "+value); */ newClause.subj = value;
 			}
 		}
 		if (vars.contains(pred)) {
 			final String value = tuple.getValue(pred);
-			if (!value.equals(MagicStrings.unbound_variable)) {
+			if (!value.equals(BotProperties.unbound_variable)) {
 				/* log.info("adjusting "+pred+" "+value); */ newClause.pred = value;
 			}
 		}
 		if (vars.contains(obj)) {
 			final String value = tuple.getValue(obj);
-			if (!value.equals(MagicStrings.unbound_variable)) {
+			if (!value.equals(BotProperties.unbound_variable)) {
 				/* log.info("adjusting "+obj+" "+value); */newClause.obj = value;
 			}
 		}

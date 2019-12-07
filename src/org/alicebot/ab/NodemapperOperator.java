@@ -140,7 +140,7 @@ public class NodemapperOperator {
 	 */
 	static void upgrade(Nodemapper node) {
 		// log.info("Upgrading "+node.id);
-		// node.type = MagicNumbers.hash_node_mapper;
+		// node.type = BotProperties.hash_node_mapper;
 		node.map = new HashMap<String, Nodemapper>();
 		node.map.put(node.key, node.value);
 		node.key = null;

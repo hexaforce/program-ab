@@ -11,14 +11,14 @@ import java.util.regex.Pattern;
  */
 public class Contact {
 
-	public static int contactCount = 0;
-	public static HashMap<String, Contact> idContactMap = new HashMap<String, Contact>();
-	public static HashMap<String, String> nameIdMap = new HashMap<String, String>();
-	public String contactId;
-	public String displayName;
-	public String birthday;
-	public HashMap<String, String> phones;
-	public HashMap<String, String> emails;
+	private static int contactCount = 0;
+	private static HashMap<String, Contact> idContactMap = new HashMap<String, Contact>();
+	private static HashMap<String, String> nameIdMap = new HashMap<String, String>();
+	private String contactId;
+	private String displayName;
+	private String birthday;
+	private HashMap<String, String> phones;
+	private HashMap<String, String> emails;
 
 	static String multipleIds(String contactName) {
 		String patternString = " (" + contactName.toUpperCase() + ") ";

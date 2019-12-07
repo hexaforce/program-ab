@@ -24,6 +24,9 @@ package org.alicebot.ab;
 
 import java.util.Comparator;
 
+import org.alicebot.ab.utils.BotProperties;
+import org.alicebot.ab.utils.Utilities;
+
 import lombok.extern.slf4j.Slf4j;
 
 /**
@@ -119,7 +122,7 @@ public class Category {
 	 */
 	String getFilename() {
 		if (filename == null) {
-			return MagicStrings.unknown_aiml_file;
+			return BotProperties.unknown_aiml_file;
 		} else {
 			return filename;
 		}
@@ -160,7 +163,7 @@ public class Category {
 	static String templateToLine(String template) {
 		String result = template;
 		result = result.replaceAll("(\r\n|\n\r|\r|\n)", "\\#Newline");
-		result = result.replaceAll(",", MagicStrings.aimlif_split_char_name);
+		result = result.replaceAll(",", "\\#Comma");
 		return result;
 	}
 
@@ -173,7 +176,7 @@ public class Category {
 	 */
 	private static String lineToTemplate(String line) {
 		String result = line.replaceAll("\\#Newline", NL);
-		result = result.replaceAll(MagicStrings.aimlif_split_char_name, ",");
+		result = result.replaceAll("\\#Comma", ",");
 		return result;
 	}
 
@@ -353,7 +356,7 @@ public class Category {
 	 */
 
 	Category(int activationCnt, String pattern, String that, String topic, String template, String filename) {
-		if (MagicBooleans.fix_excel_csv) {
+		if (BotProperties.fix_excel_csv) {
 			pattern = Utilities.fixCSV(pattern);
 			that = Utilities.fixCSV(that);
 			topic = Utilities.fixCSV(topic);

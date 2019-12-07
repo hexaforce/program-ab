@@ -33,9 +33,9 @@ import lombok.extern.slf4j.Slf4j;
 public class Path extends ArrayList<String> {
 	private static final long serialVersionUID = 1L;
 
-	public String word;
-	public Path next;
-	public int length;
+	String word;
+	Path next;
+	int length;
 
 	/**
 	 * Constructor - class has public members

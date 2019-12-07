@@ -41,7 +41,10 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.stream.Collectors;
 
+import org.alicebot.ab.utils.BotProperties;
 import org.alicebot.ab.utils.DomUtils;
+import org.alicebot.ab.utils.Timer;
+import org.alicebot.ab.utils.Utilities;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.filefilter.FileFilterUtils;
 import org.apache.commons.io.filefilter.IOFileFilter;
@@ -55,7 +58,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class Bot {
 
-	public final Properties properties = new Properties();
+	public final BotProperties properties;
 	public final PreProcessor preProcessor;
 	public final Graphmaster brain;
 	public Graphmaster learnfGraph;
@@ -74,7 +77,7 @@ public class Bot {
 	public final String aimlif_path;
 	public final String aiml_path;
 	public final String config_path;
-	public final String log_path;
+//	public final String log_path;
 	public final File sets_path;
 	public final File maps_path;
 
@@ -96,7 +99,8 @@ public class Bot {
 		this.aiml_path = currentDirectory + "/aiml";
 		this.aimlif_path = currentDirectory + "/aimlif";
 		this.config_path = currentDirectory + "/config";
-		this.log_path = currentDirectory + "/logs";
+		this.properties = new BotProperties(new File(config_path + "/properties.txt"));
+//		this.log_path = currentDirectory + "/logs";
 		this.sets_path = new File(currentDirectory + "/sets");
 		this.maps_path = new File(currentDirectory + "/maps");
 
@@ -110,22 +114,22 @@ public class Bot {
 
 		preProcessor = new PreProcessor(this);
 //		addProperties();
-		properties.getProperties(config_path + "/properties.txt");
+//		properties.getProperties(config_path + "/properties.txt");
 		cnt = addAIMLSets();
 		log.debug("Loaded " + cnt + " set elements.");
 		cnt = addAIMLMaps();
 		log.debug("Loaded " + cnt + " map elements");
 		this.pronounSet = getPronouns();
-		final AIMLSet number = new AIMLSet(MagicStrings.natural_number_set_name, this);
-		setMap.put(MagicStrings.natural_number_set_name, number);
-		final AIMLMap successor = new AIMLMap(MagicStrings.map_successor, this);
-		mapMap.put(MagicStrings.map_successor, successor);
-		final AIMLMap predecessor = new AIMLMap(MagicStrings.map_predecessor, this);
-		mapMap.put(MagicStrings.map_predecessor, predecessor);
-		final AIMLMap singular = new AIMLMap(MagicStrings.map_singular, this);
-		mapMap.put(MagicStrings.map_singular, singular);
-		final AIMLMap plural = new AIMLMap(MagicStrings.map_plural, this);
-		mapMap.put(MagicStrings.map_plural, plural);
+		final AIMLSet number = new AIMLSet(BotProperties.natural_number_set_name, this);
+		setMap.put(BotProperties.natural_number_set_name, number);
+		final AIMLMap successor = new AIMLMap(BotProperties.map_successor, this);
+		mapMap.put(BotProperties.map_successor, successor);
+		final AIMLMap predecessor = new AIMLMap(BotProperties.map_predecessor, this);
+		mapMap.put(BotProperties.map_predecessor, predecessor);
+		final AIMLMap singular = new AIMLMap(BotProperties.map_singular, this);
+		mapMap.put(BotProperties.map_singular, singular);
+		final AIMLMap plural = new AIMLMap(BotProperties.map_plural, this);
+		mapMap.put(BotProperties.map_plural, plural);
 		// log.info("setMap = "+setMap);
 		final Date aimlDate = new Date(new File(aiml_path).lastModified());
 		final Date aimlIFDate = new Date(new File(aimlif_path).lastModified());
@@ -143,7 +147,7 @@ public class Bot {
 			}
 		}
 
-		final Category c = new Category(0, "PROGRAM VERSION", "*", "*", MagicStrings.program_name_version, "update.aiml");
+		final Category c = new Category(0, "PROGRAM VERSION", "*", "*", BotProperties.program_name_version, "update.aiml");
 		brain.addCategory(c);
 		brain.nodeStats();
 		learnfGraph.nodeStats();
@@ -173,13 +177,13 @@ public class Bot {
 	 * @param moreCategories list of categories
 	 */
 	private void addMoreCategories(String file, ArrayList<Category> moreCategories) {
-		if (file.contains(MagicStrings.deleted_aiml_file)) {
+		if (file.contains(BotProperties.deleted_aiml_file)) {
 			/*
 			 * for (Category c : moreCategories) { //log.info("Delete "+c.getPattern());
 			 * deletedGraph.addCategory(c); }
 			 */
 
-		} else if (file.contains(MagicStrings.learnf_aiml_file)) {
+		} else if (file.contains(BotProperties.learnf_aiml_file)) {
 			log.debug("Reading Learnf file");
 			for (final Category c : moreCategories) {
 				brain.addCategory(c);
@@ -281,7 +285,7 @@ public class Bot {
 		}
 
 		ArrayList<Category> cats = learnfGraph.getCategories();
-		String filename = MagicStrings.learnf_aiml_file + MagicStrings.aimlif_file_suffix;
+		String filename = BotProperties.learnf_aiml_file + ".csv";
 
 		File f = new File(aimlif_path + "/" + filename);
 		log.debug("writeIFCategories {}", f.getPath());
@@ -336,7 +340,7 @@ public class Bot {
 				if (fileMap.containsKey(fileName)) {
 					bw = fileMap.get(fileName);
 				} else {
-					File f = new File(aimlif_path + "/" + fileName + MagicStrings.aimlif_file_suffix);
+					File f = new File(aimlif_path + "/" + fileName + ".csv");
 					log.debug("writeAIMLIFFiles {}", f.getPath());
 					bw = new BufferedWriter(new FileWriter(f));
 					fileMap.put(fileName, bw);
@@ -378,7 +382,7 @@ public class Bot {
 		String NL = System.getProperty("line.separator");
 		try {
 			for (final Category c : brainCategories) {
-				if (!c.getFilename().equals(MagicStrings.null_aiml_file)) {
+				if (!c.getFilename().equals(BotProperties.null_aiml_file)) {
 					// log.info("Writing "+c.getCategoryNumber()+" "+c.inputThatTopic());
 					BufferedWriter bw;
 					final String fileName = c.getFilename();

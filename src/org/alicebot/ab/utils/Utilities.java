@@ -1,10 +1,10 @@
-package org.alicebot.ab;
+package org.alicebot.ab.utils;
 
 import java.io.File;
 import java.nio.charset.Charset;
 import java.util.HashSet;
 
-import org.alicebot.ab.utils.CalendarUtils;
+import org.alicebot.ab.Bot;
 import org.apache.commons.io.FileUtils;
 
 import lombok.extern.slf4j.Slf4j;
@@ -57,14 +57,14 @@ public class Utilities {
 		final String date = CalendarUtils.date();
 		try {
 			copyright = FileUtils.readFileToString(new File(bot.config_path + "/copyright.txt"), Charset.defaultCharset());
-			copyright = copyright.replace("[url]", bot.properties.get("url"));
+			copyright = copyright.replace("[url]", bot.properties.getS("url"));
 			copyright = copyright.replace("[date]", date);
 			copyright = copyright.replace("[YYYY]", year);
-			copyright = copyright.replace("[version]", bot.properties.get("version"));
+			copyright = copyright.replace("[version]", bot.properties.getS("version"));
 			copyright = copyright.replace("[botname]", bot.botName.toUpperCase());
 			copyright = copyright.replace("[filename]", AIMLFilename);
-			copyright = copyright.replace("[botmaster]", bot.properties.get("botmaster"));
-			copyright = copyright.replace("[organization]", bot.properties.get("organization"));
+			copyright = copyright.replace("[botmaster]", bot.properties.getS("botmaster"));
+			copyright = copyright.replace("[organization]", bot.properties.getS("organization"));
 		} catch (final Exception e) {// Catch exception if any
 			log.error("Error: " + e.getMessage());
 		}

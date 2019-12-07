@@ -1,7 +1,6 @@
 package org.alicebot.ab.utils;
 
 import org.alicebot.ab.AIMLProcessor;
-import org.alicebot.ab.MagicStrings;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
@@ -59,7 +58,7 @@ public class JapaneseUtils {
 
 	public static String tokenizeXML(String xmlExpression) {
 		// log.info("tokenizeXML "+xmlExpression);
-		String response = MagicStrings.template_failed;
+		String response = BotProperties.template_failed;
 		try {
 			xmlExpression = "<sentence>" + xmlExpression + "</sentence>";
 			Node root = DomUtils.parseString(xmlExpression);

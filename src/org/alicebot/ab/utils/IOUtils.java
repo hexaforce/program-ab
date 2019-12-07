@@ -94,7 +94,6 @@ public class IOUtils {
 	
 	public static String system(String evaluatedContents, String failedString) {
 		Runtime rt = Runtime.getRuntime();
-		// log.info("System "+evaluatedContents);
 		try {
 			Process p = rt.exec(evaluatedContents);
 			InputStream istrm = p.getInputStream();
@@ -105,7 +104,6 @@ public class IOUtils {
 			while ((data = buffrdr.readLine()) != null) {
 				result += data + NL;
 			}
-			// log.info("Result = "+result);
 			return result;
 		} catch (Exception ex) {
 			log.error(ex.getMessage(), ex);
@@ -114,7 +112,6 @@ public class IOUtils {
 	}
 
 	public static String evalScript(String engineName, String script) throws Exception {
-		// log.info("evaluating "+script);
 		ScriptEngineManager mgr = new ScriptEngineManager();
 		ScriptEngine engine = mgr.getEngineByName("JavaScript");
 		String result = "" + engine.eval(script);

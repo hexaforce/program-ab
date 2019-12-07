@@ -17,7 +17,7 @@ import lombok.Data;
 	This library is distributed in the hope that it will be useful,
 	but WITHOUT ANY WARRANTY; without even the implied warranty of
 	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-	Library General Public License for more details.
+	Library General License for more details.
 
 	You should have received a copy of the GNU Library General Public
 	License along with this library; if not, write to the
@@ -30,13 +30,13 @@ import lombok.Data;
  */
 @Data
 @AllArgsConstructor
-public class ParseState {
-	public int depth;
-	public Chat chatSession;
-	public String input;
-	public String that;
-	public String topic;
-	public Nodemapper leaf;
-	public Predicates vars;
-	public StarBindings starBindings;
+class ParseState {
+	int depth;
+	Chat chatSession;
+	String input;
+	String that;
+	String topic;
+	Nodemapper leaf;
+	Predicates vars;
+	StarBindings starBindings;
 }

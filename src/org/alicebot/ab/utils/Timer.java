@@ -1,6 +1,4 @@
-package org.alicebot.ab;
-
-import lombok.extern.slf4j.Slf4j;
+package org.alicebot.ab.utils;
 
 /* 
 	Program AB Reference AIML 2.1 implementation
@@ -25,23 +23,34 @@ import lombok.extern.slf4j.Slf4j;
 */
 
 /**
- * Global boolean values that control various actions in Program AB
+ * Specialized timer function for program instrumentation
  */
-@Slf4j
-public class MagicBooleans {
+public class Timer {
+	private long startTimeMillis;
 
-//	public static boolean trace_mode = true;
-	public static boolean enable_external_sets = true;
-//	public static boolean enable_external_maps = true;
-//	public static boolean jp_tokenize = false;
-	public static boolean fix_excel_csv = true;
-	public static boolean enable_network_connection = true;
-	public static boolean cache_sraix = false;
-	public static boolean qa_test_mode = false;
-	public static boolean make_verbs_sets_maps = false;
-
-	public static void trace(String traceString) {
-		log.debug(traceString);
+	public Timer() {
+		start();
 	}
 
+	public void start() {
+		startTimeMillis = System.currentTimeMillis();
+	}
+
+	public long elapsedTimeMillis() {
+		return System.currentTimeMillis() - startTimeMillis + 1;
+	}
+
+	public long elapsedRestartMs() {
+		final long ms = System.currentTimeMillis() - startTimeMillis + 1;
+		start();
+		return ms;
+	}
+
+	public float elapsedTimeSecs() {
+		return elapsedTimeMillis() / 1000F;
+	}
+
+	public float elapsedTimeMins() {
+		return elapsedTimeSecs() / 60F;
+	}
 }

@@ -29,6 +29,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.HashMap;
 
+import org.alicebot.ab.utils.BotProperties;
 import org.alicebot.ab.utils.JapaneseUtils;
 
 import lombok.extern.slf4j.Slf4j;
@@ -57,10 +58,10 @@ public class Predicates extends HashMap<String, String> {
 		}
 
 		if (key.equals("topic") && value.length() == 0) {
-			value = MagicStrings.default_get;
+			value = BotProperties.default_get;
 		}
-		if (value.equals(MagicStrings.too_much_recursion)) {
-			value = MagicStrings.default_list_item;
+		if (value.equals(BotProperties.too_much_recursion)) {
+			value = BotProperties.default_list_item;
 		}
 		// MagicBooleans.trace("Setting predicate key: " + key + " to value: " + value);
 		final String result = super.put(key, value);
@@ -78,7 +79,7 @@ public class Predicates extends HashMap<String, String> {
 		// MagicBooleans.trace("predicates.get(key: " + key + ")");
 		String result = super.get(key);
 		if (result == null) {
-			result = MagicStrings.default_get;
+			result = BotProperties.default_get;
 		}
 		// MagicBooleans.trace("in predicates.get, returning: " + result);
 		return result;

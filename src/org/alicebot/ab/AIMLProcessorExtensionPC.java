@@ -24,6 +24,7 @@ package org.alicebot.ab;
 
 import java.util.Set;
 
+import org.alicebot.ab.utils.Utilities;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
@@ -34,7 +35,7 @@ import lombok.extern.slf4j.Slf4j;
  * some extension tags that are defined for mobile devices.
  */
 @Slf4j
-public class PCAIMLProcessorExtension implements AIMLProcessorExtension {
+public class AIMLProcessorExtensionPC implements AIMLProcessorExtension {
 
 	public Set<String> extensionTagNames = Utilities.stringSet("contactid", "multipleids", "displayname", "dialnumber", "emailaddress", "contactbirthday", "addinfo");
 

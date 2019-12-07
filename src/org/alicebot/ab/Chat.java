@@ -23,14 +23,12 @@ package org.alicebot.ab;
 */
 
 import java.io.BufferedReader;
-import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileWriter;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 
-import org.alicebot.ab.utils.IOUtils;
+import org.alicebot.ab.utils.BotProperties;
 import org.alicebot.ab.utils.JapaneseUtils;
 
 import lombok.extern.slf4j.Slf4j;
@@ -41,20 +39,20 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class Chat {
 
-	public Bot bot;
-//	public boolean doWrites;
-	public String customerId = MagicStrings.default_Customer_id;
+	Bot bot;
+//	private boolean doWrites;
+	String customerId = BotProperties.default_Customer_id;
 	public History<History<?>> thatHistory = new History<History<?>>("that");
-	public History<String> requestHistory = new History<String>("request");
-	public History<String> responseHistory = new History<String>("response");
+	History<String> requestHistory = new History<String>("request");
+	History<String> responseHistory = new History<String>("response");
 	// public History<String> repetitionHistory = new History<String>("repetition");
-	public History<String> inputHistory = new History<String>("input");
+	History<String> inputHistory = new History<String>("input");
 	public Predicates predicates = new Predicates();
-	public static String matchTrace = "";
-	public static boolean locationKnown = false;
-	public static String longitude;
-	public static String latitude;
-	public TripleStore tripleStore = new TripleStore("anon", bot);
+	static String matchTrace = "";
+	static boolean locationKnown = false;
+	static String longitude;
+	static String latitude;
+	TripleStore tripleStore = new TripleStore("anon", bot);
 
 	/**
 	 * Constructor
@@ -69,7 +67,7 @@ public class Chat {
 		this.bot = bot;
 //		this.doWrites = doWrites;
 		final History<String> contextThatHistory = new History<String>();
-		contextThatHistory.add(MagicStrings.default_that);
+		contextThatHistory.add(BotProperties.default_that);
 		thatHistory.add(contextThatHistory);
 		try {
 			predicates.getPredicateDefaults(bot.config_path + "/predicates.txt");
@@ -77,8 +75,8 @@ public class Chat {
 			log.error(ex.getMessage(), ex);
 		}
 		addTriples();
-		predicates.put("topic", MagicStrings.default_topic);
-		predicates.put("jsenabled", MagicStrings.js_enabled);
+		predicates.put("topic", BotProperties.default_topic);
+		predicates.put("jsenabled", BotProperties.js_enabled);
 		log.debug("Chat Session Created for bot " + bot.botName);
 	}
 
@@ -129,34 +127,6 @@ public class Chat {
 	}
 
 	/**
-	 * Chat session terminal interaction
-	 */
-	public void chat() {
-		BufferedWriter bw = null;
-		final String logFile = bot.log_path + "/log_" + customerId + ".txt";
-		try {
-			// Construct the bw object
-			bw = new BufferedWriter(new FileWriter(logFile, true));
-			String request = "SET PREDICATES";
-			String response = multisentenceRespond(request);
-			while (!request.equals("quit")) {
-				System.out.print("Human: ");
-				request = IOUtils.readInputTextLine();
-				response = multisentenceRespond(request);
-				log.info("Robot: " + response);
-				bw.write("Human: " + request);
-				bw.newLine();
-				bw.write("Robot: " + response);
-				bw.newLine();
-				bw.flush();
-			}
-			bw.close();
-		} catch (final Exception ex) {
-			log.error(ex.getMessage(), ex);
-		}
-	}
-
-	/**
 	 * Return bot response to a single sentence input given conversation context
 	 *
 	 * @param input              client input
@@ -171,19 +141,19 @@ public class Chat {
 		// topic: " + topic + ", contextThatHistory: " + contextThatHistory + ")");
 		boolean repetition = true;
 		// inputHistory.printHistory();
-		for (int i = 0; i < MagicNumbers.repetition_count; i++) {
+		for (int i = 0; i < BotProperties.repetition_count; i++) {
 			// log.info(request.toUpperCase()+"=="+inputHistory.get(i)+"?
 			// "+request.toUpperCase().equals(inputHistory.get(i)));
 			if (inputHistory.get(i) == null || !input.toUpperCase().equals(inputHistory.get(i).toUpperCase())) {
 				repetition = false;
 			}
 		}
-		if (input.equals(MagicStrings.null_input)) {
+		if (input.equals(BotProperties.null_input)) {
 			repetition = false;
 		}
 		inputHistory.add(input);
 		if (repetition) {
-			input = MagicStrings.repetition_detected;
+			input = BotProperties.repetition_detected;
 		}
 
 		String response;
@@ -199,7 +169,7 @@ public class Chat {
 			that = sentence;
 			// log.info("That "+i+" '"+that+"'");
 			if (that.trim().equals("")) {
-				that = MagicStrings.default_that;
+				that = BotProperties.default_that;
 			}
 			contextThatHistory.add(that);
 		}
@@ -221,7 +191,7 @@ public class Chat {
 		final History<?> hist = thatHistory.get(0);
 		String that;
 		if (hist == null) {
-			that = MagicStrings.default_that;
+			that = BotProperties.default_that;
 		} else {
 			that = hist.getString(0);
 		}
@@ -263,7 +233,7 @@ public class Chat {
 			response = response.trim();
 		} catch (final Exception ex) {
 			log.error(ex.getMessage(), ex);
-			return MagicStrings.error_bot_response;
+			return BotProperties.error_bot_response;
 		}
 
 //		if (doWrites) {
@@ -274,7 +244,7 @@ public class Chat {
 		return response;
 	}
 
-	public static void setMatchTrace(String newMatchTrace) {
+	static void setMatchTrace(String newMatchTrace) {
 		matchTrace = newMatchTrace;
 	}
 

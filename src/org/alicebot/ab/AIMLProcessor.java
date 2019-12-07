@@ -26,11 +26,13 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.alicebot.ab.utils.BotProperties;
 import org.alicebot.ab.utils.CalendarUtils;
 import org.alicebot.ab.utils.DomUtils;
 import org.alicebot.ab.utils.IOUtils;
 import org.alicebot.ab.utils.IntervalUtils;
 import org.alicebot.ab.utils.JapaneseUtils;
+import org.alicebot.ab.utils.Utilities;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
@@ -46,7 +48,6 @@ import lombok.extern.slf4j.Slf4j;
 public class AIMLProcessor {
 
 	// static private boolean DEBUG = false;
-	public static AIMLProcessorExtension extension;
 
 	/**
 	 * when parsing an AIML file, process a category element.
@@ -140,7 +141,7 @@ public class AIMLProcessor {
 				final Node n = nodelist.item(i);
 				// log.info("AIML child: " +n.getNodeName());
 				if (n.getNodeName().equals("category")) {
-					final Category c = categoryProcessor(n, "*", aimlFileName, MagicStrings.default_language);
+					final Category c = categoryProcessor(n, "*", aimlFileName, BotProperties.default_language);
 					categories.add(c);
 				} else if (n.getNodeName().equals("topic")) {
 					final String topic = n.getAttributes().getNamedItem("name").getTextContent();
@@ -150,7 +151,7 @@ public class AIMLProcessor {
 						final Node m = children.item(j);
 						// log.info("Topic child: " + m.getNodeName());
 						if (m.getNodeName().equals("category")) {
-							final Category c = categoryProcessor(m, topic, aimlFileName, MagicStrings.default_language);
+							final Category c = categoryProcessor(m, topic, aimlFileName, BotProperties.default_language);
 							categories.add(c);
 						}
 					}
@@ -190,13 +191,13 @@ public class AIMLProcessor {
 	 * @return bot's reply.
 	 */
 	private static String respond(String input, String that, String topic, Chat chatSession, int srCnt) {
-		MagicBooleans.trace("input: " + input + ", that: " + that + ", topic: " + topic + ", chatSession: " + chatSession + ", srCnt: " + srCnt);
+		log.trace("input: " + input + ", that: " + that + ", topic: " + topic + ", chatSession: " + chatSession + ", srCnt: " + srCnt);
 		String response;
 		if (input == null || input.length() == 0) {
-			input = MagicStrings.null_input;
+			input = BotProperties.null_input;
 		}
 		sraiCount = srCnt;
-		response = MagicStrings.default_bot_response;
+		response = BotProperties.default_bot_response;
 		try {
 			final Nodemapper leaf = chatSession.bot.brain.match(input, that, topic);
 			if (leaf == null) {
@@ -350,10 +351,10 @@ public class AIMLProcessor {
 	private static String srai(Node node, ParseState ps) {
 		// MagicBooleans.trace("AIMLProcessor.srai(node: " + node + ", ps: " + ps);
 		sraiCount++;
-		if (sraiCount > MagicNumbers.max_recursion_count || ps.depth > MagicNumbers.max_recursion_depth) {
-			return MagicStrings.too_much_recursion;
+		if (sraiCount > BotProperties.max_recursion_count || ps.depth > BotProperties.max_recursion_depth) {
+			return BotProperties.too_much_recursion;
 		}
-		String response = MagicStrings.default_bot_response;
+		String response = BotProperties.default_bot_response;
 		try {
 			String result = evalTagContent(node, ps, null);
 			result = result.trim();
@@ -446,7 +447,7 @@ public class AIMLProcessor {
 	 * @return the map result or a string indicating the key was not found
 	 */
 	private static String map(Node node, ParseState ps) {
-		String result = MagicStrings.default_map;
+		String result = BotProperties.default_map;
 		final HashSet<String> attributeNames = Utilities.stringSet("name");
 		final String mapName = getAttributeOrTagValue(node, ps, "name");
 		String contents = evalTagContent(node, ps, attributeNames);
@@ -460,7 +461,7 @@ public class AIMLProcessor {
 			}
 			// log.info("AIMLProcessor map "+contents+" "+result);
 			if (result == null) {
-				result = MagicStrings.default_map;
+				result = BotProperties.default_map;
 			}
 			result = result.trim();
 		}
@@ -485,11 +486,11 @@ public class AIMLProcessor {
 		final String value = result.trim();
 		if (predicateName != null) {
 			ps.chatSession.predicates.put(predicateName, result);
-			MagicBooleans.trace("Set predicate " + predicateName + " to " + result + " in " + ps.leaf.category.inputThatTopic());
+			log.trace("Set predicate " + predicateName + " to " + result + " in " + ps.leaf.category.inputThatTopic());
 		}
 		if (varName != null) {
 			ps.vars.put(varName, result);
-			MagicBooleans.trace("Set var " + varName + " to " + value + " in " + ps.leaf.category.inputThatTopic());
+			log.trace("Set var " + varName + " to " + value + " in " + ps.leaf.category.inputThatTopic());
 		}
 		if (ps.chatSession.bot.pronounSet.contains(predicateName)) {
 			result = predicateName;
@@ -508,7 +509,7 @@ public class AIMLProcessor {
 	 */
 	private static String get(Node node, ParseState ps) {
 		// MagicBooleans.trace("AIMLProcessor.get(node: " + node + ", ps: " + ps + ")");
-		String result = MagicStrings.default_get;
+		String result = BotProperties.default_get;
 		final String predicateName = getAttributeOrTagValue(node, ps, "name");
 		final String varName = getAttributeOrTagValue(node, ps, "var");
 		final String tupleName = getAttributeOrTagValue(node, ps, "tuple");
@@ -525,12 +526,12 @@ public class AIMLProcessor {
 	}
 
 	private static String tupleGet(String tupleName, String varName) {
-		String result = MagicStrings.default_get;
+		String result = BotProperties.default_get;
 		final Tuple tuple = Tuple.tupleMap.get(tupleName);
 		// log.info("Tuple = "+tuple.printTuple());
 		// log.info("Value = "+tuple.getValue(varName));
 		if (tuple == null) {
-			result = MagicStrings.default_get;
+			result = BotProperties.default_get;
 		} else {
 			result = tuple.getValue(varName);
 		}
@@ -546,11 +547,11 @@ public class AIMLProcessor {
 	 * @return the bot property or a string indicating the property was not found.
 	 */
 	private static String bot(Node node, ParseState ps) {
-		String result = MagicStrings.default_property;
+		String result = BotProperties.default_property;
 		// HashSet<String> attributeNames = Utilities.stringSet("name");
 		final String propertyName = getAttributeOrTagValue(node, ps, "name");
 		if (propertyName != null) {
-			result = ps.chatSession.bot.properties.get(propertyName).trim();
+			result = ps.chatSession.bot.properties.getS(propertyName).trim();
 		}
 		// log.info("BOT: "+m.getNodeValue()+"="+result);
 		return result;
@@ -565,15 +566,10 @@ public class AIMLProcessor {
 	 * @return the formatted date
 	 */
 	private static String date(Node node, ParseState ps) {
-		// HashSet<String> attributeNames =
-		// Utilities.stringSet("jformat","format","locale","timezone");
-		final String jformat = getAttributeOrTagValue(node, ps, "jformat"); // AIML 2.1
+		final String jformat = getAttributeOrTagValue(node, ps, "jformat");
 		final String locale = getAttributeOrTagValue(node, ps, "locale");
 		final String timezone = getAttributeOrTagValue(node, ps, "timezone");
-		// log.info("Format = "+format+" Locale = "+locale+" Timezone =
-		// "+timezone);
 		final String dateAsString = CalendarUtils.date(jformat, locale, timezone);
-		// log.info(dateAsString);
 		return dateAsString;
 	}
 
@@ -584,10 +580,8 @@ public class AIMLProcessor {
 	 */
 
 	private static String interval(Node node, ParseState ps) {
-		// HashSet<String> attributeNames =
-		// Utilities.stringSet("style","jformat","from","to");
-		String style = getAttributeOrTagValue(node, ps, "style"); // AIML 2.1
-		String jformat = getAttributeOrTagValue(node, ps, "jformat"); // AIML 2.1
+		String style = getAttributeOrTagValue(node, ps, "style");
+		String jformat = getAttributeOrTagValue(node, ps, "jformat");
 		String from = getAttributeOrTagValue(node, ps, "from");
 		String to = getAttributeOrTagValue(node, ps, "to");
 		if (style == null) {
@@ -735,18 +729,18 @@ public class AIMLProcessor {
 		return String.valueOf(size);
 	}
 
-	/**
-	 * return a string indicating the name and version of the AIML program.
-	 * implements {@code <program/>}
-	 *
-	 *
-	 * @param node current XML parse node
-	 * @param ps   AIML parse state
-	 * @return AIML program name and version.
-	 */
-	private static String program(Node node, ParseState ps) {
-		return MagicStrings.program_name_version;
-	}
+//	/**
+//	 * return a string indicating the name and version of the AIML program.
+//	 * implements {@code <program/>}
+//	 *
+//	 *
+//	 * @param node current XML parse node
+//	 * @param ps   AIML parse state
+//	 * @return AIML program name and version.
+//	 */
+//	private static String program(Node node, ParseState ps) {
+//		return BotProperties.program_name_version;
+//	}
 
 	/**
 	 * implements the (template-side) {@code <that index="M,N"/>} tag. returns a
@@ -771,7 +765,7 @@ public class AIMLProcessor {
 				log.error(ex.getMessage(), ex);
 			}
 		}
-		String that = MagicStrings.unknown_history_item;
+		String that = BotProperties.unknown_history_item;
 		final History<?> hist = ps.chatSession.thatHistory.get(index);
 		if (hist != null) {
 			that = (String) hist.get(jndex);
@@ -833,7 +827,7 @@ public class AIMLProcessor {
 		final HashSet<String> attributeNames = Utilities.stringSet("timeout");
 		// String stimeout = getAttributeOrTagValue(node, ps, "timeout");
 		final String evaluatedContents = evalTagContent(node, ps, attributeNames);
-		final String result = IOUtils.system(evaluatedContents, MagicStrings.system_failed);
+		final String result = IOUtils.system(evaluatedContents, BotProperties.system_failed);
 		return result;
 	}
 
@@ -1024,9 +1018,6 @@ public class AIMLProcessor {
 			}
 		}
 		int index = (int) (Math.random() * liList.size());
-		if (MagicBooleans.qa_test_mode) {
-			index = 0;
-		}
 		return evalTagContent(liList.get(index), ps, null);
 	}
 
@@ -1095,11 +1086,11 @@ public class AIMLProcessor {
 				Category c;
 				if (node.getNodeName().equals("learn")) {
 					// log.info("node is <learn>");
-					c = new Category(0, pattern, that, "*", template, MagicStrings.null_aiml_file);
+					c = new Category(0, pattern, that, "*", template, BotProperties.null_aiml_file);
 					ps.chatSession.bot.learnGraph.addCategory(c);
 				} else {// learnf
 						// log.info("node is <learnf>");
-					c = new Category(0, pattern, that, "*", template, MagicStrings.learnf_aiml_file);
+					c = new Category(0, pattern, that, "*", template, BotProperties.learnf_aiml_file);
 					ps.chatSession.bot.learnfGraph.addCategory(c);
 				}
 				ps.chatSession.bot.brain.addCategory(c);
@@ -1121,10 +1112,10 @@ public class AIMLProcessor {
 		boolean loop = true;
 		String result = "";
 		final int loopCnt = 0;
-		while (loop && loopCnt < MagicNumbers.max_loops) {
+		while (loop && loopCnt < BotProperties.max_loops) {
 			String loopResult = condition(node, ps);
-			if (loopResult.trim().equals(MagicStrings.too_much_recursion)) {
-				return MagicStrings.too_much_recursion;
+			if (loopResult.trim().equals(BotProperties.too_much_recursion)) {
+				return BotProperties.too_much_recursion;
 			}
 			if (loopResult.contains("<loop/>")) {
 				loopResult = loopResult.replace("<loop/>", "");
@@ -1134,8 +1125,8 @@ public class AIMLProcessor {
 			}
 			result += loopResult;
 		}
-		if (loopCnt >= MagicNumbers.max_loops) {
-			result = MagicStrings.too_much_looping;
+		if (loopCnt >= BotProperties.max_loops) {
+			result = BotProperties.too_much_looping;
 		}
 		return result;
 	}
@@ -1333,7 +1324,7 @@ public class AIMLProcessor {
 	private static String javascript(Node node, ParseState ps) {
 		// MagicBooleans.trace("AIMLProcessor.javascript(node: " + node + ", ps: " + ps
 		// + ")");
-		String result = MagicStrings.bad_javascript;
+		String result = BotProperties.bad_javascript;
 		final String script = evalTagContent(node, ps, null);
 
 		try {
@@ -1341,7 +1332,7 @@ public class AIMLProcessor {
 		} catch (final Exception ex) {
 			log.error(ex.getMessage(), ex);
 		}
-		MagicBooleans.trace("in AIMLProcessor.javascript, returning result: " + result);
+		log.trace("in AIMLProcessor.javascript, returning result: " + result);
 		return result;
 	}
 
@@ -1354,7 +1345,7 @@ public class AIMLProcessor {
 		} else if (content.length() > 0) {
 			return content;
 		} else {
-			return MagicStrings.default_list_item;
+			return BotProperties.default_list_item;
 		}
 	}
 
@@ -1365,7 +1356,7 @@ public class AIMLProcessor {
 			final String tail = content.substring(content.indexOf(" ") + 1, content.length());
 			return tail;
 		} else {
-			return MagicStrings.default_list_item;
+			return BotProperties.default_list_item;
 		}
 	}
 
@@ -1394,6 +1385,8 @@ public class AIMLProcessor {
 
 	}
 
+	final static AIMLProcessorExtension extension = new AIMLProcessorExtensionPC();
+
 	/**
 	 * Recursively descend the XML DOM tree, evaluating AIML and building a
 	 * response.
@@ -1401,7 +1394,6 @@ public class AIMLProcessor {
 	 * @param node current XML parse node
 	 * @param ps   AIML parse state
 	 */
-
 	private static String recursEval(Node node, ParseState ps) {
 		// MagicBooleans.trace("AIMLProcessor.recursEval(node: " + node + ", ps: " + ps
 		// + ")");
@@ -1445,7 +1437,7 @@ public class AIMLProcessor {
 			} else if (nodeName.equals("vocabulary")) {
 				return vocabulary(node, ps);
 			} else if (nodeName.equals("program")) {
-				return program(node, ps);
+				return BotProperties.program_name_version;
 			} else if (nodeName.equals("date")) {
 				return date(node, ps);
 			} else if (nodeName.equals("interval")) {
@@ -1529,7 +1521,7 @@ public class AIMLProcessor {
 	private static String evalTemplate(String template, ParseState ps) {
 		// MagicBooleans.trace("AIMLProcessor.evalTemplate(template: " + template + ",
 		// ps: " + ps + ")");
-		String response = MagicStrings.template_failed;
+		String response = BotProperties.template_failed;
 		try {
 			template = "<template>" + template + "</template>";
 			final Node root = DomUtils.parseString(template);

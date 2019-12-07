@@ -23,14 +23,14 @@ package org.alicebot.ab;
 */
 
 import java.io.BufferedReader;
-import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileWriter;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import org.alicebot.ab.utils.BotProperties;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -40,28 +40,28 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class PreProcessor {
 
-	public int normalCount = 0;
-	public int denormalCount = 0;
-	public int personCount = 0;
-	public int person2Count = 0;
-	public int genderCount = 0;
-	public String[] normalSubs = new String[MagicNumbers.max_substitutions];
-	public Pattern[] normalPatterns = new Pattern[MagicNumbers.max_substitutions];
-	public String[] denormalSubs = new String[MagicNumbers.max_substitutions];
-	public Pattern[] denormalPatterns = new Pattern[MagicNumbers.max_substitutions];
-	public String[] personSubs = new String[MagicNumbers.max_substitutions];
-	public Pattern[] personPatterns = new Pattern[MagicNumbers.max_substitutions];
-	public String[] person2Subs = new String[MagicNumbers.max_substitutions];
-	public Pattern[] person2Patterns = new Pattern[MagicNumbers.max_substitutions];
-	public String[] genderSubs = new String[MagicNumbers.max_substitutions];
-	public Pattern[] genderPatterns = new Pattern[MagicNumbers.max_substitutions];
+	private int normalCount = 0;
+	private int denormalCount = 0;
+	private int personCount = 0;
+	private int person2Count = 0;
+	private int genderCount = 0;
+	private String[] normalSubs = new String[BotProperties.max_substitutions];
+	private Pattern[] normalPatterns = new Pattern[BotProperties.max_substitutions];
+	private String[] denormalSubs = new String[BotProperties.max_substitutions];
+	private Pattern[] denormalPatterns = new Pattern[BotProperties.max_substitutions];
+	private String[] personSubs = new String[BotProperties.max_substitutions];
+	private Pattern[] personPatterns = new Pattern[BotProperties.max_substitutions];
+	private String[] person2Subs = new String[BotProperties.max_substitutions];
+	private Pattern[] person2Patterns = new Pattern[BotProperties.max_substitutions];
+	private String[] genderSubs = new String[BotProperties.max_substitutions];
+	private Pattern[] genderPatterns = new Pattern[BotProperties.max_substitutions];
 
 	/**
 	 * Constructor given bot
 	 *
 	 * @param bot AIML bot
 	 */
-	public PreProcessor(Bot bot) {
+	PreProcessor(Bot bot) {
 
 		normalCount = readSubstitutions(bot.config_path + "/normal.txt", normalPatterns, normalSubs);
 		denormalCount = readSubstitutions(bot.config_path + "/denormal.txt", denormalPatterns, denormalSubs);
@@ -78,7 +78,7 @@ public class PreProcessor {
 	 * @param request client input
 	 * @return normalized client input
 	 */
-	public String normalize(String request) {
+	String normalize(String request) {
 		log.debug("PreProcessor.normalize(request: " + request + ")");
 		String result = substitute(request, normalPatterns, normalSubs, normalCount);
 		result = result.replaceAll("(\r\n|\n\r|\r|\n)", " ");
@@ -92,7 +92,7 @@ public class PreProcessor {
 	 * @param request client input
 	 * @return normalized client input
 	 */
-	public String denormalize(String request) {
+	String denormalize(String request) {
 		return substitute(request, denormalPatterns, denormalSubs, denormalCount);
 	}
 
@@ -102,7 +102,7 @@ public class PreProcessor {
 	 * @param input sentence
 	 * @return sentence with pronouns swapped
 	 */
-	public String person(String input) {
+	String person(String input) {
 		return substitute(input, personPatterns, personSubs, personCount);
 
 	}
@@ -113,7 +113,7 @@ public class PreProcessor {
 	 * @param input sentence
 	 * @return sentence with pronouns swapped
 	 */
-	public String person2(String input) {
+	String person2(String input) {
 		return substitute(input, person2Patterns, person2Subs, person2Count);
 
 	}
@@ -124,7 +124,7 @@ public class PreProcessor {
 	 * @param input sentence
 	 * @return sentence with pronouns swapped
 	 */
-	public String gender(String input) {
+	String gender(String input) {
 		return substitute(input, genderPatterns, genderSubs, genderCount);
 
 	}
@@ -176,7 +176,7 @@ public class PreProcessor {
 	 * @param subs     array of substitution values
 	 * @return number of patterns substitutions read
 	 */
-	public int readSubstitutionsFromInputStream(InputStream in, Pattern[] patterns, String[] subs) {
+	private int readSubstitutionsFromInputStream(InputStream in, Pattern[] patterns, String[] subs) {
 		final BufferedReader br = new BufferedReader(new InputStreamReader(in));
 		String strLine;
 		// Read File Line By Line
@@ -185,10 +185,10 @@ public class PreProcessor {
 			while ((strLine = br.readLine()) != null) {
 				// log.info(strLine);
 				strLine = strLine.trim();
-				if (!strLine.startsWith(MagicStrings.text_comment_mark)) {
+				if (!strLine.startsWith(";;")) {
 					final Pattern pattern = Pattern.compile("\"(.*?)\",\"(.*?)\"", Pattern.DOTALL);
 					final Matcher matcher = pattern.matcher(strLine);
-					if (matcher.find() && subCount < MagicNumbers.max_substitutions) {
+					if (matcher.find() && subCount < BotProperties.max_substitutions) {
 						subs[subCount] = matcher.group(2);
 						final String quotedPattern = Pattern.quote(matcher.group(1));
 						// log.info("quoted pattern="+quotedPattern);
@@ -239,7 +239,7 @@ public class PreProcessor {
 	 * @param line input text
 	 * @return array of sentences
 	 */
-	public String[] sentenceSplit(String line) {
+	String[] sentenceSplit(String line) {
 		line = line.replace("。", ".");
 		line = line.replace("？", "?");
 		line = line.replace("！", "!");
@@ -251,46 +251,4 @@ public class PreProcessor {
 		return result;
 	}
 
-	/**
-	 * normalize a file consisting of sentences, one sentence per line.
-	 *
-	 * @param infile  input file
-	 * @param outfile output file to write results
-	 */
-	public void normalizeFile(String infile, String outfile) {
-		try {
-			BufferedWriter bw = null;
-			final FileInputStream fstream = new FileInputStream(infile);
-			final BufferedReader br = new BufferedReader(new InputStreamReader(fstream));
-			bw = new BufferedWriter(new FileWriter(outfile));
-			String strLine;
-			// Read File Line By Line
-			while ((strLine = br.readLine()) != null) {
-				strLine = strLine.trim();
-				if (strLine.length() > 0) {
-					final String norm = normalize(strLine).toUpperCase();
-					final String sentences[] = sentenceSplit(norm);
-					{
-						if (sentences.length > 1) {
-							for (final String s : sentences) {
-								log.info(norm + "-->" + s);
-							}
-						}
-						for (String sentence : sentences) {
-							sentence = sentence.trim();
-							if (sentence.length() > 0) {
-								// log.info("'"+strLine+"'-->'"+norm+"'");
-								bw.write(sentence);
-								bw.newLine();
-							}
-						}
-					}
-				}
-			}
-			bw.close();
-			br.close();
-		} catch (final Exception ex) {
-			log.error(ex.getMessage(), ex);
-		}
-	}
 }

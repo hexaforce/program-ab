@@ -39,16 +39,12 @@ public class CalendarUtils {
 	}
 
 	public static String date(String jformat, String locale, String timezone) {
-		// HashSet<String> attributeNames =
-		// Utilities.stringSet("jformat","format","locale","timezone");
 		if (jformat == null)
 			jformat = "EEE MMM dd HH:mm:ss zzz yyyy";
 		if (locale == null)
 			locale = Locale.US.getISO3Country();
 		if (timezone == null)
 			timezone = TimeZone.getDefault().getDisplayName();
-		// log.info("Format = "+format+" Locale = "+locale+" Timezone =
-		// "+timezone);
 		String dateAsString = new Date().toString();
 		try {
 			SimpleDateFormat simpleDateFormat = new SimpleDateFormat(jformat);
@@ -57,7 +53,6 @@ public class CalendarUtils {
 			log.info("CalendarUtils.date Bad date: Format = " + jformat + " Locale = " + locale + " Timezone = " + timezone);
 			log.error(ex.getMessage(), ex);
 		}
-		// MagicBooleans.trace("CalendarUtils.date: "+dateAsString);
 		return dateAsString;
 	}
 

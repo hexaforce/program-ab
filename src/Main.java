@@ -23,12 +23,10 @@
 
 import java.io.IOException;
 
-import org.alicebot.ab.AIMLProcessor;
 import org.alicebot.ab.Bot;
 import org.alicebot.ab.Chat;
-import org.alicebot.ab.MagicNumbers;
-import org.alicebot.ab.MagicStrings;
-import org.alicebot.ab.PCAIMLProcessorExtension;
+
+import org.alicebot.ab.utils.BotProperties;
 import org.alicebot.ab.utils.IOUtils;
 
 import lombok.extern.slf4j.Slf4j;
@@ -37,40 +35,19 @@ import lombok.extern.slf4j.Slf4j;
 public class Main {
 
 	public static void main(String[] args) throws IOException {
-		AIMLProcessor.extension = new PCAIMLProcessorExtension();
 
-		String botName = "alice1.5";
-//		String botName = "alice2";
+//		String botName = "alice1.5";
+		String botName = "alice2";
 //		String botName = "アリス";
 		String workingDirectory = System.getProperty("user.dir");
-//		String action = "chat";
-		log.info(MagicStrings.program_name_version);
-		for (final String s : args) {
-			// log.info(s);
-			final String[] splitArg = s.split("=");
-			if (splitArg.length >= 2) {
-				final String option = splitArg[0];
-				final String value = splitArg[1];
-				// if (MagicBooleans.trace_mode) log.info(option+"='"+value+"'");
-				if (option.equals("bot")) {
-					botName = value;
-				}
-//				if (option.equals("action")) {
-//					action = value;
-//				}
-			}
-		}
+
+		log.info(BotProperties.program_name_version);
 		log.debug("Working Directory = " + workingDirectory);
-//		Graphmaster.ENABLE_SHORT_CUTS = true;
-		// Timer timer = new Timer();
 
-		// final Bot bot = new Bot(botName, path, action); //
-		final Bot bot = new Bot(workingDirectory, botName); //
-
-		if (bot.brain.getCategories().size() < MagicNumbers.brain_print_size) {
+		final Bot bot = new Bot(workingDirectory, botName);
+		if (bot.brain.getCategories().size() < BotProperties.brain_print_size) {
 			bot.brain.printgraph();
 		}
-
 		final Chat chatSession = new Chat(bot, "0");
 
 		bot.brain.nodeStats();
@@ -78,7 +55,7 @@ public class Main {
 		while (true) {
 			textLine = IOUtils.readInputTextLine("Human");
 			if (textLine == null || textLine.length() < 1) {
-				textLine = MagicStrings.null_input;
+				textLine = BotProperties.null_input;
 			}
 			if (textLine.equals("q")) {
 				System.exit(0);
@@ -98,7 +75,6 @@ public class Main {
 				IOUtils.writeOutputTextLine("Robot", response);
 			}
 		}
-
 	}
 
 }

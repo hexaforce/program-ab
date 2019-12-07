@@ -27,6 +27,9 @@ import java.util.HashSet;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.alicebot.ab.utils.BotProperties;
+import org.alicebot.ab.utils.Utilities;
+
 import lombok.extern.slf4j.Slf4j;
 
 /**
@@ -89,7 +92,7 @@ public class Graphmaster {
 			while (matcher.find()) {
 				final String propname = matcher.group(1).toLowerCase();
 				// log.info(matcher.group(1));
-				final String property = bot.properties.get(propname).toUpperCase();
+				final String property = bot.properties.getS(propname).toUpperCase();
 				pattern = pattern.replaceFirst("(?i)" + botPropRegex, property);
 				// log.info("addCategory: Replaced pattern with: "+inputThatTopic);
 			}
@@ -291,7 +294,7 @@ public class Graphmaster {
 			log.error(ex.getMessage(), ex);
 			n = null;
 		}
-		if (log.isDebugEnabled() && Chat.matchTrace.length() < MagicNumbers.max_trace_length) {
+		if (log.isDebugEnabled() && Chat.matchTrace.length() < BotProperties.max_trace_length) {
 			if (n != null) {
 				Chat.setMatchTrace(Chat.matchTrace + n.category.inputThatTopic() + NL);
 			}
@@ -310,21 +313,21 @@ public class Graphmaster {
 	 */
 	private final Nodemapper match(Path path, String inputThatTopic) {
 		try {
-			final String[] inputStars = new String[MagicNumbers.max_stars];
-			final String[] thatStars = new String[MagicNumbers.max_stars];
-			final String[] topicStars = new String[MagicNumbers.max_stars];
+			final String[] inputStars = new String[BotProperties.max_stars];
+			final String[] thatStars = new String[BotProperties.max_stars];
+			final String[] topicStars = new String[BotProperties.max_stars];
 			final String starState = "inputStar";
 			final String matchTrace = "";
 			final Nodemapper n = match(path, root, inputThatTopic, starState, 0, inputStars, thatStars, topicStars, matchTrace);
 			if (n != null) {
 				final StarBindings sb = new StarBindings();
-				for (int i = 0; inputStars[i] != null && i < MagicNumbers.max_stars; i++) {
+				for (int i = 0; inputStars[i] != null && i < BotProperties.max_stars; i++) {
 					sb.inputStars.add(inputStars[i]);
 				}
-				for (int i = 0; thatStars[i] != null && i < MagicNumbers.max_stars; i++) {
+				for (int i = 0; thatStars[i] != null && i < BotProperties.max_stars; i++) {
 					sb.thatStars.add(thatStars[i]);
 				}
-				for (int i = 0; topicStars[i] != null && i < MagicNumbers.max_stars; i++) {
+				for (int i = 0; topicStars[i] != null && i < BotProperties.max_stars; i++) {
 					sb.topicStars.add(topicStars[i]);
 				}
 				n.starBindings = sb;
@@ -511,8 +514,8 @@ public class Graphmaster {
 		matchTrace += "[" + wildcard + ",]";
 		if (path != null && NodemapperOperator.containsKey(node, wildcard)) {
 			// log.info("Zero match calling setStars Prop
-			// "+MagicStrings.null_star+" = "+bot.properties.get(MagicStrings.null_star));
-			setStars(bot.properties.get(MagicStrings.null_star), starIndex, starState, inputStars, thatStars, topicStars);
+			// "+BotProperties.null_star+" = "+bot.properties.get(BotProperties.null_star));
+			setStars(bot.properties.getS(BotProperties.null_star), starIndex, starState, inputStars, thatStars, topicStars);
 			final Nodemapper nextNode = NodemapperOperator.get(node, wildcard);
 			return match(path, nextNode, input, starState, starIndex + 1, inputStars, thatStars, topicStars, matchTrace);
 		} else {
@@ -644,7 +647,7 @@ public class Graphmaster {
 	 */
 
 	private void setStars(String starWords, int starIndex, String starState, String[] inputStars, String[] thatStars, String[] topicStars) {
-		if (starIndex < MagicNumbers.max_stars) {
+		if (starIndex < BotProperties.max_stars) {
 			// log.info("starWords="+starWords);
 			starWords = starWords.trim();
 			if (starState.equals("inputStar")) {

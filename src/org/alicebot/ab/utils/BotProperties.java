@@ -1,44 +1,27 @@
-package org.alicebot.ab;
+package org.alicebot.ab.utils;
 
-/* 
-	Program AB Reference AIML 2.1 implementation
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.util.Properties;
 
-	Copyright (C) 2013 ALICE A.I. Foundation
-	Contact: info@alicebot.org
-
-	This library is free software; you can redistribute it and/or
-	modify it under the terms of the GNU Library General Public
-	License as published by the Free Software Foundation; either
-	version 2 of the License, or (at your option) any later version.
-
-	This library is distributed in the hope that it will be useful,
-	but WITHOUT ANY WARRANTY; without even the implied warranty of
-	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-	Library General Public License for more details.
-
-	You should have received a copy of the GNU Library General Public
-	License along with this library; if not, write to the
-	Free Software Foundation, Inc., 51 Franklin St, Fifth Floor,
-	Boston, MA  02110-1301, USA.
-*/
+import lombok.extern.slf4j.Slf4j;
 
 /**
- * Global values for many strings in Program AB
+ * Bot Properties
  */
-public class MagicStrings {
-//	// General global strings
+@Slf4j
+public class BotProperties extends Properties {
+	private static final long serialVersionUID = 1L;
+
+	public BotProperties(File file) throws FileNotFoundException, IOException {
+		log.debug("LOAD Properties ", file.getAbsolutePath());
+		load(new FileInputStream(file));
+	}
+
 	public static String program_name_version = "Program AB 0.0.6.26 beta -- AI Foundation Reference AIML 2.1 implementation";
-//	public static String comment = "Added repetition detection.";
-//	public static String aimlif_split_char = ",";
-	public static String default_bot = "alice2";
-	public static String default_language = "EN";
-	public static String aimlif_split_char_name = "\\#Comma";
-	public static String aimlif_file_suffix = ".csv";
-	public static String ab_sample_file = "sample.txt";
-	public static String text_comment_mark = ";;";
-	// <sraix> defaults
-	public static String pannous_api_key = "guest";
-	public static String pannous_login = "test-user";
+	public static String default_language = "JP";
 	public static String sraix_failed = "SRAIXFAILED";
 	public static String repetition_detected = "REPETITIONDETECTED";
 	public static String sraix_no_hint = "nohint";
@@ -94,21 +77,43 @@ public class MagicStrings {
 	// sets and maps
 	public static String set_member_string = "ISA";
 	public static String remote_map_key = "external";
-//	public static String remote_set_key = "external";
 	public static String natural_number_set_name = "number";
 	public static String map_successor = "successor";
 	public static String map_predecessor = "predecessor";
 	public static String map_singular = "singular";
 	public static String map_plural = "plural";
-//	// paths
-//	public static String root_path = "c:/ab";
+	
+	//
+	public static int node_activation_cnt = 4; // minimum number of activations to suggest atomic pattern
+	public static int node_size = 4; // minimum number of branches to suggest wildcard pattern
+	public static int displayed_input_sample_size = 6;
+	public static int max_history = 32;
+	public static int repetition_count = 2;
+	public static int max_stars = 1000;
+	public static int max_graph_height = 100000;
+	public static int max_substitutions = 10000;
+	public static int max_recursion_depth = 765; // assuming java -Xmx512M
+	public static int max_recursion_count = 2048;
+	public static int max_trace_length = 2048;
+	public static int max_loops = 10000;
+	public static int brain_print_size = 100; // largest size of brain to print to System.out
+	
+	//
+	public static boolean cache_sraix = false;
+	public static boolean fix_excel_csv = true;
+	public static boolean enable_network_connection = true;
+	public static boolean enable_external_sets = true;
+	
+	public String getS(String key) {
+		return (String) get(key);
+	}
 
-//	public static void setRootPath(String newRootPath) {
-//		root_path = newRootPath;
-//	}
-//
-//	public static void setRootPath() {
-//		setRootPath(System.getProperty("user.dir"));
-//	}
+	public Integer getI(String key) {
+		return (Integer) get(key);
+	}
 
+	public Boolean getB(String key) {
+		return (Boolean) get(key);
+	}
+	
 }

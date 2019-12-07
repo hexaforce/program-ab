@@ -34,12 +34,13 @@ import org.w3c.dom.Node;
  * node associated with a new tag.
  */
 public interface AIMLProcessorExtension {
+
 	/**
 	 * provide the AIMLProcessor with a list of extension tag names.
 	 *
 	 * @return Set of extension tag names
 	 */
-	public Set<String> extensionTagSet();
+	Set<String> extensionTagSet();
 
 	/**
 	 * recursively evaluate AIML from a node corresponding an extension tag
@@ -48,6 +49,6 @@ public interface AIMLProcessorExtension {
 	 * @param ps   current parse state
 	 * @return result of evaluating AIML
 	 */
-	public String recursEval(Node node, ParseState ps);
+	String recursEval(Node node, ParseState ps);
 
 }

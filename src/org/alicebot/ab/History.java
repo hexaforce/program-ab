@@ -1,5 +1,7 @@
 package org.alicebot.ab;
 
+import org.alicebot.ab.utils.BotProperties;
+
 import lombok.extern.slf4j.Slf4j;
 
 /* 
@@ -49,7 +51,7 @@ public class History<T> {
 	 */
 	public History(String name) {
 		this.name = name;
-		history = new Object[MagicNumbers.max_history];
+		history = new Object[BotProperties.max_history];
 	}
 
 	/**
@@ -58,7 +60,7 @@ public class History<T> {
 	 * @param item history item to add
 	 */
 	public void add(T item) {
-		for (int i = MagicNumbers.max_history - 1; i > 0; i--) {
+		for (int i = BotProperties.max_history - 1; i > 0; i--) {
 			history[i] = history[i - 1];
 		}
 		history[0] = item;
@@ -72,7 +74,7 @@ public class History<T> {
 	 */
 	@SuppressWarnings("unchecked")
 	public T get(int index) {
-		if (index < MagicNumbers.max_history) {
+		if (index < BotProperties.max_history) {
 			if (history[index] == null) {
 				return null;
 			} else {
@@ -90,9 +92,9 @@ public class History<T> {
 	 * @return history item
 	 */
 	public String getString(int index) {
-		if (index < MagicNumbers.max_history) {
+		if (index < BotProperties.max_history) {
 			if (history[index] == null) {
-				return MagicStrings.unknown_history_item;
+				return BotProperties.unknown_history_item;
 			} else {
 				return (String) history[index];
 			}
