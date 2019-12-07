@@ -40,12 +40,10 @@ import lombok.extern.slf4j.Slf4j;
 public class Chat {
 
 	Bot bot;
-//	private boolean doWrites;
 	String customerId = BotProperties.default_Customer_id;
 	public History<History<?>> thatHistory = new History<History<?>>("that");
 	History<String> requestHistory = new History<String>("request");
 	History<String> responseHistory = new History<String>("response");
-	// public History<String> repetitionHistory = new History<String>("repetition");
 	History<String> inputHistory = new History<String>("input");
 	public Predicates predicates = new Predicates();
 	static String matchTrace = "";
@@ -65,7 +63,6 @@ public class Chat {
 	public Chat(Bot bot, String customerId) {
 		this.customerId = customerId;
 		this.bot = bot;
-//		this.doWrites = doWrites;
 		final History<String> contextThatHistory = new History<String>();
 		contextThatHistory.add(BotProperties.default_that);
 		thatHistory.add(contextThatHistory);
@@ -79,17 +76,6 @@ public class Chat {
 		predicates.put("jsenabled", BotProperties.js_enabled);
 		log.debug("Chat Session Created for bot " + bot.botName);
 	}
-
-//	/**
-//	 * Load all predicate defaults
-//	 */
-//	void addPredicates() {
-//		try {
-//			predicates.getPredicateDefaults(bot.config_path + "/predicates.txt");
-//		} catch (final Exception ex) {
-//			log.error(ex.getMessage(), ex);
-//		}
-//	}
 
 	/**
 	 * Load Triple Store knowledge base

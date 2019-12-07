@@ -14,7 +14,7 @@ package org.alicebot.ab;
 	This library is distributed in the hope that it will be useful,
 	but WITHOUT ANY WARRANTY; without even the implied warranty of
 	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-	Library General Public License for more details.
+	Library General private License for more details.
 
 	You should have received a copy of the GNU Library General Public
 	License along with this library; if not, write to the
@@ -59,27 +59,23 @@ import lombok.extern.slf4j.Slf4j;
 public class Bot {
 
 	public final BotProperties properties;
-	public final PreProcessor preProcessor;
+	final PreProcessor preProcessor;
 	public final Graphmaster brain;
-	public Graphmaster learnfGraph;
-	public Graphmaster learnGraph;
+	Graphmaster learnfGraph;
+	Graphmaster learnGraph;
 
-	// public Graphmaster unfinishedGraph;
-	// public final ArrayList<Category> categories;
-
-	public final String workingDirectory;
 	public final String botName;
 
-	public HashMap<String, AIMLSet> setMap = new HashMap<String, AIMLSet>();
-	public HashMap<String, AIMLMap> mapMap = new HashMap<String, AIMLMap>();
-	public HashSet<String> pronounSet = new HashSet<String>();
+	HashMap<String, AIMLSet> setMap = new HashMap<String, AIMLSet>();
+	HashMap<String, AIMLMap> mapMap = new HashMap<String, AIMLMap>();
+	HashSet<String> pronounSet = new HashSet<String>();
 
-	public final String aimlif_path;
-	public final String aiml_path;
+	private final String aimlif_path;
+	private final String aiml_path;
 	public final String config_path;
-//	public final String log_path;
-	public final File sets_path;
-	public final File maps_path;
+//	private final String log_path;
+	final File sets_path;
+	final File maps_path;
 
 	/**
 	 * Constructor
@@ -89,32 +85,21 @@ public class Bot {
 	 * @param action Program AB action
 	 * @throws IOException
 	 */
-	// public Bot(String name, String path, String action) {
+	// private Bot(String name, String path, String action) {
 	public Bot(String workingDirectory, String botName) throws IOException {
 		int cnt = 0;
-//		final int elementCnt = 0;
-		this.workingDirectory = workingDirectory;
 		this.botName = botName;
 		String currentDirectory = workingDirectory + "/bots/" + botName;
 		this.aiml_path = currentDirectory + "/aiml";
 		this.aimlif_path = currentDirectory + "/aimlif";
 		this.config_path = currentDirectory + "/config";
 		this.properties = new BotProperties(new File(config_path + "/properties.txt"));
-//		this.log_path = currentDirectory + "/logs";
 		this.sets_path = new File(currentDirectory + "/sets");
 		this.maps_path = new File(currentDirectory + "/maps");
-
-//		setAllPaths(path, name);
 		this.brain = new Graphmaster(this, "brain");
-
 		this.learnfGraph = new Graphmaster(this, "learnf");
 		this.learnGraph = new Graphmaster(this, "learn");
-		// this.unfinishedGraph = new Graphmaster(this);
-		// this.categories = new ArrayList<Category>();
-
 		preProcessor = new PreProcessor(this);
-//		addProperties();
-//		properties.getProperties(config_path + "/properties.txt");
 		cnt = addAIMLSets();
 		log.debug("Loaded " + cnt + " set elements.");
 		cnt = addAIMLMaps();
@@ -130,7 +115,6 @@ public class Bot {
 		mapMap.put(BotProperties.map_singular, singular);
 		final AIMLMap plural = new AIMLMap(BotProperties.map_plural, this);
 		mapMap.put(BotProperties.map_plural, plural);
-		// log.info("setMap = "+setMap);
 		final Date aimlDate = new Date(new File(aiml_path).lastModified());
 		final Date aimlIFDate = new Date(new File(aimlif_path).lastModified());
 		log.debug("AIML modified " + aimlDate + " AIMLIF modified " + aimlIFDate);
@@ -177,29 +161,16 @@ public class Bot {
 	 * @param moreCategories list of categories
 	 */
 	private void addMoreCategories(String file, ArrayList<Category> moreCategories) {
-		if (file.contains(BotProperties.deleted_aiml_file)) {
-			/*
-			 * for (Category c : moreCategories) { //log.info("Delete "+c.getPattern());
-			 * deletedGraph.addCategory(c); }
-			 */
-
-		} else if (file.contains(BotProperties.learnf_aiml_file)) {
+		if (file.contains(BotProperties.learnf_aiml_file)) {
 			log.debug("Reading Learnf file");
 			for (final Category c : moreCategories) {
 				brain.addCategory(c);
 				learnfGraph.addCategory(c);
-				// patternGraph.addCategory(c);
 			}
-			// this.categories.addAll(moreCategories);
 		} else {
 			for (final Category c : moreCategories) {
-				// log.info("Brain size="+brain.root.size());
-				// brain.printgraph();
 				brain.addCategory(c);
-				// patternGraph.addCategory(c);
-				// brain.printgraph();
 			}
-			// this.categories.addAll(moreCategories);
 		}
 	}
 
@@ -221,16 +192,7 @@ public class Bot {
 			addMoreCategories(x.getKey(), moreCategories);
 			cnt += moreCategories.size();
 		}
-//		for (File file : aimlFiles) {
-//			log.debug("Loading AIML files from " + file.getPath());
-//			Node node = DomUtils.parseFile(file);
-//			if (node != null) {
-//				final ArrayList<Category> moreCategories = AIMLProcessor.AIMLToCategories(file.getName(), node);
-//				addMoreCategories(file.getPath(), moreCategories);
-//				cnt += moreCategories.size();
-//			}
-//		}
-
+		
 		log.debug("Loaded " + cnt + " categories in " + timer.elapsedTimeSecs() + " sec");
 		return cnt;
 	}
@@ -242,7 +204,7 @@ public class Bot {
 	 * 
 	 * @return count
 	 */
-	public int addCategoriesFromAIMLIF() {
+	private int addCategoriesFromAIMLIF() {
 		final Timer timer = new Timer();
 		timer.start();
 		int cnt = 0;
@@ -263,12 +225,7 @@ public class Bot {
 	 */
 	public void writeQuit() {
 		writeAIMLIFFiles();
-		// log.info("Wrote AIMLIF Files");
 		writeAIMLFiles();
-		// log.info("Wrote AIML Files");
-		/*
-		 * updateUnfinishedCategories(); writeUnfinishedIFCategories();
-		 */
 	}
 
 	/**
@@ -277,7 +234,7 @@ public class Bot {
 	 * @param cats     array list of categories
 	 * @param filename AIMLIF filename
 	 */
-	public void writeIFCategories() {
+	void writeIFCategories() {
 
 		final File existsPath = new File(aimlif_path);
 		if (!existsPath.exists()) {
@@ -320,7 +277,7 @@ public class Bot {
 	/**
 	 * Write all AIMLIF files from bot brain
 	 */
-	public void writeAIMLIFFiles() {
+	private void writeAIMLIFFiles() {
 
 		final File existsPath = new File(aimlif_path);
 		if (!existsPath.exists()) {
@@ -366,7 +323,7 @@ public class Bot {
 	/**
 	 * Write all AIML files. Adds categories for BUILD and DEVELOPMENT ENVIRONMENT
 	 */
-	public void writeAIMLFiles() {
+	private void writeAIMLFiles() {
 
 		final File existsPath = new File(aimlif_path);
 		if (!existsPath.exists()) {
@@ -383,7 +340,6 @@ public class Bot {
 		try {
 			for (final Category c : brainCategories) {
 				if (!c.getFilename().equals(BotProperties.null_aiml_file)) {
-					// log.info("Writing "+c.getCategoryNumber()+" "+c.inputThatTopic());
 					BufferedWriter bw;
 					final String fileName = c.getFilename();
 					if (fileMap.containsKey(fileName)) {
@@ -397,11 +353,11 @@ public class Bot {
 						bw.write("<?xml version=\"1.0\" encoding=\"UTF-8\"?>" + NL + "<aiml version=\"2.1\">" + NL);
 						bw.write("<!--" + NL);
 						bw.write(copyright + NL);
-						bw.write("-->" + NL + NL);
-						// bw.newLine();
+						bw.write("-->" + NL);
+						bw.newLine();
 					}
-					bw.write(Category.categoryToAIML(c) + NL);
-					// bw.newLine();
+					bw.write(Category.categoryToAIML(c));
+					bw.newLine();
 				}
 			}
 			for (final String key : fileMap.keySet()) {
@@ -426,7 +382,7 @@ public class Bot {
 	 * @param filename name of AIMLIF file
 	 * @return array list of categories read
 	 */
-	public ArrayList<Category> readIFCategories(String filename) {
+	private ArrayList<Category> readIFCategories(String filename) {
 		final ArrayList<Category> categories = new ArrayList<Category>();
 		try {
 			// Open the file that is the first
@@ -499,7 +455,7 @@ public class Bot {
 		return cnt;
 	}
 
-	public void deleteLearnfCategories() {
+	void deleteLearnfCategories() {
 		final ArrayList<Category> learnfCategories = learnfGraph.getCategories();
 		for (final Category c : learnfCategories) {
 			final Nodemapper n = brain.findNode(c);
@@ -511,7 +467,7 @@ public class Bot {
 		learnfGraph = new Graphmaster(this, "brain");
 	}
 
-	public void deleteLearnCategories() {
+	void deleteLearnCategories() {
 		final ArrayList<Category> learnCategories = learnGraph.getCategories();
 		for (final Category c : learnCategories) {
 			final Nodemapper n = brain.findNode(c);
