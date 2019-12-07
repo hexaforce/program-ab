@@ -39,9 +39,9 @@ public class Main {
 	public static void main(String[] args) throws IOException {
 		AIMLProcessor.extension = new PCAIMLProcessorExtension();
 
-//		String botName = "alice1.5";
+		String botName = "alice1.5";
 //		String botName = "alice2";
-		String botName = "アリス";
+//		String botName = "アリス";
 		String workingDirectory = System.getProperty("user.dir");
 //		String action = "chat";
 		log.info(MagicStrings.program_name_version);

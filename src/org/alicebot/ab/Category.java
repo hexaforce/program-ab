@@ -202,56 +202,6 @@ public class Category {
 		return category.getActivationCnt() + c + category.getPattern() + c + category.getThat() + c + category.getTopic() + c + templateToLine(category.getTemplate()) + c + category.getFilename();
 	}
 
-//	/**
-//	 * convert a Category object to AIML syntax
-//	 *
-//	 * @param category Category object
-//	 * @return AIML Category
-//	 */
-//	static String categoryToAIML(Category category) {
-//
-//		String topicStart = "";
-//		String topicEnd = "";
-//		String thatStatement = "";
-//		String result = "";
-//		String pattern = category.getPattern();
-//
-//		if (pattern.contains("<SET>") || pattern.contains("<BOT")) {
-//			final String[] splitPattern = pattern.split(" ");
-//			String rpattern = "";
-//			for (String w : splitPattern) {
-//				if (w.startsWith("<SET>") || w.startsWith("<BOT") || w.startsWith("NAME=")) {
-//					w = w.toLowerCase();
-//				}
-//				rpattern = rpattern + " " + w;
-//			}
-//			pattern = rpattern.trim();
-//		}
-//		// if (pattern.contains("set")) log.info("Rebuilt pattern "+pattern);
-//
-//		String NL = System.getProperty("line.separator");
-//
-//		try {
-//			if (!category.getTopic().equals("*")) {
-//				topicStart = "<topic name=\"" + category.getTopic() + "\">" + NL;
-//				topicEnd = "</topic>";
-//			}
-//			if (!category.getThat().equals("*")) {
-//				thatStatement = "      <that>" + category.getThat() + "</that>" + NL ;
-//			}
-//			result = topicStart //
-//					+ "  <category>" + NL //
-//					+ "    <pattern>" + pattern + "</pattern>" + NL //
-//					+ thatStatement//
-//					+ "    <template>" + NL + "      " + category.getTemplate() + NL + "    </template>" + NL //
-//					+ "  </category>" + NL //
-//					+ topicEnd + NL;
-//		} catch (final Exception ex) {
-//			log.error(ex.getMessage(), ex);
-//		}
-//		return result;
-//	}
-
 	final static String NL = System.getProperty("line.separator");
 
 	/**
@@ -283,7 +233,7 @@ public class Category {
 
 				String thatStatement = "";
 				if (!category.getThat().equals("*")) {
-					thatStatement = "      <that>" + category.getThat() + "</that>" + NL;
+					thatStatement = "    <that>" + category.getThat() + "</that>" + NL;
 				}
 				String[] templates = category.getTemplate().split(NL);
 				String template = "";
