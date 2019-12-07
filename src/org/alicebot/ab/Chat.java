@@ -43,7 +43,7 @@ class Chat {
 
 	Bot bot;
 //	boolean doWrites;
-	String customerId = MagicStrings.default_Customer_id;
+	String customerId = Properties.default_Customer_id;
 	History<History<?>> thatHistory = new History<History<?>>("that");
 	History<String> requestHistory = new History<String>("request");
 	History<String> responseHistory = new History<String>("response");
@@ -69,7 +69,7 @@ class Chat {
 		this.bot = bot;
 //		this.doWrites = doWrites;
 		final History<String> contextThatHistory = new History<String>();
-		contextThatHistory.add(MagicStrings.default_that);
+		contextThatHistory.add(Properties.default_that);
 		thatHistory.add(contextThatHistory);
 		try {
 			predicates.getPredicateDefaults(bot.config_path + "/predicates.txt");
@@ -77,8 +77,8 @@ class Chat {
 			log.error(ex.getMessage(), ex);
 		}
 		addTriples();
-		predicates.put("topic", MagicStrings.default_topic);
-		predicates.put("jsenabled", MagicStrings.js_enabled);
+		predicates.put("topic", Properties.default_topic);
+		predicates.put("jsenabled", Properties.js_enabled);
 		log.debug("Chat Session Created for bot " + bot.botName);
 	}
 
@@ -156,31 +156,31 @@ class Chat {
 	 * @return bot's reply
 	 */
 	private String respond(String input, String that, String topic, History<String> contextThatHistory) {
-		// MagicBooleans.trace("chat.respond(input: " + input + ", that: " + that + ",
+		// Properties.trace("chat.respond(input: " + input + ", that: " + that + ",
 		// topic: " + topic + ", contextThatHistory: " + contextThatHistory + ")");
 		boolean repetition = true;
 		// inputHistory.printHistory();
-		for (int i = 0; i < MagicNumbers.repetition_count; i++) {
+		for (int i = 0; i < Properties.repetition_count; i++) {
 			// log.info(request.toUpperCase()+"=="+inputHistory.get(i)+"?
 			// "+request.toUpperCase().equals(inputHistory.get(i)));
 			if (inputHistory.get(i) == null || !input.toUpperCase().equals(inputHistory.get(i).toUpperCase())) {
 				repetition = false;
 			}
 		}
-		if (input.equals(MagicStrings.null_input)) {
+		if (input.equals(Properties.null_input)) {
 			repetition = false;
 		}
 		inputHistory.add(input);
 		if (repetition) {
-			input = MagicStrings.repetition_detected;
+			input = Properties.repetition_detected;
 		}
 
 		String response;
 
 		response = AIMLProcessor.respond(input, that, topic, this);
-		// MagicBooleans.trace("in chat.respond(), response: " + response);
+		// Properties.trace("in chat.respond(), response: " + response);
 		String normResponse = bot.preProcessor.normalize(response);
-		// MagicBooleans.trace("in chat.respond(), normResponse: " + normResponse);
+		// Properties.trace("in chat.respond(), normResponse: " + normResponse);
 
 		normResponse = JapaneseUtils.tokenizeSentence(normResponse);
 		final String sentences[] = bot.preProcessor.sentenceSplit(normResponse);
@@ -188,12 +188,12 @@ class Chat {
 			that = sentence;
 			// log.info("That "+i+" '"+that+"'");
 			if (that.trim().equals("")) {
-				that = MagicStrings.default_that;
+				that = Properties.default_that;
 			}
 			contextThatHistory.add(that);
 		}
 		final String result = response.trim() + "  ";
-		// MagicBooleans.trace("in chat.respond(), returning: " + result);
+		// Properties.trace("in chat.respond(), returning: " + result);
 		return result;
 	}
 
@@ -210,7 +210,7 @@ class Chat {
 		final History<?> hist = thatHistory.get(0);
 		String that;
 		if (hist == null) {
-			that = MagicStrings.default_that;
+			that = Properties.default_that;
 		} else {
 			that = hist.getString(0);
 		}
@@ -228,13 +228,13 @@ class Chat {
 	 */
 	String multisentenceRespond(String request) {
 
-		// MagicBooleans.trace("chat.multisentenceRespond(request: " + request + ")");
+		// Properties.trace("chat.multisentenceRespond(request: " + request + ")");
 		String response = "";
 		matchTrace = "";
 		try {
 			String normalized = bot.preProcessor.normalize(request);
 			normalized = JapaneseUtils.tokenizeSentence(normalized);
-			// MagicBooleans.trace("in chat.multisentenceRespond(), normalized: " +
+			// Properties.trace("in chat.multisentenceRespond(), normalized: " +
 			// normalized);
 			final String sentences[] = bot.preProcessor.sentenceSplit(normalized);
 			final History<String> contextThatHistory = new History<String>("contextThat");
@@ -252,13 +252,13 @@ class Chat {
 			response = response.trim();
 		} catch (final Exception ex) {
 			log.error(ex.getMessage(), ex);
-			return MagicStrings.error_bot_response;
+			return Properties.error_bot_response;
 		}
 
 //		if (doWrites) {
 		bot.writeIFCategories();
 //		}
-		// MagicBooleans.trace("in chat.multisentenceRespond(), returning: " +
+		// Properties.trace("in chat.multisentenceRespond(), returning: " +
 		// response);
 		return response;
 	}

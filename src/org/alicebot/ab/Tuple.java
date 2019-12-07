@@ -30,7 +30,7 @@ public class Tuple extends HashMap<String, String> {
 		}
 		if (varSet != null) {
 			for (final String key : varSet) {
-				put(key, MagicStrings.unbound_variable);
+				put(key, Properties.unbound_variable);
 			}
 		}
 		name = "tuple" + index;
@@ -71,10 +71,10 @@ public class Tuple extends HashMap<String, String> {
 		}
 		// log.info("Tuple: values = "+values());
 		// log.info("Tuple: tuple.values = "+tuple.values());
-		if (values().contains(MagicStrings.unbound_variable)) {
+		if (values().contains(Properties.unbound_variable)) {
 			return false;
 		}
-		if (tuple.values().contains(MagicStrings.unbound_variable)) {
+		if (tuple.values().contains(Properties.unbound_variable)) {
 			return false;
 		}
 		// log.info("Tuple: "+name+"="+tuple.name);
@@ -102,14 +102,14 @@ public class Tuple extends HashMap<String, String> {
 	String getValue(String var) {
 		final String result = get(var);
 		if (result == null) {
-			return MagicStrings.default_get;
+			return Properties.default_get;
 		} else {
 			return result;
 		}
 	}
 
 	void bind(String var, String value) {
-		if (get(var) != null && !get(var).equals(MagicStrings.unbound_variable)) {
+		if (get(var) != null && !get(var).equals(Properties.unbound_variable)) {
 			log.info(var + " already bound to " + get(var));
 		} else {
 			put(var, value);

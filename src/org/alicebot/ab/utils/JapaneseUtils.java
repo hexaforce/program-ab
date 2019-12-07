@@ -1,7 +1,7 @@
 package org.alicebot.ab.utils;
 
 import org.alicebot.ab.AIMLProcessor;
-import org.alicebot.ab.MagicStrings;
+import org.alicebot.ab.Properties;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
@@ -52,14 +52,14 @@ public class JapaneseUtils {
 		while (result.contains("anon "))
 			result = result.replace("anon ", "anon"); // for Triple Store
 		result = result.trim();
-		// if (MagicBooleans.trace_mode) log.info("tokenizeSentence
+		// if (Properties.trace_mode) log.info("tokenizeSentence
 		// '"+sentence+"'-->'"+result+"'");
 		return result;
 	}
 
 	public static String tokenizeXML(String xmlExpression) {
 		// log.info("tokenizeXML "+xmlExpression);
-		String response = MagicStrings.template_failed;
+		String response = Properties.template_failed;
 		try {
 			xmlExpression = "<sentence>" + xmlExpression + "</sentence>";
 			Node root = DomUtils.parseString(xmlExpression);

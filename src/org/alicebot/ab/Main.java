@@ -39,12 +39,12 @@ public class Main {
 //		String botName = "アリス";
 		String workingDirectory = System.getProperty("user.dir");
 
-		log.info(MagicStrings.program_name_version);
+		log.info(Properties.program_name_version);
 		log.debug("Working Directory = " + workingDirectory);
 
 		final Bot bot = new Bot(workingDirectory, botName); //
 
-		if (bot.brain.getCategories().size() < MagicNumbers.brain_print_size) {
+		if (bot.brain.getCategories().size() < Properties.brain_print_size) {
 			bot.brain.printgraph();
 		}
 
@@ -55,7 +55,7 @@ public class Main {
 		while (true) {
 			textLine = IOUtils.readInputTextLine("Yuor");
 			if (textLine == null || textLine.length() < 1) {
-				textLine = MagicStrings.null_input;
+				textLine = Properties.null_input;
 			}
 			if (textLine.equals("q")) {
 				System.exit(0);

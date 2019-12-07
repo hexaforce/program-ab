@@ -44,17 +44,17 @@ public class Sraix {
 
 	static String sraix(Chat chatSession, String input, String defaultResponse, String hint, String host, String botid, String apiKey, String limit) {
 		String response;
-		if (!MagicBooleans.enable_network_connection) {
-			response = MagicStrings.sraix_failed;
+		if (!Properties.enable_network_connection) {
+			response = Properties.sraix_failed;
 		} else if (host != null && botid != null) {
 			response = sraixPandorabots(input, chatSession, host, botid);
 		} else {
 			response = sraixPannous(input, hint, chatSession);
 		}
 		log.info("Sraix: response = " + response + " defaultResponse = " + defaultResponse);
-		if (response.equals(MagicStrings.sraix_failed)) {
+		if (response.equals(Properties.sraix_failed)) {
 			if (chatSession != null && defaultResponse == null) {
-				response = AIMLProcessor.respond(MagicStrings.sraix_failed, "nothing", "nothing", chatSession);
+				response = AIMLProcessor.respond(Properties.sraix_failed, "nothing", "nothing", chatSession);
 			} else if (defaultResponse != null) {
 				response = defaultResponse;
 			}
@@ -67,7 +67,7 @@ public class Sraix {
 		// botid="+botid);
 		final String responseContent = pandorabotsRequest(input, host, botid);
 		if (responseContent == null) {
-			return MagicStrings.sraix_failed;
+			return Properties.sraix_failed;
 		} else {
 			return pandorabotsResponse(responseContent, chatSession, host, botid);
 		}
@@ -114,7 +114,7 @@ public class Sraix {
 	}
 
 	private static String pandorabotsResponse(String sraixResponse, Chat chatSession, String host, String botid) {
-		String botResponse = MagicStrings.sraix_failed;
+		String botResponse = Properties.sraix_failed;
 		try {
 			int n1 = sraixResponse.indexOf("<that>");
 			int n2 = sraixResponse.indexOf("</that>");
@@ -148,7 +148,7 @@ public class Sraix {
 		try {
 			final String rawInput = input;
 			if (hint == null) {
-				hint = MagicStrings.sraix_no_hint;
+				hint = Properties.sraix_no_hint;
 			}
 			input = " " + input + " ";
 			input = input.replace(" point ", ".");
@@ -168,30 +168,30 @@ public class Sraix {
 			}
 			// https://weannie.pannous.com/api?input=when+is+daylight+savings+time+in+the+us&locale=en_US&login=pandorabots&ip=169.254.178.212&botid=0&key=CKNgaaVLvNcLhDupiJ1R8vtPzHzWc8mhIQDFSYWj&exclude=Dialogues,ChatBot&out=json
 			// exclude=Dialogues,ChatBot&out=json&clientFeatures=show-images,reminder,say&debug=true
-			final String url = "https://ask.pannous.com/api?input=" + input + "&locale=en_US&timeZone=" + offset + locationString + "&login=" + MagicStrings.pannous_login + "&ip=" + NetworkUtils.localIPAddress() + "&botid=0&key=" + MagicStrings.pannous_api_key + "&exclude=Dialogues,ChatBot&out=json&clientFeatures=show-images,reminder,say&debug=true";
-			MagicBooleans.trace("in Sraix.sraixPannous, url: '" + url + "'");
+			final String url = "https://ask.pannous.com/api?input=" + input + "&locale=en_US&timeZone=" + offset + locationString + "&login=" + Properties.pannous_login + "&ip=" + NetworkUtils.localIPAddress() + "&botid=0&key=" + Properties.pannous_api_key + "&exclude=Dialogues,ChatBot&out=json&clientFeatures=show-images,reminder,say&debug=true";
+			log.trace("in Sraix.sraixPannous, url: '" + url + "'");
 			final String page = NetworkUtils.responseContent(url);
-			// MagicBooleans.trace("in Sraix.sraixPannous, page: " + page);
+			// Properties.trace("in Sraix.sraixPannous, page: " + page);
 			String text = "";
 			String imgRef = "";
 			String urlRef = "";
 			if (page == null || page.length() == 0) {
-				text = MagicStrings.sraix_failed;
+				text = Properties.sraix_failed;
 			} else {
 				final JSONArray outputJson = new JSONObject(page).getJSONArray("output");
-				// MagicBooleans.trace("in Sraix.sraixPannous, outputJson class: " +
+				// Properties.trace("in Sraix.sraixPannous, outputJson class: " +
 				// outputJson.getClass() + ", outputJson: " + outputJson);
 				if (outputJson.length() == 0) {
-					text = MagicStrings.sraix_failed;
+					text = Properties.sraix_failed;
 				} else {
 					final JSONObject firstHandler = outputJson.getJSONObject(0);
-					// MagicBooleans.trace("in Sraix.sraixPannous, firstHandler class: " +
+					// Properties.trace("in Sraix.sraixPannous, firstHandler class: " +
 					// firstHandler.getClass() + ", firstHandler: " + firstHandler);
 					final JSONObject actions = firstHandler.getJSONObject("actions");
-					// MagicBooleans.trace("in Sraix.sraixPannous, actions class: " +
+					// Properties.trace("in Sraix.sraixPannous, actions class: " +
 					// actions.getClass() + ", actions: " + actions);
 					if (actions.has("reminder")) {
-						// MagicBooleans.trace("in Sraix.sraixPannous, found reminder action");
+						// Properties.trace("in Sraix.sraixPannous, found reminder action");
 						final Object obj = actions.get("reminder");
 						if (obj instanceof JSONObject) {
 							log.debug("Found JSON Object");
@@ -215,14 +215,14 @@ public class Sraix {
 								text = "<year>" + year + "</year>" + "<month>" + month + "</month>" + "<day>" + day + "</day>" + "<hour>" + hour + "</hour>" + "<minute>" + minute + "</minute>" + "<duration>" + duration + "</duration>";
 
 							} else {
-								text = MagicStrings.schedule_error;
+								text = Properties.schedule_error;
 							}
 						}
-					} else if (actions.has("say") && !hint.equals(MagicStrings.sraix_pic_hint) && !hint.equals(MagicStrings.sraix_shopping_hint)) {
-						MagicBooleans.trace("in Sraix.sraixPannous, found say action");
+					} else if (actions.has("say") && !hint.equals(Properties.sraix_pic_hint) && !hint.equals(Properties.sraix_shopping_hint)) {
+						log.trace("in Sraix.sraixPannous, found say action");
 						final Object obj = actions.get("say");
-						// MagicBooleans.trace("in Sraix.sraixPannous, obj class: " + obj.getClass());
-						// MagicBooleans.trace("in Sraix.sraixPannous, obj instanceof JSONObject: " +
+						// Properties.trace("in Sraix.sraixPannous, obj class: " + obj.getClass());
+						// Properties.trace("in Sraix.sraixPannous, obj instanceof JSONObject: " +
 						// (obj instanceof JSONObject));
 						if (obj instanceof JSONObject) {
 							final JSONObject sObj = (JSONObject) obj;
@@ -238,7 +238,7 @@ public class Sraix {
 						}
 					}
 					if (actions.has("show") && !text.contains("Wolfram") && actions.getJSONObject("show").has("images")) {
-						MagicBooleans.trace("in Sraix.sraixPannous, found show action");
+						log.trace("in Sraix.sraixPannous, found show action");
 						final JSONArray arr = actions.getJSONObject("show").getJSONArray("images");
 						final int i = (int) (arr.length() * Math.random());
 						// for (int j = 0; j < arr.length(); j++) log.info(arr.getString(j));
@@ -250,15 +250,15 @@ public class Sraix {
 						// log.info("IMAGE REF="+imgRef);
 
 					}
-					if (hint.equals(MagicStrings.sraix_shopping_hint) && actions.has("open") && actions.getJSONObject("open").has("url")) {
+					if (hint.equals(Properties.sraix_shopping_hint) && actions.has("open") && actions.getJSONObject("open").has("url")) {
 						urlRef = "<oob><url>" + actions.getJSONObject("open").getString("url") + "</oob></url>";
 
 					}
 				}
-				if (hint.equals(MagicStrings.sraix_event_hint) && !text.startsWith("<year>")) {
-					return MagicStrings.sraix_failed;
-				} else if (text.equals(MagicStrings.sraix_failed)) {
-					return AIMLProcessor.respond(MagicStrings.sraix_failed, "nothing", "nothing", chatSession);
+				if (hint.equals(Properties.sraix_event_hint) && !text.startsWith("<year>")) {
+					return Properties.sraix_failed;
+				} else if (text.equals(Properties.sraix_failed)) {
+					return AIMLProcessor.respond(Properties.sraix_failed, "nothing", "nothing", chatSession);
 				} else {
 					text = text.replace("&#39;", "'");
 					text = text.replace("&apos;", "'");
@@ -284,7 +284,7 @@ public class Sraix {
 			log.error(ex.getMessage(), ex);
 			log.info("Sraix '" + input + "' failed");
 		}
-		return MagicStrings.sraix_failed;
+		return Properties.sraix_failed;
 	} // sraixPannous
 
 	final static String NL = System.getProperty("line.separator");
@@ -292,11 +292,11 @@ public class Sraix {
 	private static void log(String pattern, String template) {
 		log.info("Logging " + pattern);
 		template = template.trim();
-		if (MagicBooleans.cache_sraix) {
+		if (Properties.cache_sraix) {
 			try {
 				if (!template.contains("<year>") && !template.contains("No facilities")) {
 					template = template.replace(NL, "\\#Newline");
-					template = template.replace(",", MagicStrings.aimlif_split_char_name);
+					template = template.replace(",", Properties.aimlif_split_char_name);
 					template = template.replaceAll("<a(.*)</a>", "");
 					template = template.trim();
 					if (template.length() > 0) {

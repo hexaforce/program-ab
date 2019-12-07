@@ -75,35 +75,35 @@ class AIMLMap extends HashMap<String, String> {
 	 */
 	String get(String key) {
 		String value;
-		if (mapName.equals(MagicStrings.map_successor)) {
+		if (mapName.equals(Properties.map_successor)) {
 			try {
 				final int number = Integer.parseInt(key);
 				return String.valueOf(number + 1);
 			} catch (final Exception ex) {
-				return MagicStrings.default_map;
+				return Properties.default_map;
 			}
-		} else if (mapName.equals(MagicStrings.map_predecessor)) {
+		} else if (mapName.equals(Properties.map_predecessor)) {
 			try {
 				final int number = Integer.parseInt(key);
 				return String.valueOf(number - 1);
 			} catch (final Exception ex) {
-				return MagicStrings.default_map;
+				return Properties.default_map;
 			}
 		} else if (mapName.equals("singular")) {
 			return inflector.singularize(key).toLowerCase();
 		} else if (mapName.equals("plural")) {
 			return inflector.pluralize(key).toLowerCase();
-		} else if (isExternal && MagicBooleans.enable_external_sets) {
+		} else if (isExternal && Properties.enable_external_sets) {
 			// String[] split = key.split(" ");
 			final String query = mapName.toUpperCase() + " " + key;
-			final String response = Sraix.sraix(null, query, MagicStrings.default_map, null, host, botid, null, "0");
+			final String response = Sraix.sraix(null, query, Properties.default_map, null, host, botid, null, "0");
 			log.info("External " + mapName + "(" + key + ")=" + response);
 			value = response;
 		} else {
 			value = super.get(key);
 		}
 		if (value == null) {
-			value = MagicStrings.default_map;
+			value = Properties.default_map;
 		}
 		// log.info("AIMLMap get "+key+"="+value);
 		return value;
@@ -152,7 +152,7 @@ class AIMLMap extends HashMap<String, String> {
 				// log.info("AIMLMap line="+strLine);
 				if (splitLine.length >= 2) {
 					cnt++;
-					if (strLine.startsWith(MagicStrings.remote_map_key)) {
+					if (strLine.startsWith(Properties.remote_map_key)) {
 						if (splitLine.length >= 3) {
 							host = splitLine[1];
 							botid = splitLine[2];

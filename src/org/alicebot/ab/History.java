@@ -49,7 +49,7 @@ class History<T> {
 	 */
 	History(String name) {
 		this.name = name;
-		history = new Object[MagicNumbers.max_history];
+		history = new Object[Properties.max_history];
 	}
 
 	/**
@@ -58,7 +58,7 @@ class History<T> {
 	 * @param item history item to add
 	 */
 	void add(T item) {
-		for (int i = MagicNumbers.max_history - 1; i > 0; i--) {
+		for (int i = Properties.max_history - 1; i > 0; i--) {
 			history[i] = history[i - 1];
 		}
 		history[0] = item;
@@ -72,7 +72,7 @@ class History<T> {
 	 */
 	@SuppressWarnings("unchecked")
 	T get(int index) {
-		if (index < MagicNumbers.max_history) {
+		if (index < Properties.max_history) {
 			if (history[index] == null) {
 				return null;
 			} else {
@@ -90,9 +90,9 @@ class History<T> {
 	 * @return history item
 	 */
 	String getString(int index) {
-		if (index < MagicNumbers.max_history) {
+		if (index < Properties.max_history) {
 			if (history[index] == null) {
-				return MagicStrings.unknown_history_item;
+				return Properties.unknown_history_item;
 			} else {
 				return (String) history[index];
 			}

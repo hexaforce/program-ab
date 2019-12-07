@@ -45,16 +45,16 @@ class PreProcessor {
 	int personCount = 0;
 	int person2Count = 0;
 	int genderCount = 0;
-	String[] normalSubs = new String[MagicNumbers.max_substitutions];
-	Pattern[] normalPatterns = new Pattern[MagicNumbers.max_substitutions];
-	String[] denormalSubs = new String[MagicNumbers.max_substitutions];
-	Pattern[] denormalPatterns = new Pattern[MagicNumbers.max_substitutions];
-	String[] personSubs = new String[MagicNumbers.max_substitutions];
-	Pattern[] personPatterns = new Pattern[MagicNumbers.max_substitutions];
-	String[] person2Subs = new String[MagicNumbers.max_substitutions];
-	Pattern[] person2Patterns = new Pattern[MagicNumbers.max_substitutions];
-	String[] genderSubs = new String[MagicNumbers.max_substitutions];
-	Pattern[] genderPatterns = new Pattern[MagicNumbers.max_substitutions];
+	String[] normalSubs = new String[Properties.max_substitutions];
+	Pattern[] normalPatterns = new Pattern[Properties.max_substitutions];
+	String[] denormalSubs = new String[Properties.max_substitutions];
+	Pattern[] denormalPatterns = new Pattern[Properties.max_substitutions];
+	String[] personSubs = new String[Properties.max_substitutions];
+	Pattern[] personPatterns = new Pattern[Properties.max_substitutions];
+	String[] person2Subs = new String[Properties.max_substitutions];
+	Pattern[] person2Patterns = new Pattern[Properties.max_substitutions];
+	String[] genderSubs = new String[Properties.max_substitutions];
+	Pattern[] genderPatterns = new Pattern[Properties.max_substitutions];
 
 	/**
 	 * Constructor given bot
@@ -185,10 +185,10 @@ class PreProcessor {
 			while ((strLine = br.readLine()) != null) {
 				// log.info(strLine);
 				strLine = strLine.trim();
-				if (!strLine.startsWith(MagicStrings.text_comment_mark)) {
+				if (!strLine.startsWith(Properties.text_comment_mark)) {
 					final Pattern pattern = Pattern.compile("\"(.*?)\",\"(.*?)\"", Pattern.DOTALL);
 					final Matcher matcher = pattern.matcher(strLine);
-					if (matcher.find() && subCount < MagicNumbers.max_substitutions) {
+					if (matcher.find() && subCount < Properties.max_substitutions) {
 						subs[subCount] = matcher.group(2);
 						final String quotedPattern = Pattern.quote(matcher.group(1));
 						// log.info("quoted pattern="+quotedPattern);

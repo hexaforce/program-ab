@@ -62,7 +62,7 @@ public class DomUtils {
 	 * @return XML string
 	 */
 	public static String nodeToString(Node node) {
-		// MagicBooleans.trace("nodeToString(node: " + node + ")");
+		// Properties.trace("nodeToString(node: " + node + ")");
 		StringWriter sw = new StringWriter();
 		try {
 			Transformer t = TransformerFactory.newInstance().newTransformer();
@@ -73,7 +73,7 @@ public class DomUtils {
 			log.info("nodeToString Transformer Exception");
 		}
 		String result = sw.toString();
-		// MagicBooleans.trace("nodeToString() returning: " + result);
+		// Properties.trace("nodeToString() returning: " + result);
 		return result;
 	}
 }

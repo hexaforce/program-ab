@@ -50,21 +50,21 @@ class Predicates extends HashMap<String, String> {
 	 */
 	@Override
 	public String put(String key, String value) {
-		// MagicBooleans.trace("predicates.put(key: " + key + ", value: " + value +
+		// Properties.trace("predicates.put(key: " + key + ", value: " + value +
 		// ")");
 		if (key.equals("topic")) {
 			value = JapaneseUtils.tokenizeSentence(value);
 		}
 
 		if (key.equals("topic") && value.length() == 0) {
-			value = MagicStrings.default_get;
+			value = Properties.default_get;
 		}
-		if (value.equals(MagicStrings.too_much_recursion)) {
-			value = MagicStrings.default_list_item;
+		if (value.equals(Properties.too_much_recursion)) {
+			value = Properties.default_list_item;
 		}
-		// MagicBooleans.trace("Setting predicate key: " + key + " to value: " + value);
+		// Properties.trace("Setting predicate key: " + key + " to value: " + value);
 		final String result = super.put(key, value);
-		// MagicBooleans.trace("in predicates.put, returning: " + result);
+		// Properties.trace("in predicates.put, returning: " + result);
 		return result;
 	}
 
@@ -75,12 +75,12 @@ class Predicates extends HashMap<String, String> {
 	 * @return predicate value
 	 */
 	String get(String key) {
-		// MagicBooleans.trace("predicates.get(key: " + key + ")");
+		// Properties.trace("predicates.get(key: " + key + ")");
 		String result = super.get(key);
 		if (result == null) {
-			result = MagicStrings.default_get;
+			result = Properties.default_get;
 		}
-		// MagicBooleans.trace("in predicates.get, returning: " + result);
+		// Properties.trace("in predicates.get, returning: " + result);
 		return result;
 	}
 

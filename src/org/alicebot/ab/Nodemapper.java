@@ -35,7 +35,7 @@ class Nodemapper {
 	 * static int idCnt=0; int id;
 	 */
 	Category category = null;
-	int height = MagicNumbers.max_graph_height;
+	int height = Properties.max_graph_height;
 	StarBindings starBindings = null;
 	HashMap<String, Nodemapper> map = null;
 	String key = null;

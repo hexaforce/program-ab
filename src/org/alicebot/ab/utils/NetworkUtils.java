@@ -28,7 +28,7 @@ public class NetworkUtils {
 						int p = ipAddress.indexOf("%");
 						if (p > 0)
 							ipAddress = ipAddress.substring(0, p);
-						// if (MagicBooleans.trace_mode) log.info("--> localIPAddress =
+						// if (Properties.trace_mode) log.info("--> localIPAddress =
 						// "+ipAddress);
 						return ipAddress;
 					}

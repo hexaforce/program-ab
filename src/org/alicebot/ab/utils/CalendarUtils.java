@@ -57,7 +57,7 @@ public class CalendarUtils {
 			log.info("CalendarUtils.date Bad date: Format = " + jformat + " Locale = " + locale + " Timezone = " + timezone);
 			log.error(ex.getMessage(), ex);
 		}
-		// MagicBooleans.trace("CalendarUtils.date: "+dateAsString);
+		// Properties.trace("CalendarUtils.date: "+dateAsString);
 		return dateAsString;
 	}
 

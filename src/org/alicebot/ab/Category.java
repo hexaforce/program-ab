@@ -119,7 +119,7 @@ class Category {
 	 */
 	String getFilename() {
 		if (filename == null) {
-			return MagicStrings.unknown_aiml_file;
+			return Properties.unknown_aiml_file;
 		} else {
 			return filename;
 		}
@@ -160,7 +160,7 @@ class Category {
 	static String templateToLine(String template) {
 		String result = template;
 		result = result.replaceAll("(\r\n|\n\r|\r|\n)", "\\#Newline");
-		result = result.replaceAll(",", MagicStrings.aimlif_split_char_name);
+		result = result.replaceAll(",", Properties.aimlif_split_char_name);
 		return result;
 	}
 
@@ -173,7 +173,7 @@ class Category {
 	 */
 	private static String lineToTemplate(String line) {
 		String result = line.replaceAll("\\#Newline", NL);
-		result = result.replaceAll(MagicStrings.aimlif_split_char_name, ",");
+		result = result.replaceAll(Properties.aimlif_split_char_name, ",");
 		return result;
 	}
 
@@ -353,7 +353,7 @@ class Category {
 	 */
 
 	Category(int activationCnt, String pattern, String that, String topic, String template, String filename) {
-		if (MagicBooleans.fix_excel_csv) {
+		if (Properties.fix_excel_csv) {
 			pattern = Utilities.fixCSV(pattern);
 			that = Utilities.fixCSV(that);
 			topic = Utilities.fixCSV(topic);

@@ -102,7 +102,7 @@ public class ChatTest {
 
 //	@Test
 //	public void testMultisentenceRespond() throws Exception {
-//		this.bot = new Bot("alice", MagicStrings.root_path, "auto");
+//		this.bot = new Bot("alice", Properties.root_path, "auto");
 //		this.chatSession = new Chat(bot, true, "0");
 //		//for (int i = 0; i < pairs.length; i++) {
 //			String request = pairs[0][0];
