@@ -16,7 +16,7 @@ import lombok.extern.slf4j.Slf4j;
 	This library is distributed in the hope that it will be useful,
 	but WITHOUT ANY WARRANTY; without even the implied warranty of
 	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-	Library General Public License for more details.
+	Library General License for more details.
 
 	You should have received a copy of the GNU Library General Public
 	License along with this library; if not, write to the
@@ -30,7 +30,7 @@ import lombok.extern.slf4j.Slf4j;
  * @param <T> type of history object
  */
 @Slf4j
-public class History<T> {
+class History<T> {
 
 	private Object[] history;
 	private String name;
@@ -38,7 +38,7 @@ public class History<T> {
 	/**
 	 * Constructor with default history name
 	 */
-	public History() {
+	History() {
 		this("unknown");
 	}
 
@@ -47,7 +47,7 @@ public class History<T> {
 	 *
 	 * @param name name of history
 	 */
-	public History(String name) {
+	History(String name) {
 		this.name = name;
 		history = new Object[MagicNumbers.max_history];
 	}
@@ -57,7 +57,7 @@ public class History<T> {
 	 *
 	 * @param item history item to add
 	 */
-	public void add(T item) {
+	void add(T item) {
 		for (int i = MagicNumbers.max_history - 1; i > 0; i--) {
 			history[i] = history[i - 1];
 		}
@@ -71,7 +71,7 @@ public class History<T> {
 	 * @return history item
 	 */
 	@SuppressWarnings("unchecked")
-	public T get(int index) {
+	T get(int index) {
 		if (index < MagicNumbers.max_history) {
 			if (history[index] == null) {
 				return null;
@@ -89,7 +89,7 @@ public class History<T> {
 	 * @param index history index
 	 * @return history item
 	 */
-	public String getString(int index) {
+	String getString(int index) {
 		if (index < MagicNumbers.max_history) {
 			if (history[index] == null) {
 				return MagicStrings.unknown_history_item;
@@ -104,7 +104,7 @@ public class History<T> {
 	/**
 	 * print history
 	 */
-	public void printHistory() {
+	void printHistory() {
 		int i;
 		for (i = 0; get(i) != null; i++) {
 			log.info(name + "History " + (i + 1) + " = " + get(i));

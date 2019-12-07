@@ -13,7 +13,7 @@ package org.alicebot.ab;
 	This library is distributed in the hope that it will be useful,
 	but WITHOUT ANY WARRANTY; without even the implied warranty of
 	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-	Library General Public License for more details.
+	Library General License for more details.
 
 	You should have received a copy of the GNU Library General Public
 	License along with this library; if not, write to the
@@ -25,8 +25,8 @@ package org.alicebot.ab;
  * structure to hold binding of wildcards in input pattern, that pattern and
  * topicpattern
  */
-public class StarBindings {
-	public Stars inputStars = new Stars();
-	public Stars thatStars = new Stars();
-	public Stars topicStars = new Stars();
+class StarBindings {
+	Stars inputStars = new Stars();
+	Stars thatStars = new Stars();
+	Stars topicStars = new Stars();
 }

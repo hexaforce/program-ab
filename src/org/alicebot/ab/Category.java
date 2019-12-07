@@ -14,7 +14,7 @@ package org.alicebot.ab;
 	This library is distributed in the hope that it will be useful,
 	but WITHOUT ANY WARRANTY; without even the implied warranty of
 	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-	Library General Public License for more details.
+	Library General License for more details.
 
 	You should have received a copy of the GNU Library General Public
 	License along with this library; if not, write to the
@@ -30,7 +30,7 @@ import lombok.extern.slf4j.Slf4j;
  * structure representing an AIML category and operations on Category
  */
 @Slf4j
-public class Category {
+class Category {
 
 	private String pattern;
 	private String that;
@@ -39,7 +39,7 @@ public class Category {
 	private String filename;
 	private int activationCnt;
 	private final int categoryNumber; // for loading order
-	public static int categoryCnt = 0;
+	static int categoryCnt = 0;
 	private AIMLSet matches;
 
 	/**
@@ -429,7 +429,7 @@ public class Category {
 //	 * @param template         AIML template
 //	 * @param filename         AIML category
 //	 */
-//	public Category(int activationCnt, String patternThatTopic, String template, String filename) {
+//	Category(int activationCnt, String patternThatTopic, String template, String filename) {
 //		this(activationCnt, patternThatTopic.substring(0, patternThatTopic.indexOf("<THAT>")), patternThatTopic.substring(patternThatTopic.indexOf("<THAT>") + "<THAT>".length(), patternThatTopic.indexOf("<TOPIC>")), patternThatTopic.substring(patternThatTopic.indexOf("<TOPIC>") + "<TOPIC>".length(), patternThatTopic.length()), template, filename);
 //	}
 
@@ -438,7 +438,7 @@ public class Category {
 //	 */
 //	private static Comparator<Category> ACTIVATION_COMPARATOR = new Comparator<Category>() {
 //		@Override
-//		public int compare(Category c1, Category c2) {
+//		int compare(Category c1, Category c2) {
 //			return c2.getActivationCnt() - c1.getActivationCnt();
 //		}
 //	};
@@ -448,7 +448,7 @@ public class Category {
 //	 */
 //	private static Comparator<Category> PATTERN_COMPARATOR = new Comparator<Category>() {
 //		@Override
-//		public int compare(Category c1, Category c2) {
+//		int compare(Category c1, Category c2) {
 //			return String.CASE_INSENSITIVE_ORDER.compare(c1.inputThatTopic(), c2.inputThatTopic());
 //		}
 //	};

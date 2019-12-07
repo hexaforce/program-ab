@@ -14,7 +14,7 @@ package org.alicebot.ab;
 	This library is distributed in the hope that it will be useful,
 	but WITHOUT ANY WARRANTY; without even the implied warranty of
 	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-	Library General Public License for more details.
+	Library General License for more details.
 
 	You should have received a copy of the GNU Library General Public
 	License along with this library; if not, write to the
@@ -39,22 +39,22 @@ import lombok.extern.slf4j.Slf4j;
  * Class encapsulating a chat session between a bot and a client
  */
 @Slf4j
-public class Chat {
+class Chat {
 
-	public Bot bot;
-//	public boolean doWrites;
-	public String customerId = MagicStrings.default_Customer_id;
-	public History<History<?>> thatHistory = new History<History<?>>("that");
-	public History<String> requestHistory = new History<String>("request");
-	public History<String> responseHistory = new History<String>("response");
-	// public History<String> repetitionHistory = new History<String>("repetition");
-	public History<String> inputHistory = new History<String>("input");
-	public Predicates predicates = new Predicates();
-	public static String matchTrace = "";
-	public static boolean locationKnown = false;
-	public static String longitude;
-	public static String latitude;
-	public TripleStore tripleStore = new TripleStore("anon", bot);
+	Bot bot;
+//	boolean doWrites;
+	String customerId = MagicStrings.default_Customer_id;
+	History<History<?>> thatHistory = new History<History<?>>("that");
+	History<String> requestHistory = new History<String>("request");
+	History<String> responseHistory = new History<String>("response");
+	// History<String> repetitionHistory = new History<String>("repetition");
+	History<String> inputHistory = new History<String>("input");
+	Predicates predicates = new Predicates();
+	static String matchTrace = "";
+	static boolean locationKnown = false;
+	static String longitude;
+	static String latitude;
+	TripleStore tripleStore = new TripleStore("anon", bot);
 
 	/**
 	 * Constructor
@@ -63,8 +63,8 @@ public class Chat {
 	 * @param doWrites   doWrites
 	 * @param customerId unique customer identifier
 	 */
-	// public Chat(Bot bot, boolean doWrites, String customerId) {
-	public Chat(Bot bot, String customerId) {
+	// Chat(Bot bot, boolean doWrites, String customerId) {
+	Chat(Bot bot, String customerId) {
 		this.customerId = customerId;
 		this.bot = bot;
 //		this.doWrites = doWrites;
@@ -131,7 +131,7 @@ public class Chat {
 	/**
 	 * Chat session terminal interaction
 	 */
-	public void chat() {
+	void chat() {
 		BufferedWriter bw = null;
 		final String logFile = bot.log_path + "/log_" + customerId + ".txt";
 		try {
@@ -237,7 +237,7 @@ public class Chat {
 	 * @param request client's multiple-sentence input
 	 * @return string
 	 */
-	public String multisentenceRespond(String request) {
+	String multisentenceRespond(String request) {
 
 		// MagicBooleans.trace("chat.multisentenceRespond(request: " + request + ")");
 		String response = "";
@@ -274,7 +274,7 @@ public class Chat {
 		return response;
 	}
 
-	public static void setMatchTrace(String newMatchTrace) {
+	static void setMatchTrace(String newMatchTrace) {
 		matchTrace = newMatchTrace;
 	}
 

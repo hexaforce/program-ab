@@ -9,16 +9,16 @@ import java.util.regex.Pattern;
  * This class is here to simulate a Contacts database for the purpose of testing
  * contactaction.aiml
  */
-public class Contact {
+class Contact {
 
-	public static int contactCount = 0;
-	public static HashMap<String, Contact> idContactMap = new HashMap<String, Contact>();
-	public static HashMap<String, String> nameIdMap = new HashMap<String, String>();
-	public String contactId;
-	public String displayName;
-	public String birthday;
-	public HashMap<String, String> phones;
-	public HashMap<String, String> emails;
+	static int contactCount = 0;
+	static HashMap<String, Contact> idContactMap = new HashMap<String, Contact>();
+	static HashMap<String, String> nameIdMap = new HashMap<String, String>();
+	String contactId;
+	String displayName;
+	String birthday;
+	HashMap<String, String> phones;
+	HashMap<String, String> emails;
 
 	static String multipleIds(String contactName) {
 		String patternString = " (" + contactName.toUpperCase() + ") ";

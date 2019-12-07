@@ -14,7 +14,7 @@ package org.alicebot.ab;
 	This library is distributed in the hope that it will be useful,
 	but WITHOUT ANY WARRANTY; without even the implied warranty of
 	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-	Library General Public License for more details.
+	Library General License for more details.
 
 	You should have received a copy of the GNU Library General Public
 	License along with this library; if not, write to the
@@ -33,17 +33,17 @@ import lombok.extern.slf4j.Slf4j;
  * The AIML Pattern matching algorithm and data structure.
  */
 @Slf4j
-public class Graphmaster {
+class Graphmaster {
 	// static private boolean DEBUG = false;
 
-	public Bot bot;
-	public String name;
-	public final Nodemapper root;
-	public int matchCount = 0;
-	public int upgradeCnt = 0;
-	public HashSet<String> vocabulary;
-	public String resultNote = "";
-	public int categoryCnt = 0;
+	Bot bot;
+	String name;
+	final Nodemapper root;
+	int matchCount = 0;
+	int upgradeCnt = 0;
+	HashSet<String> vocabulary;
+	String resultNote = "";
+	int categoryCnt = 0;
 	private boolean ENABLE_SHORT_CUTS = true;
 
 	/**
@@ -51,11 +51,11 @@ public class Graphmaster {
 	 *
 	 * @param bot the bot the graph belongs to.
 	 */
-//	public Graphmaster(Bot bot) {
+//	Graphmaster(Bot bot) {
 //		this(bot, "brain");
 //	}
 
-	public Graphmaster(Bot bot, String name) {
+	Graphmaster(Bot bot, String name) {
 		root = new Nodemapper();
 		this.bot = bot;
 		this.name = name;
@@ -71,7 +71,7 @@ public class Graphmaster {
 	 * @param topic topic (or topic pattern)
 	 * @return string
 	 */
-	public static String inputThatTopic(String input, String that, String topic) {
+	static String inputThatTopic(String input, String that, String topic) {
 		return input.trim() + " <THAT> " + that.trim() + " <TOPIC> " + topic.trim();
 	}
 
@@ -224,7 +224,7 @@ public class Graphmaster {
 		return result;
 	}
 
-//	public static boolean verbose = false;
+//	static boolean verbose = false;
 
 	/**
 	 * Recursively find a leaf node given a starting node and a path.
@@ -657,7 +657,7 @@ public class Graphmaster {
 		}
 	}
 
-	public void printgraph() {
+	void printgraph() {
 		printgraph(root, "");
 	}
 
@@ -682,7 +682,7 @@ public class Graphmaster {
 		}
 	}
 
-	public ArrayList<Category> getCategories() {
+	ArrayList<Category> getCategories() {
 		final ArrayList<Category> categories = new ArrayList<Category>();
 		getCategories(root, categories);
 		// for (Category c : categories) log.info("getCategories:
@@ -714,7 +714,7 @@ public class Graphmaster {
 	private int shortCutCnt;
 	private int naryCnt;
 
-	public void nodeStats() {
+	void nodeStats() {
 		leafCnt = 0;
 		nodeCnt = 0;
 		nodeSize = 0;

@@ -14,7 +14,7 @@ package org.alicebot.ab;
 	This library is distributed in the hope that it will be useful,
 	but WITHOUT ANY WARRANTY; without even the implied warranty of
 	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-	Library General Public License for more details.
+	Library General License for more details.
 
 	You should have received a copy of the GNU Library General Public
 	License along with this library; if not, write to the
@@ -34,9 +34,9 @@ import lombok.extern.slf4j.Slf4j;
  * some extension tags that are defined for mobile devices.
  */
 @Slf4j
-public class PCAIMLProcessorExtension implements AIMLProcessorExtension {
+class PCAIMLProcessorExtension implements AIMLProcessorExtension {
 
-	public Set<String> extensionTagNames = Utilities.stringSet("contactid", "multipleids", "displayname", "dialnumber", "emailaddress", "contactbirthday", "addinfo");
+	Set<String> extensionTagNames = Utilities.stringSet("contactid", "multipleids", "displayname", "dialnumber", "emailaddress", "contactbirthday", "addinfo");
 
 	@Override
 	public Set<String> extensionTagSet() {

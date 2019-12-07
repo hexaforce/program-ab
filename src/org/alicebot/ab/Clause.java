@@ -1,24 +1,24 @@
 package org.alicebot.ab;
 
-public class Clause {
+class Clause {
 
-	public String subj;
-	public String pred;
-	public String obj;
-	public Boolean affirm;
+	String subj;
+	String pred;
+	String obj;
+	Boolean affirm;
 
-	public Clause(String s, String p, String o) {
+	Clause(String s, String p, String o) {
 		this(s, p, o, true);
 	}
 
-	public Clause(String s, String p, String o, Boolean affirm) {
+	Clause(String s, String p, String o, Boolean affirm) {
 		subj = s;
 		pred = p;
 		obj = o;
 		this.affirm = affirm;
 	}
 
-	public Clause(Clause clause) {
+	Clause(Clause clause) {
 		this(clause.subj, clause.pred, clause.obj, clause.affirm);
 	}
 

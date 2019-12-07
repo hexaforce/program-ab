@@ -14,7 +14,7 @@ package org.alicebot.ab;
 	This library is distributed in the hope that it will be useful,
 	but WITHOUT ANY WARRANTY; without even the implied warranty of
 	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-	Library General Public License for more details.
+	Library General License for more details.
 
 	You should have received a copy of the GNU Library General Public
 	License along with this library; if not, write to the
@@ -25,32 +25,32 @@ package org.alicebot.ab;
 /**
  * Specialized timer function for program instrumentation
  */
-public class Timer {
+class Timer {
 	private long startTimeMillis;
 
-	public Timer() {
+	Timer() {
 		start();
 	}
 
-	public void start() {
+	void start() {
 		startTimeMillis = System.currentTimeMillis();
 	}
 
-	public long elapsedTimeMillis() {
+	long elapsedTimeMillis() {
 		return System.currentTimeMillis() - startTimeMillis + 1;
 	}
 
-	public long elapsedRestartMs() {
+	long elapsedRestartMs() {
 		final long ms = System.currentTimeMillis() - startTimeMillis + 1;
 		start();
 		return ms;
 	}
 
-	public float elapsedTimeSecs() {
+	float elapsedTimeSecs() {
 		return elapsedTimeMillis() / 1000F;
 	}
 
-	public float elapsedTimeMins() {
+	float elapsedTimeMins() {
 		return elapsedTimeSecs() / 60F;
 	}
 }

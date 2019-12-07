@@ -14,7 +14,7 @@ package org.alicebot.ab;
 	This library is distributed in the hope that it will be useful,
 	but WITHOUT ANY WARRANTY; without even the implied warranty of
 	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-	Library General Public License for more details.
+	Library General License for more details.
 
 	You should have received a copy of the GNU Library General Public
 	License along with this library; if not, write to the
@@ -35,7 +35,7 @@ import lombok.extern.slf4j.Slf4j;
  * Bot Properties
  */
 @Slf4j
-public class Properties extends HashMap<String, String> {
+class Properties extends HashMap<String, String> {
 	private static final long serialVersionUID = 1L;
 
 	/**
@@ -44,7 +44,7 @@ public class Properties extends HashMap<String, String> {
 	 * @param key property name
 	 * @return property value or a string indicating the property is undefined
 	 */
-	public String get(String key) {
+	String get(String key) {
 		final String result = super.get(key);
 		if (result == null) {
 			return MagicStrings.default_property;
@@ -59,7 +59,7 @@ public class Properties extends HashMap<String, String> {
 	 * @param in Input stream
 	 * @return count
 	 */
-	public int getPropertiesFromInputStream(InputStream in) {
+	int getPropertiesFromInputStream(InputStream in) {
 		int cnt = 0;
 		final BufferedReader br = new BufferedReader(new InputStreamReader(in));
 		String strLine;
@@ -85,7 +85,7 @@ public class Properties extends HashMap<String, String> {
 	 * @param filename file containing bot properties
 	 * @return count
 	 */
-	public int getProperties(String filename) {
+	int getProperties(String filename) {
 		int cnt = 0;
 		log.debug("Get Properties: " + filename);
 		try {

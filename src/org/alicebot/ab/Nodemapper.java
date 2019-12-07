@@ -14,7 +14,7 @@ package org.alicebot.ab;
 	This library is distributed in the hope that it will be useful,
 	but WITHOUT ANY WARRANTY; without even the implied warranty of
 	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-	Library General Public License for more details.
+	Library General License for more details.
 
 	You should have received a copy of the GNU Library General Public
 	License along with this library; if not, write to the
@@ -30,20 +30,20 @@ import java.util.HashMap;
  * has no methods. Operations on Nodemapper objects are performed by
  * NodemapperOperator class
  */
-public class Nodemapper {
+class Nodemapper {
 	/*
-	 * public static int idCnt=0; public int id;
+	 * static int idCnt=0; int id;
 	 */
-	public Category category = null;
-	public int height = MagicNumbers.max_graph_height;
-	public StarBindings starBindings = null;
-	public HashMap<String, Nodemapper> map = null;
-	public String key = null;
-	public Nodemapper value = null;
-	public boolean shortCut = false;
-	public ArrayList<String> sets;
+	Category category = null;
+	int height = MagicNumbers.max_graph_height;
+	StarBindings starBindings = null;
+	HashMap<String, Nodemapper> map = null;
+	String key = null;
+	Nodemapper value = null;
+	boolean shortCut = false;
+	ArrayList<String> sets;
 	/*
-	 * public Nodemapper () { id = idCnt++; }
+	 * Nodemapper () { id = idCnt++; }
 	 */
 
 }

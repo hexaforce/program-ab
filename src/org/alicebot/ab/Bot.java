@@ -14,7 +14,7 @@ package org.alicebot.ab;
 	This library is distributed in the hope that it will be useful,
 	but WITHOUT ANY WARRANTY; without even the implied warranty of
 	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-	Library General Public License for more details.
+	Library General License for more details.
 
 	You should have received a copy of the GNU Library General Public
 	License along with this library; if not, write to the
@@ -53,30 +53,30 @@ import lombok.extern.slf4j.Slf4j;
  * Class representing the AIML bot
  */
 @Slf4j
-public class Bot {
+class Bot {
 
-	public final Properties properties = new Properties();
-	public final PreProcessor preProcessor;
-	public final Graphmaster brain;
-	public Graphmaster learnfGraph;
-	public Graphmaster learnGraph;
+	final Properties properties = new Properties();
+	final PreProcessor preProcessor;
+	final Graphmaster brain;
+	Graphmaster learnfGraph;
+	Graphmaster learnGraph;
 
-	// public Graphmaster unfinishedGraph;
-	// public final ArrayList<Category> categories;
+	// Graphmaster unfinishedGraph;
+	// final ArrayList<Category> categories;
 
-	public final String workingDirectory;
-	public final String botName;
+	final String workingDirectory;
+	final String botName;
 
-	public HashMap<String, AIMLSet> setMap = new HashMap<String, AIMLSet>();
-	public HashMap<String, AIMLMap> mapMap = new HashMap<String, AIMLMap>();
-	public HashSet<String> pronounSet = new HashSet<String>();
+	HashMap<String, AIMLSet> setMap = new HashMap<String, AIMLSet>();
+	HashMap<String, AIMLMap> mapMap = new HashMap<String, AIMLMap>();
+	HashSet<String> pronounSet = new HashSet<String>();
 
-	public final String aimlif_path;
-	public final String aiml_path;
-	public final String config_path;
-	public final String log_path;
-	public final File sets_path;
-	public final File maps_path;
+	final String aimlif_path;
+	final String aiml_path;
+	final String config_path;
+	final String log_path;
+	final File sets_path;
+	final File maps_path;
 
 	/**
 	 * Constructor
@@ -86,8 +86,8 @@ public class Bot {
 	 * @param action Program AB action
 	 * @throws IOException
 	 */
-	// public Bot(String name, String path, String action) {
-	public Bot(String workingDirectory, String botName) throws IOException {
+	// Bot(String name, String path, String action) {
+	Bot(String workingDirectory, String botName) throws IOException {
 		int cnt = 0;
 //		final int elementCnt = 0;
 		this.workingDirectory = workingDirectory;
@@ -229,7 +229,7 @@ public class Bot {
 	 * 
 	 * @return count
 	 */
-	public int addCategoriesFromAIMLIF() {
+	int addCategoriesFromAIMLIF() {
 		final Timer timer = new Timer();
 		timer.start();
 		int cnt = 0;
@@ -248,7 +248,7 @@ public class Bot {
 	/**
 	 * write all AIML and AIMLIF categories
 	 */
-	public void writeQuit() {
+	void writeQuit() {
 		writeAIMLIFFiles();
 		// log.info("Wrote AIMLIF Files");
 		writeAIMLFiles();
@@ -264,7 +264,7 @@ public class Bot {
 	 * @param cats     array list of categories
 	 * @param filename AIMLIF filename
 	 */
-	public void writeIFCategories() {
+	void writeIFCategories() {
 
 		final File existsPath = new File(aimlif_path);
 		if (!existsPath.exists()) {
@@ -307,7 +307,7 @@ public class Bot {
 	/**
 	 * Write all AIMLIF files from bot brain
 	 */
-	public void writeAIMLIFFiles() {
+	void writeAIMLIFFiles() {
 
 		final File existsPath = new File(aimlif_path);
 		if (!existsPath.exists()) {
@@ -353,7 +353,7 @@ public class Bot {
 	/**
 	 * Write all AIML files. Adds categories for BUILD and DEVELOPMENT ENVIRONMENT
 	 */
-	public void writeAIMLFiles() {
+	void writeAIMLFiles() {
 
 		final File existsPath = new File(aimlif_path);
 		if (!existsPath.exists()) {
@@ -413,7 +413,7 @@ public class Bot {
 	 * @param filename name of AIMLIF file
 	 * @return array list of categories read
 	 */
-	public ArrayList<Category> readIFCategories(String filename) {
+	ArrayList<Category> readIFCategories(String filename) {
 		final ArrayList<Category> categories = new ArrayList<Category>();
 		try {
 			// Open the file that is the first
@@ -486,7 +486,7 @@ public class Bot {
 		return cnt;
 	}
 
-	public void deleteLearnfCategories() {
+	void deleteLearnfCategories() {
 		final ArrayList<Category> learnfCategories = learnfGraph.getCategories();
 		for (final Category c : learnfCategories) {
 			final Nodemapper n = brain.findNode(c);
@@ -498,7 +498,7 @@ public class Bot {
 		learnfGraph = new Graphmaster(this, "brain");
 	}
 
-	public void deleteLearnCategories() {
+	void deleteLearnCategories() {
 		final ArrayList<Category> learnCategories = learnGraph.getCategories();
 		for (final Category c : learnCategories) {
 			final Nodemapper n = brain.findNode(c);

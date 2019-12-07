@@ -14,7 +14,7 @@ package org.alicebot.ab;
 	This library is distributed in the hope that it will be useful,
 	but WITHOUT ANY WARRANTY; without even the implied warranty of
 	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-	Library General Public License for more details.
+	Library General License for more details.
 
 	You should have received a copy of the GNU Library General Public
 	License along with this library; if not, write to the
@@ -45,7 +45,7 @@ import lombok.extern.slf4j.Slf4j;
 @Data
 @Slf4j
 @EqualsAndHashCode(callSuper = false)
-public class AIMLMap extends HashMap<String, String> {
+class AIMLMap extends HashMap<String, String> {
 	private static final long serialVersionUID = 1L;
 
 	private String mapName;
@@ -61,7 +61,7 @@ public class AIMLMap extends HashMap<String, String> {
 	 * @param name the name of the map
 	 * @param bot  bot
 	 */
-	public AIMLMap(String name, Bot bot) {
+	AIMLMap(String name, Bot bot) {
 		super();
 		this.bot = bot;
 		this.mapName = name;
@@ -73,7 +73,7 @@ public class AIMLMap extends HashMap<String, String> {
 	 * @param key the domain element
 	 * @return the range element or a string indicating the key was not found
 	 */
-	public String get(String key) {
+	String get(String key) {
 		String value;
 		if (mapName.equals(MagicStrings.map_successor)) {
 			try {
@@ -122,7 +122,7 @@ public class AIMLMap extends HashMap<String, String> {
 		return super.put(key, value);
 	}
 
-	public void writeAIMLMap() {
+	void writeAIMLMap() {
 		log.info("Writing AIML Map " + mapName);
 		try {
 			// Create file
@@ -141,7 +141,7 @@ public class AIMLMap extends HashMap<String, String> {
 		}
 	}
 
-	public int readAIMLMapFromInputStream(InputStream in, Bot bot) {
+	int readAIMLMapFromInputStream(InputStream in, Bot bot) {
 		int cnt = 0;
 		final BufferedReader br = new BufferedReader(new InputStreamReader(in));
 		String strLine;
@@ -180,7 +180,7 @@ public class AIMLMap extends HashMap<String, String> {
 	 * @param bot the bot associated with this map.
 	 * @return count
 	 */
-	public int readAIMLMap(Bot bot) {
+	int readAIMLMap(Bot bot) {
 		int cnt = 0;
 
 		final File file = new File(bot.maps_path + "/" + mapName + ".txt");

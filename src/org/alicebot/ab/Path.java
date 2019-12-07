@@ -14,7 +14,7 @@ package org.alicebot.ab;
 	This library is distributed in the hope that it will be useful,
 	but WITHOUT ANY WARRANTY; without even the implied warranty of
 	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-	Library General Public License for more details.
+	Library General License for more details.
 
 	You should have received a copy of the GNU Library General Public
 	License along with this library; if not, write to the
@@ -30,15 +30,15 @@ import lombok.extern.slf4j.Slf4j;
  * Linked list representation of Pattern Path and Input Path
  */
 @Slf4j
-public class Path extends ArrayList<String> {
+class Path extends ArrayList<String> {
 	private static final long serialVersionUID = 1L;
 
-	public String word;
-	public Path next;
-	public int length;
+	String word;
+	Path next;
+	int length;
 
 	/**
-	 * Constructor - class has public members
+	 * Constructor - class has members
 	 */
 	private Path() {
 		next = null;
@@ -53,7 +53,7 @@ public class Path extends ArrayList<String> {
 	 * @param sentence sentence to convert
 	 * @return sentence in Path form
 	 */
-	public static Path sentenceToPath(String sentence) {
+	static Path sentenceToPath(String sentence) {
 		sentence = sentence.trim();
 		return arrayToPath(sentence.split(" "));
 	}
@@ -64,7 +64,7 @@ public class Path extends ArrayList<String> {
 	 * @param path input path
 	 * @return sentence
 	 */
-	public static String pathToSentence(Path path) {
+	static String pathToSentence(Path path) {
 		String result = "";
 		for (Path p = path; p != null; p = p.next) {
 			result = result + " " + p.word;
@@ -127,7 +127,7 @@ public class Path extends ArrayList<String> {
 	/**
 	 * print a Path
 	 */
-	public void print() {
+	void print() {
 		String result = "";
 		for (Path p = this; p != null; p = p.next) {
 			result += p.word + ",";

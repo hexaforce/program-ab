@@ -1,3 +1,4 @@
+package org.alicebot.ab;
 
 /* 
 	Program AB Reference AIML 2.1 implementation
@@ -23,12 +24,6 @@
 
 import java.io.IOException;
 
-import org.alicebot.ab.AIMLProcessor;
-import org.alicebot.ab.Bot;
-import org.alicebot.ab.Chat;
-import org.alicebot.ab.MagicNumbers;
-import org.alicebot.ab.MagicStrings;
-import org.alicebot.ab.PCAIMLProcessorExtension;
 import org.alicebot.ab.utils.IOUtils;
 
 import lombok.extern.slf4j.Slf4j;

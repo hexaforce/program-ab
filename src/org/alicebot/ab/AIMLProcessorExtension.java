@@ -14,7 +14,7 @@ package org.alicebot.ab;
 	This library is distributed in the hope that it will be useful,
 	but WITHOUT ANY WARRANTY; without even the implied warranty of
 	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-	Library General Public License for more details.
+	Library General License for more details.
 
 	You should have received a copy of the GNU Library General Public
 	License along with this library; if not, write to the
@@ -33,13 +33,13 @@ import org.w3c.dom.Node;
  * and provide a function to recursively evaluate the XML parse tree for each
  * node associated with a new tag.
  */
-public interface AIMLProcessorExtension {
+interface AIMLProcessorExtension {
 	/**
 	 * provide the AIMLProcessor with a list of extension tag names.
 	 *
 	 * @return Set of extension tag names
 	 */
-	public Set<String> extensionTagSet();
+	Set<String> extensionTagSet();
 
 	/**
 	 * recursively evaluate AIML from a node corresponding an extension tag
@@ -48,6 +48,6 @@ public interface AIMLProcessorExtension {
 	 * @param ps   current parse state
 	 * @return result of evaluating AIML
 	 */
-	public String recursEval(Node node, ParseState ps);
+	String recursEval(Node node, ParseState ps);
 
 }

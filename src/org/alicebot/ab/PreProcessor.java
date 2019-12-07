@@ -14,7 +14,7 @@ package org.alicebot.ab;
 	This library is distributed in the hope that it will be useful,
 	but WITHOUT ANY WARRANTY; without even the implied warranty of
 	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-	Library General Public License for more details.
+	Library General License for more details.
 
 	You should have received a copy of the GNU Library General Public
 	License along with this library; if not, write to the
@@ -38,30 +38,30 @@ import lombok.extern.slf4j.Slf4j;
  * AIML Preprocessor and substitutions
  */
 @Slf4j
-public class PreProcessor {
+class PreProcessor {
 
-	public int normalCount = 0;
-	public int denormalCount = 0;
-	public int personCount = 0;
-	public int person2Count = 0;
-	public int genderCount = 0;
-	public String[] normalSubs = new String[MagicNumbers.max_substitutions];
-	public Pattern[] normalPatterns = new Pattern[MagicNumbers.max_substitutions];
-	public String[] denormalSubs = new String[MagicNumbers.max_substitutions];
-	public Pattern[] denormalPatterns = new Pattern[MagicNumbers.max_substitutions];
-	public String[] personSubs = new String[MagicNumbers.max_substitutions];
-	public Pattern[] personPatterns = new Pattern[MagicNumbers.max_substitutions];
-	public String[] person2Subs = new String[MagicNumbers.max_substitutions];
-	public Pattern[] person2Patterns = new Pattern[MagicNumbers.max_substitutions];
-	public String[] genderSubs = new String[MagicNumbers.max_substitutions];
-	public Pattern[] genderPatterns = new Pattern[MagicNumbers.max_substitutions];
+	int normalCount = 0;
+	int denormalCount = 0;
+	int personCount = 0;
+	int person2Count = 0;
+	int genderCount = 0;
+	String[] normalSubs = new String[MagicNumbers.max_substitutions];
+	Pattern[] normalPatterns = new Pattern[MagicNumbers.max_substitutions];
+	String[] denormalSubs = new String[MagicNumbers.max_substitutions];
+	Pattern[] denormalPatterns = new Pattern[MagicNumbers.max_substitutions];
+	String[] personSubs = new String[MagicNumbers.max_substitutions];
+	Pattern[] personPatterns = new Pattern[MagicNumbers.max_substitutions];
+	String[] person2Subs = new String[MagicNumbers.max_substitutions];
+	Pattern[] person2Patterns = new Pattern[MagicNumbers.max_substitutions];
+	String[] genderSubs = new String[MagicNumbers.max_substitutions];
+	Pattern[] genderPatterns = new Pattern[MagicNumbers.max_substitutions];
 
 	/**
 	 * Constructor given bot
 	 *
 	 * @param bot AIML bot
 	 */
-	public PreProcessor(Bot bot) {
+	PreProcessor(Bot bot) {
 
 		normalCount = readSubstitutions(bot.config_path + "/normal.txt", normalPatterns, normalSubs);
 		denormalCount = readSubstitutions(bot.config_path + "/denormal.txt", denormalPatterns, denormalSubs);
@@ -78,7 +78,7 @@ public class PreProcessor {
 	 * @param request client input
 	 * @return normalized client input
 	 */
-	public String normalize(String request) {
+	String normalize(String request) {
 		log.debug("PreProcessor.normalize(request: " + request + ")");
 		String result = substitute(request, normalPatterns, normalSubs, normalCount);
 		result = result.replaceAll("(\r\n|\n\r|\r|\n)", " ");
@@ -92,7 +92,7 @@ public class PreProcessor {
 	 * @param request client input
 	 * @return normalized client input
 	 */
-	public String denormalize(String request) {
+	String denormalize(String request) {
 		return substitute(request, denormalPatterns, denormalSubs, denormalCount);
 	}
 
@@ -102,7 +102,7 @@ public class PreProcessor {
 	 * @param input sentence
 	 * @return sentence with pronouns swapped
 	 */
-	public String person(String input) {
+	String person(String input) {
 		return substitute(input, personPatterns, personSubs, personCount);
 
 	}
@@ -113,7 +113,7 @@ public class PreProcessor {
 	 * @param input sentence
 	 * @return sentence with pronouns swapped
 	 */
-	public String person2(String input) {
+	String person2(String input) {
 		return substitute(input, person2Patterns, person2Subs, person2Count);
 
 	}
@@ -124,7 +124,7 @@ public class PreProcessor {
 	 * @param input sentence
 	 * @return sentence with pronouns swapped
 	 */
-	public String gender(String input) {
+	String gender(String input) {
 		return substitute(input, genderPatterns, genderSubs, genderCount);
 
 	}
@@ -176,7 +176,7 @@ public class PreProcessor {
 	 * @param subs     array of substitution values
 	 * @return number of patterns substitutions read
 	 */
-	public int readSubstitutionsFromInputStream(InputStream in, Pattern[] patterns, String[] subs) {
+	int readSubstitutionsFromInputStream(InputStream in, Pattern[] patterns, String[] subs) {
 		final BufferedReader br = new BufferedReader(new InputStreamReader(in));
 		String strLine;
 		// Read File Line By Line
@@ -239,7 +239,7 @@ public class PreProcessor {
 	 * @param line input text
 	 * @return array of sentences
 	 */
-	public String[] sentenceSplit(String line) {
+	String[] sentenceSplit(String line) {
 		line = line.replace("。", ".");
 		line = line.replace("？", "?");
 		line = line.replace("！", "!");
@@ -257,7 +257,7 @@ public class PreProcessor {
 	 * @param infile  input file
 	 * @param outfile output file to write results
 	 */
-	public void normalizeFile(String infile, String outfile) {
+	void normalizeFile(String infile, String outfile) {
 		try {
 			BufferedWriter bw = null;
 			final FileInputStream fstream = new FileInputStream(infile);

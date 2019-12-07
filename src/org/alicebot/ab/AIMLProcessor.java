@@ -14,7 +14,7 @@ package org.alicebot.ab;
 	This library is distributed in the hope that it will be useful,
 	but WITHOUT ANY WARRANTY; without even the implied warranty of
 	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-	Library General Public License for more details.
+	Library General License for more details.
 
 	You should have received a copy of the GNU Library General Public
 	License along with this library; if not, write to the
@@ -43,10 +43,11 @@ import lombok.extern.slf4j.Slf4j;
  * https://docs.google.com/document/d/1wNT25hJRyupcG51aO89UcQEiG-HkXRXusukADpFnDs4/pub
  */
 @Slf4j
-public class AIMLProcessor {
+public
+class AIMLProcessor {
 
 	// static private boolean DEBUG = false;
-	public static AIMLProcessorExtension extension;
+	static AIMLProcessorExtension extension;
 
 	/**
 	 * when parsing an AIML file, process a category element.

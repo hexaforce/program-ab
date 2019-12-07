@@ -14,7 +14,7 @@ package org.alicebot.ab;
 	This library is distributed in the hope that it will be useful,
 	but WITHOUT ANY WARRANTY; without even the implied warranty of
 	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-	Library General Public License for more details.
+	Library General License for more details.
 
 	You should have received a copy of the GNU Library General Public
 	License along with this library; if not, write to the
@@ -43,7 +43,7 @@ import lombok.extern.slf4j.Slf4j;
 @Data
 @Slf4j
 @EqualsAndHashCode(callSuper = false)
-public class AIMLSet extends HashSet<String> {
+class AIMLSet extends HashSet<String> {
 	private static final long serialVersionUID = 1L;
 
 	private String setName;
@@ -61,7 +61,7 @@ public class AIMLSet extends HashSet<String> {
 	 * @param name name of set
 	 * @param bot  bot
 	 */
-	public AIMLSet(String name, Bot bot) {
+	AIMLSet(String name, Bot bot) {
 		super();
 		this.bot = bot;
 		this.setName = name.toLowerCase();
@@ -70,7 +70,7 @@ public class AIMLSet extends HashSet<String> {
 		}
 	}
 
-	public boolean contains(String s) {
+	boolean contains(String s) {
 		// if (isExternal) log.info("External "+setName+" contains "+s+"?");
 		// else log.info("Internal "+setName+" contains "+s+"?");
 		if (isExternal && MagicBooleans.enable_external_sets) {
@@ -105,7 +105,7 @@ public class AIMLSet extends HashSet<String> {
 		}
 	}
 
-	public void writeAIMLSet() {
+	void writeAIMLSet() {
 		log.info("Writing AIML Set " + setName);
 		try {
 			// Create file
@@ -122,7 +122,7 @@ public class AIMLSet extends HashSet<String> {
 		}
 	}
 
-	public int readAIMLSetFromInputStream(InputStream in, Bot bot) {
+	int readAIMLSetFromInputStream(InputStream in, Bot bot) {
 		final BufferedReader br = new BufferedReader(new InputStreamReader(in));
 		String strLine;
 		int cnt = 0;
@@ -163,7 +163,7 @@ public class AIMLSet extends HashSet<String> {
 		return cnt;
 	}
 
-	public int readAIMLSet(Bot bot) {
+	int readAIMLSet(Bot bot) {
 		int cnt = 0;
 
 		final File file = new File(bot.sets_path + "/" + setName + ".txt");

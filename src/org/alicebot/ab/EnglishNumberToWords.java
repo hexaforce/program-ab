@@ -15,7 +15,7 @@ import java.text.DecimalFormat;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
-public class EnglishNumberToWords {
+class EnglishNumberToWords {
 	private static final String[] tensNames = { "", " ten", " twenty", " thirty", " forty", " fifty", " sixty", " seventy", " eighty", " ninety" };
 
 	private static final String[] numNames = { "", " one", " two", " three", " four", " five", " six", " seven", " eight", " nine", " ten", " eleven", " twelve", " thirteen", " fourteen", " fifteen", " sixteen", " seventeen", " eighteen", " nineteen" };
@@ -42,7 +42,7 @@ public class EnglishNumberToWords {
 		return numNames[number] + " hundred" + soFar;
 	}
 
-	public static String convert(long number) {
+	static String convert(long number) {
 		// 0 to 999 999 999 999
 		if (number == 0) {
 			return "zero";
@@ -111,7 +111,7 @@ public class EnglishNumberToWords {
 		return result.replaceAll("^\\s+", "").replaceAll("\\b\\s{2,}\\b", " ");
 	}
 
-	public static void makeSetMap(Bot bot) {
+	static void makeSetMap(Bot bot) {
 		final AIMLSet numberName = new AIMLSet("numbername", bot);
 		final AIMLMap name2number = new AIMLMap("name2number", bot);
 		for (int i = 0; i < 10000; i++) {
@@ -127,7 +127,7 @@ public class EnglishNumberToWords {
 		name2number.writeAIMLMap();
 	}
 
-//	public static void main(String[] args) {
+//	static void main(String[] args) {
 //		log.info("*** " + EnglishNumberToWords.convert(0));
 //		log.info("*** " + EnglishNumberToWords.convert(1));
 //		log.info("*** " + EnglishNumberToWords.convert(16));

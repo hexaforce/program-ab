@@ -14,7 +14,7 @@ package org.alicebot.ab;
 	This library is distributed in the hope that it will be useful,
 	but WITHOUT ANY WARRANTY; without even the implied warranty of
 	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-	Library General Public License for more details.
+	Library General License for more details.
 
 	You should have received a copy of the GNU Library General Public
 	License along with this library; if not, write to the
@@ -38,7 +38,7 @@ import lombok.extern.slf4j.Slf4j;
  *
  */
 @Slf4j
-public class Predicates extends HashMap<String, String> {
+class Predicates extends HashMap<String, String> {
 	private static final long serialVersionUID = 1L;
 
 	/**
@@ -74,7 +74,7 @@ public class Predicates extends HashMap<String, String> {
 	 * @param key predicate name
 	 * @return predicate value
 	 */
-	public String get(String key) {
+	String get(String key) {
 		// MagicBooleans.trace("predicates.get(key: " + key + ")");
 		String result = super.get(key);
 		if (result == null) {
@@ -89,7 +89,7 @@ public class Predicates extends HashMap<String, String> {
 	 *
 	 * @param in input stream
 	 */
-	public void getPredicateDefaultsFromInputStream(InputStream in) {
+	void getPredicateDefaultsFromInputStream(InputStream in) {
 		final BufferedReader br = new BufferedReader(new InputStreamReader(in));
 		String strLine;
 		try {
@@ -111,7 +111,7 @@ public class Predicates extends HashMap<String, String> {
 	 *
 	 * @param filename name of file
 	 */
-	public void getPredicateDefaults(String filename) {
+	void getPredicateDefaults(String filename) {
 		try {
 			// Open the file that is the first
 			// command line parameter
