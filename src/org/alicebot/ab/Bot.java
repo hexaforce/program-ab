@@ -210,12 +210,21 @@ public class Bot {
 		int cnt = 0;
 
 		final Collection<File> aimlFiles = FileUtils.listFiles(new File(aiml_path), aimlFileExtension, FileFilterUtils.trueFileFilter());
-		final Map<String, Node> rootNodes = aimlFiles.parallelStream().collect(Collectors.toMap(File::getName, DomUtils::parseFile));
-		for (final Entry<String, Node> x : rootNodes.entrySet()) {
-			log.debug("Loading AIML files from " + x.getKey());
-			final ArrayList<Category> moreCategories = AIMLProcessor.AIMLToCategories(x.getKey(), x.getValue());
-			addMoreCategories(x.getKey(), moreCategories);
-			cnt += moreCategories.size();
+//		final Map<String, Node> rootNodes = aimlFiles.parallelStream().collect(Collectors.toMap(File::getName, DomUtils::parseFile));
+//		for (final Entry<String, Node> x : rootNodes.entrySet()) {
+//			log.debug("Loading AIML files from " + x.getKey());
+//			final ArrayList<Category> moreCategories = AIMLProcessor.AIMLToCategories(x.getKey(), x.getValue());
+//			addMoreCategories(x.getKey(), moreCategories);
+//			cnt += moreCategories.size();
+//		}
+		for (File file : aimlFiles) {
+			log.debug("Loading AIML files from " + file.getPath());
+			Node node = DomUtils.parseFile(file);
+			if (node != null) {
+				final ArrayList<Category> moreCategories = AIMLProcessor.AIMLToCategories(file.getName(), node);
+				addMoreCategories(file.getPath(), moreCategories);
+				cnt += moreCategories.size();
+			}
 		}
 
 		log.debug("Loaded " + cnt + " categories in " + timer.elapsedTimeSecs() + " sec");
