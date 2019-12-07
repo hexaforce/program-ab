@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<aiml>
+<aiml version="2.1">
 <!-- File: roman.aiml -->
 <!-- Author: Dr. Richard S. Wallace -->
-<!-- Last modified: July 19, 2014 -->
+<!-- Last modified: 12月 04, 2019 -->
 <!--  -->
 <!-- This AIML file is part of the ALICE2 0.0.5 chat bot knowledge base. -->
 <!--  -->
-<!-- The ALICE2 brain is Copyright &copy; 2014 by ALICE AI Foundation. -->
+<!-- The ALICE2 brain is Copyright &copy; 2019 by ALICE AI Foundation. -->
 <!--  -->
 <!-- The ALICE2 brain is released under the terms of the GNU Lesser General -->
 <!-- Public License, as published by the Free Software Foundation. -->
@@ -16,18 +16,28 @@
 <!--  -->
 <!-- For more information see http://www.alicebot.org -->
 <!--  -->
-<category><pattern>ROMAN <set>numbername</set></pattern>
-<template><srai>ROMAN <map><name>name2number</name><star/></map></srai></template>
-</category>
-<category><pattern>ROMAN *</pattern>
-<template><think><set var="ex"><explode><star/></explode></set></think>
+  <category>
+    <pattern>ROMAN <set>numbername</set></pattern>
+    <template>
+      <srai>ROMAN <map><name>name2number</name><star/></map></srai>
+    </template>
+  </category>
+
+  <category>
+    <pattern>ROMAN *</pattern>
+    <template>
+      <think><set var="ex"><explode><star/></explode></set></think>
 <condition var="ex">
 <li><value><star/></value>I don't know what <srai>IMPLODE <star/></srai> is in Roman.</li>
 <li><srai>ROMAN <explode><star/></explode></srai></li>
-</condition></template>
-</category>
-<category><pattern>ROMAN <set>digit</set></pattern>
-<template><think><set var="d"><star/></set></think>
+</condition>
+    </template>
+  </category>
+
+  <category>
+    <pattern>ROMAN <set>digit</set></pattern>
+    <template>
+      <think><set var="d"><star/></set></think>
 <condition var="d">
 <li value="1">I</li>
 <li value="2">II</li>
@@ -39,10 +49,14 @@
 <li value="8">VIII</li>
 <li value="9">IX</li>
 <li/>
-</condition></template>
-</category>
-<category><pattern>ROMAN <set>digit</set> <set>digit</set></pattern>
-<template><think><set var="d"><star/></set></think>
+</condition>
+    </template>
+  </category>
+
+  <category>
+    <pattern>ROMAN <set>digit</set> <set>digit</set></pattern>
+    <template>
+      <think><set var="d"><star/></set></think>
 <condition var="d">
 <li value="1">X</li>
 <li value="2">XX</li>
@@ -54,10 +68,14 @@
 <li value="8">LXXX</li>
 <li value="9">XC</li>
 <li/>
-</condition><srai>ROMAN <star index="2"/></srai></template>
-</category>
-<category><pattern>ROMAN <set>digit</set> <set>digit</set> <set>digit</set></pattern>
-<template><think><set var="d"><star/></set></think>
+</condition><srai>ROMAN <star index="2"/></srai>
+    </template>
+  </category>
+
+  <category>
+    <pattern>ROMAN <set>digit</set> <set>digit</set> <set>digit</set></pattern>
+    <template>
+      <think><set var="d"><star/></set></think>
 <condition var="d">
 <li value="1">C</li>
 <li value="2">CC</li>
@@ -69,10 +87,14 @@
 <li value="8">DCCC</li>
 <li value="9">CM</li>
 <li/>
-</condition><srai>ROMAN <star index="2"/> <star index="3"/></srai></template>
-</category>
-<category><pattern>ROMAN <set>digit</set> <set>digit</set> <set>digit</set> <set>digit</set></pattern>
-<template><think><set var="d"><star/></set></think>
+</condition><srai>ROMAN <star index="2"/> <star index="3"/></srai>
+    </template>
+  </category>
+
+  <category>
+    <pattern>ROMAN <set>digit</set> <set>digit</set> <set>digit</set> <set>digit</set></pattern>
+    <template>
+      <think><set var="d"><star/></set></think>
 <condition var="d">
 <li value="1">M</li>
 <li value="2">MM</li>
@@ -83,6 +105,8 @@
 <li value="8">MMMMMMM</li>
 <li value="9">MMMMMMMM</li>
 <li/>
-</condition><srai>ROMAN <star index="2"/> <star index="3"/> <star index="4"/></srai></template>
-</category>
+</condition><srai>ROMAN <star index="2"/> <star index="3"/> <star index="4"/></srai>
+    </template>
+  </category>
+
 </aiml>

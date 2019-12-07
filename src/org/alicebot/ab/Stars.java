@@ -1,5 +1,8 @@
 package org.alicebot.ab;
-/* Program AB Reference AIML 2.0 implementation
+
+/* 
+        Program AB Reference AIML 2.1 implementation
+
         Copyright (C) 2013 ALICE A.I. Foundation
         Contact: info@alicebot.org
 
@@ -18,17 +21,21 @@ package org.alicebot.ab;
         Free Software Foundation, Inc., 51 Franklin St, Fifth Floor,
         Boston, MA  02110-1301, USA.
 */
-import java.util.ArrayList;
 
+import java.util.ArrayList;
 
 /**
  * Array of values matching wildcards
  */
 public class Stars extends ArrayList<String> {
-    public String star (int i) {
-        if (i < size())
-        return get(i);
-        else return null;
-    }
+	private static final long serialVersionUID = 1L;
+
+	public String star(int i) {
+		if (i < size()) {
+			return get(i);
+		} else {
+			return null;
+		}
+	}
 
 }

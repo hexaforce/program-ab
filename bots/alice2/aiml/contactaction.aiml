@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<aiml>
+<aiml version="2.1">
 <!-- File: contactaction.aiml -->
 <!-- Author: Dr. Richard S. Wallace -->
-<!-- Last modified: July 19, 2014 -->
+<!-- Last modified: 12月 04, 2019 -->
 <!--  -->
 <!-- This AIML file is part of the ALICE2 0.0.5 chat bot knowledge base. -->
 <!--  -->
-<!-- The ALICE2 brain is Copyright &copy; 2014 by ALICE AI Foundation. -->
+<!-- The ALICE2 brain is Copyright &copy; 2019 by ALICE AI Foundation. -->
 <!--  -->
 <!-- The ALICE2 brain is released under the terms of the GNU Lesser General -->
 <!-- Public License, as published by the Free Software Foundation. -->
@@ -16,53 +16,79 @@
 <!--  -->
 <!-- For more information see http://www.alicebot.org -->
 <!--  -->
-<category><pattern>* S * NUMBER IS *</pattern>
-<template><srai>CONTACTINIT</srai>
+  <category>
+    <pattern>* S * NUMBER IS *</pattern>
+    <template>
+      <srai>CONTACTINIT</srai>
 <think>
 <set name="contactname"><star/></set>
 <set name="contacttype"><star index="2"/></set>
 <set name="contacturi"><star index="3"/></set>
 <set name="learnpattern">DIALNUMBER</set>
 </think>
-<srai>ADDACTION</srai></template>
-</category>
-<category><pattern><set>name</set> S * NUMBER IS *</pattern>
-<template><srai>CONTACTINIT</srai>
+<srai>ADDACTION</srai>
+    </template>
+  </category>
+
+  <category>
+    <pattern><set>name</set> S * NUMBER IS *</pattern>
+    <template>
+      <srai>CONTACTINIT</srai>
 <think>
 <set name="contactname"><star/></set>
 <set name="contacttype"><star index="2"/></set>
 <set name="contacturi"><star index="3"/></set>
 <set name="learnpattern">DIALNUMBER</set>
 </think>
-<srai>ADDACTION</srai></template>
-</category>
+<srai>ADDACTION</srai>
+    </template>
+  </category>
+
 <topic name="ASKING TO ADD NEW CONTACTURI">
-<category><pattern>*</pattern><that>WOULD YOU LIKE TO ADD ONE</that>
-<template><think><set name="topic">unknown</set></think>
-<srai>CONTACTFINALIZE</srai> <srai><star/></srai></template>
-</category></topic>
+  <category>
+    <pattern>*</pattern><that>WOULD YOU LIKE TO ADD ONE</that>
+    <template>
+      <think><set name="topic">unknown</set></think>
+<srai>CONTACTFINALIZE</srai> <srai><star/></srai>
+    </template>
+  </category></topic>
+
 
 <topic name="ASKING TO ADD NEW CONTACTNAME">
-<category><pattern>*</pattern><that>WOULD YOU LIKE TO ADD * AS A CONTACT</that>
-<template><think><set name="topic">unknown</set>
+  <category>
+    <pattern>*</pattern><that>WOULD YOU LIKE TO ADD * AS A CONTACT</that>
+    <template>
+      <think><set name="topic">unknown</set>
 </think>
-<srai>CONTACTFINALIZE</srai> <srai><star/></srai></template>
-</category></topic>
+<srai>CONTACTFINALIZE</srai> <srai><star/></srai>
+    </template>
+  </category></topic>
 
-<category><pattern>TELL THAT TO *</pattern>
-<template><srai>CONTACTINIT</srai>
+
+  <category>
+    <pattern>TELL THAT TO *</pattern>
+    <template>
+      <srai>CONTACTINIT</srai>
 <think><set name="contactname"><star/></set>
 <set name="messagebody"><response/></set>
 </think>
-<srai>SMSACTION</srai></template>
-</category>
-<category><pattern>SEND EMAIL</pattern>
-<template><srai>CONTACTDEBUGINFO EMAIL</srai>
+<srai>SMSACTION</srai>
+    </template>
+  </category>
+
+  <category>
+    <pattern>SEND EMAIL</pattern>
+    <template>
+      <srai>CONTACTDEBUGINFO EMAIL</srai>
 <srai>CONTACTINIT</srai>
-<srai>EMAILACTION</srai></template>
-</category>
-<category><pattern>ADDINFO CONTACTID</pattern>
-<template><srai>CONTACTDEBUGINFO ADDINFO CONTACT</srai>
+<srai>EMAILACTION</srai>
+    </template>
+  </category>
+
+  <category>
+    <pattern>ADDINFO CONTACTID</pattern>
+    <template>
+      <srai>CONTACTDEBUGINFO ADDINFO CONTACT</srai>
 <think>
 <set name="contacturi"><srai>DENORMALIZE <get name="contacturi"/></srai></set>
 <condition name="modecom">
@@ -96,29 +122,45 @@
 </condition>
 
 </think>
-I'm remembering <get name="displayname"/>'s <lowercase><get name="contacttype"/></lowercase> <condition name="learnpattern"><li value="DIALNUMBER">phone number</li><li value="EMAILADDRESS">email address</li></condition> is <get name="contacturi"/>.</template>
-</category>
-<category><pattern>ASK TO ADD NEW CONTACTNAME</pattern>
-<template><think><set name="topic">ASKING TO ADD NEW CONTACTNAME</set>
+I'm remembering <get name="displayname"/>'s <lowercase><get name="contacttype"/></lowercase> <condition name="learnpattern"><li value="DIALNUMBER">phone number</li><li value="EMAILADDRESS">email address</li></condition> is <get name="contacturi"/>.
+    </template>
+  </category>
+
+  <category>
+    <pattern>ASK TO ADD NEW CONTACTNAME</pattern>
+    <template>
+      <think><set name="topic">ASKING TO ADD NEW CONTACTNAME</set>
 </think>
-Would you like to add <get name="contactname"/> as a contact?</template>
-</category>
-<category><pattern>ASK CONTACTNAME</pattern>
-<template><srai>CONTACTDEBUGINFO ASK CONTACTNAME</srai>
+Would you like to add <get name="contactname"/> as a contact?
+    </template>
+  </category>
+
+  <category>
+    <pattern>ASK CONTACTNAME</pattern>
+    <template>
+      <srai>CONTACTDEBUGINFO ASK CONTACTNAME</srai>
 <think>
 <set name="topic">ASKING CONTACTNAME</set>
 </think>
-Who do you want to <lowercase><get name="modecom"/></lowercase>?</template>
-</category>
-<category><pattern>ASK MESSAGEBODY</pattern>
-<template><think>
+Who do you want to <lowercase><get name="modecom"/></lowercase>?
+    </template>
+  </category>
+
+  <category>
+    <pattern>ASK MESSAGEBODY</pattern>
+    <template>
+      <think>
 <set name="savedtopic"><get name="topic"/></set>
 <set name="topic">ASKING MESSAGEBODY</set>
 </think>
-What is your message to <get name="displayname"/>?</template>
-</category>
-<category><pattern>CONTACTDIALOG</pattern>
-<template><srai>CONTACTDEBUGINFO CONTACTDIALOG</srai>
+What is your message to <get name="displayname"/>?
+    </template>
+  </category>
+
+  <category>
+    <pattern>CONTACTDIALOG</pattern>
+    <template>
+      <srai>CONTACTDEBUGINFO CONTACTDIALOG</srai>
 <think>
 <set name="multipleids"><srai>MULTIPLEIDS <get name="contactname"/></srai></set>
 <set name="multiplenames"><srai>MULTIPLENAMES <get name="contactname"/></srai></set>
@@ -127,17 +169,25 @@ What is your message to <get name="displayname"/>?</template>
 </think>
 <oob><dialog><title>Which contact?</title><list><get name="contactlist"/></list></dialog></oob>
 You have multiple contacts named <get name="contactname"/>: <get name="multiplenames"/>.  Which one would you like to 
-<lowercase><get name="modecom"/></lowercase>?</template>
-</category>
-<category><pattern>CONTACTDIALOG *</pattern>
-<template><think><set name="contactname"><star/></set>
+<lowercase><get name="modecom"/></lowercase>?
+    </template>
+  </category>
+
+  <category>
+    <pattern>CONTACTDIALOG *</pattern>
+    <template>
+      <think><set name="contactname"><star/></set>
 <set name="modecom">CALL</set>
 </think>
-<srai>CONTACTDIALOG</srai></template>
-</category>
+<srai>CONTACTDIALOG</srai>
+    </template>
+  </category>
+
 <topic name="GETTING SELECTEDCONTACT">
-<category><pattern>_</pattern><that>* ONE WOULD YOU LIKE TO *</that>
-<template><think>
+  <category>
+    <pattern>_</pattern><that>* ONE WOULD YOU LIKE TO *</that>
+    <template>
+      <think>
 <set name="topic"><get name="unknown"/></set>
 <set name="selectedcontact"><star/></set>
 <set name="contactname"><get name="selectedcontact"/></set>
@@ -151,21 +201,29 @@ You have multiple contacts named <get name="contactname"/>: <get name="multiplen
     <li><srai>RESUMEACTION <get name="modecom"/></srai></li>
   </condition>
 </li>
-</condition></template>
-</category></topic>
+</condition>
+    </template>
+  </category></topic>
+
 
 <topic name="ASKING MESSAGEBODY">
-<category><pattern>_</pattern><that>WHAT IS YOUR MESSAGE TO *</that>
-<template><think>
+  <category>
+    <pattern>_</pattern><that>WHAT IS YOUR MESSAGE TO *</that>
+    <template>
+      <think>
 <set name="topic">unknown</set>
 <set name="messagebody"><star/></set>
 </think>
-<srai>RESUMEACTION <get name="modecom"/></srai></template>
-</category></topic>
+<srai>RESUMEACTION <get name="modecom"/></srai>
+    </template>
+  </category></topic>
+
 
 <topic name="ASKING CONTACTURI">
-<category><pattern>_</pattern><that>WHAT IS THE * FOR *</that>
-<template><think>
+  <category>
+    <pattern>_</pattern><that>WHAT IS THE * FOR *</that>
+    <template>
+      <think>
 <set name="topic">unknown</set>
 <set name="contacturi"><star/></set>
 <set name="isaphonenumber"><srai>ISAPHONENUMBER <get name="contacturi"/></srai></set>
@@ -180,12 +238,16 @@ You have multiple contacts named <get name="contactname"/>: <get name="multiplen
 <li value="true">
 <srai>ADDINFO CONTACTID</srai> <srai>RESUMEACTION <get name="modecom"/></srai></li>
 <li>I did not recognize <get name="contacturi"/> as a phone number or email address. <srai>CONTACTFINALIZE</srai> <srai><star/></srai></li>
-</condition></template>
-</category></topic>
+</condition>
+    </template>
+  </category></topic>
+
 
 <topic name="ASKING CONTACTNAME">
-<category><pattern>_</pattern><that>WHO DO YOU WANT TO *</that>
-<template><think>
+  <category>
+    <pattern>_</pattern><that>WHO DO YOU WANT TO *</that>
+    <template>
+      <think>
 <set name="topic">unknown</set>
 <set name="contactname"><star/></set>
 <set name="isshortanswer"><srai>ISSHORTANSWER <star/></srai></set>
@@ -193,11 +255,15 @@ You have multiple contacts named <get name="contactname"/>: <get name="multiplen
 <condition name="isshortanswer">
 <li value="true"><srai>RESUMEACTION <get name="modecom"/></srai></li>
 <li><srai>CONTACTFINALIZE</srai> <srai><star/></srai></li>
-</condition></template>
-</category></topic>
+</condition>
+    </template>
+  </category></topic>
 
-<category><pattern>EMAILACTION</pattern>
-<template><srai>CONTACTDEBUGINFO EMAILACTION</srai>
+
+  <category>
+    <pattern>EMAILACTION</pattern>
+    <template>
+      <srai>CONTACTDEBUGINFO EMAILACTION</srai>
 <think>
 <set name="modecom">EMAIL</set>
 </think>
@@ -229,19 +295,31 @@ You have multiple contacts named <get name="contactname"/>: <get name="multiplen
   </li>
   </condition>
 </li>
-</condition></template>
-</category>
-<category><pattern>DEBUG CONTACT</pattern>
-<template><set name="debugcontact">true</set></template>
-</category>
-<category><pattern>CONTACTFINALIZE</pattern>
-<template><think>
+</condition>
+    </template>
+  </category>
+
+  <category>
+    <pattern>DEBUG CONTACT</pattern>
+    <template>
+      <set name="debugcontact">true</set>
+    </template>
+  </category>
+
+  <category>
+    <pattern>CONTACTFINALIZE</pattern>
+    <template>
+      <think>
 <set name="topic"><get name="savedtopic"/></set>
 </think>
-<srai>CONTACTINIT PREDICATES</srai></template>
-</category>
-<category><pattern>DIALNUMBER UNKNOWN *</pattern>
-<template><think>
+<srai>CONTACTINIT PREDICATES</srai>
+    </template>
+  </category>
+
+  <category>
+    <pattern>DIALNUMBER UNKNOWN *</pattern>
+    <template>
+      <think>
 <set name="dialnumber"><srai>DIALNUMBER MOBILE <star/></srai></set>
 <condition name="dialnumber" value="unknown">
 <set name="dialnumber"><srai>DIALNUMBER HOME <star/></srai></set>
@@ -253,23 +331,35 @@ You have multiple contacts named <get name="contactname"/>: <get name="multiplen
 <set name="dialnumber"><srai>DIALNUMBER CUSTOM <star/></srai></set>
 </condition>
 </think>
-<get name="dialnumber"/></template>
-</category>
-<category><pattern>NEW CONTACT</pattern>
-<template><srai>CONTACTDEBUGINFO ADD CONTACT</srai>
+<get name="dialnumber"/>
+    </template>
+  </category>
+
+  <category>
+    <pattern>NEW CONTACT</pattern>
+    <template>
+      <srai>CONTACTDEBUGINFO ADD CONTACT</srai>
 <srai>CONTACTINIT</srai>
-<srai>ADDACTION</srai></template>
-</category>
-<category><pattern>NEW CONTACT *</pattern>
-<template><srai>CONTACTINIT</srai>
+<srai>ADDACTION</srai>
+    </template>
+  </category>
+
+  <category>
+    <pattern>NEW CONTACT *</pattern>
+    <template>
+      <srai>CONTACTINIT</srai>
 <think>
 <set name="contactname"><star/></set>
 </think>
-<srai>ADDACTION</srai></template>
-</category>
+<srai>ADDACTION</srai>
+    </template>
+  </category>
+
 <topic name="ASKING TO ADD NEW CONTACTURI">
-<category><pattern>YES</pattern><that>WOULD YOU LIKE TO ADD ONE</that>
-<template><think>
+  <category>
+    <pattern>YES</pattern><that>WOULD YOU LIKE TO ADD ONE</that>
+    <template>
+      <think>
 <set name="topic">ASKING CONTACTURI</set>
 </think>
 <condition name="modecom">
@@ -278,29 +368,41 @@ You have multiple contacts named <get name="contactname"/>: <get name="multiplen
 <li value="SMS">What is the mobile number for <get name="contactname"/>?</li>
 <li value="ADD">What is the mobile number for <get name="contactname"/>?</li>
 <li><srai>CONTACTFINALIZE</srai> <srai>NORESP</srai></li>
-</condition></template>
-</category></topic>
+</condition>
+    </template>
+  </category></topic>
+
 
 <topic name="ASKING TO ADD NEW CONTACTNAME">
-<category><pattern>YES</pattern><that>WOULD YOU LIKE TO ADD * AS A CONTACT</that>
-<template><think><set name="topic">unknown</set>
+  <category>
+    <pattern>YES</pattern><that>WOULD YOU LIKE TO ADD * AS A CONTACT</that>
+    <template>
+      <think><set name="topic">unknown</set>
 <set name="displayname"><get name="contactname"/></set>
 </think>
 <think>
 <srai>ADDINFO DISPLAYNAME <get name="contactname"/> DIALNUMBER unknown PHONETYPE unknown EMAILADDRESS unknown EMAILTYPE unknown BIRTHDAY unknown</srai>
 </think>
 I've saved <get name="contactname"/> to your contacts.
-<srai>RESUMEACTION <get name="modecom"/></srai></template>
-</category></topic>
+<srai>RESUMEACTION <get name="modecom"/></srai>
+    </template>
+  </category></topic>
 
-<category><pattern>CONTACTINIT</pattern>
-<template><think>
+
+  <category>
+    <pattern>CONTACTINIT</pattern>
+    <template>
+      <think>
 <set name="savedtopic"><get name="topic"/></set>
 </think>
-<srai>CONTACTINIT PREDICATES</srai></template>
-</category>
-<category><pattern>CONTACTINIT PREDICATES</pattern>
-<template><think>
+<srai>CONTACTINIT PREDICATES</srai>
+    </template>
+  </category>
+
+  <category>
+    <pattern>CONTACTINIT PREDICATES</pattern>
+    <template>
+      <think>
 <set name="checkedfamiliarname">false</set>
 <set name="checkedhimher">false</set>
 <set name="checkednameoruri">false</set>
@@ -330,16 +432,24 @@ I've saved <get name="contactname"/> to your contacts.
 <set name="modecom">unknown</set>
 <set name="multipleids">false</set>
 <set name="topic">unknown</set>
-</think></template>
-</category>
-<category><pattern>NEWCONTACTID</pattern>
-<template><condition name="contactcount">
+</think>
+    </template>
+  </category>
+
+  <category>
+    <pattern>NEWCONTACTID</pattern>
+    <template>
+      <condition name="contactcount">
 <li value="unknown">CMContactID<set name="contactcount">0</set></li>
 <li>CMContactID<set name="contactcount"><srai>SUCCESSOR <get name="contactcount"/></srai></set></li>
-</condition></template>
-</category>
-<category><pattern>RESOLVE NAMEORURI</pattern>
-<template><srai>CONTACTDEBUGINFO RESOLVE NAMEORURI</srai>
+</condition>
+    </template>
+  </category>
+
+  <category>
+    <pattern>RESOLVE NAMEORURI</pattern>
+    <template>
+      <srai>CONTACTDEBUGINFO RESOLVE NAMEORURI</srai>
 <think>
 <set name="checkednameoruri">true</set>
 <set name="isaphonenumber"><srai>ISAPHONENUMBER <get name="contactname"/></srai></set>
@@ -361,10 +471,14 @@ I've saved <get name="contactname"/> to your contacts.
 </li>
 </condition>
 </think>
-<srai>RESUMEACTION <get name="modecom"/></srai></template>
-</category>
-<category><pattern>RESOLVE CONTACTNAME</pattern>
-<template><srai>CONTACTDEBUGINFO RESOLVE CONTACTNAME</srai>
+<srai>RESUMEACTION <get name="modecom"/></srai>
+    </template>
+  </category>
+
+  <category>
+    <pattern>RESOLVE CONTACTNAME</pattern>
+    <template>
+      <srai>CONTACTDEBUGINFO RESOLVE CONTACTNAME</srai>
 <think>
 <set name="contactid"><srai>CONTACTID <get name="contactname"/></srai></set>
 <set name="multipleids"><srai>MULTIPLEIDS <get name="contactname"/></srai></set></think>
@@ -388,10 +502,14 @@ I've saved <get name="contactname"/> to your contacts.
   </condition>
 </li>
 <li><srai>CONTACTDIALOG</srai></li>
-</condition></template>
-</category>
-<category><pattern>RESOLVE FAMILIARNAME</pattern>
-<template><srai>CONTACTDEBUGINFO RESOLVE FAMILIARNAME</srai>
+</condition>
+    </template>
+  </category>
+
+  <category>
+    <pattern>RESOLVE FAMILIARNAME</pattern>
+    <template>
+      <srai>CONTACTDEBUGINFO RESOLVE FAMILIARNAME</srai>
 <think>
 <set name="checkedfamiliarname">true</set>
 <set name="familiarname"><get name="contactname"/></set>
@@ -429,10 +547,14 @@ familiarcontactid = <get name="familiarcontactid"/>.
 <li><think><set name="contactname"><get name="familiarname"/></set></think>
 <srai>RESUMEACTION <get name="modecom"/></srai>
 </li>
-</condition></template>
-</category>
-<category><pattern>RESOLVE HIMHER</pattern>
-<template><srai>CONTACTDEBUGINFO RESOLVE HIMHER</srai>
+</condition>
+    </template>
+  </category>
+
+  <category>
+    <pattern>RESOLVE HIMHER</pattern>
+    <template>
+      <srai>CONTACTDEBUGINFO RESOLVE HIMHER</srai>
 <think>
 <set name="checkedhimher">true</set>
 </think>
@@ -454,43 +576,63 @@ familiarcontactid = <get name="familiarcontactid"/>.
 <li>
 <think><srai>SETHESHE <get name="contactname"/></srai></think>
 <srai>RESUMEACTION <get name="modecom"/></srai></li>
-</condition></template>
-</category>
+</condition>
+    </template>
+  </category>
+
 <topic name="ASKING PRONOUN REFERENCE">
-<category><pattern>_</pattern><that>WHO DOES HIM REFER TO</that>
-<template><think><set name="he"><star/></set>
+  <category>
+    <pattern>_</pattern><that>WHO DOES HIM REFER TO</that>
+    <template>
+      <think><set name="he"><star/></set>
 <set name="topic">unknown</set>
 <set name="contactname"><star/></set>
 </think>
-Ok.  He is <star/>.   <srai>RESUMEACTION <get name="modecom"/></srai></template>
-</category></topic>
+Ok.  He is <star/>.   <srai>RESUMEACTION <get name="modecom"/></srai>
+    </template>
+  </category></topic>
+
 
 <topic name="ASKING PRONOUN REFERENCE">
-<category><pattern>_</pattern><that>WHO DOES HER REFER TO</that>
-<template><think><set name="she"><star/></set>
+  <category>
+    <pattern>_</pattern><that>WHO DOES HER REFER TO</that>
+    <template>
+      <think><set name="she"><star/></set>
 <set name="contactname"><star/></set>
 <set name="topic">unknown</set></think>
-Ok.  She is <star/>.   <srai>RESUMEACTION <get name="modecom"/></srai></template>
-</category></topic>
+Ok.  She is <star/>.   <srai>RESUMEACTION <get name="modecom"/></srai>
+    </template>
+  </category></topic>
+
 
 <topic name="ASKING PRONOUN REFERENCE">
-<category><pattern>$MY *</pattern><that>WHO DOES HIM REFER TO</that>
-<template><think><set name="he"><star/></set>
+  <category>
+    <pattern>$MY *</pattern><that>WHO DOES HIM REFER TO</that>
+    <template>
+      <think><set name="he"><star/></set>
 <set name="contactname"><star/></set>
 <set name="topic">unknown</set></think>
-Ok.  He is <star/>.   <srai>RESUMEACTION <get name="modecom"/></srai></template>
-</category></topic>
+Ok.  He is <star/>.   <srai>RESUMEACTION <get name="modecom"/></srai>
+    </template>
+  </category></topic>
+
 
 <topic name="ASKING PRONOUN REFERENCE">
-<category><pattern>$MY *</pattern><that>WHO DOES HER REFER TO</that>
-<template><think><set name="she"><star/></set>
+  <category>
+    <pattern>$MY *</pattern><that>WHO DOES HER REFER TO</that>
+    <template>
+      <think><set name="she"><star/></set>
 <set name="contactname"><star/></set>
 <set name="topic">unknown</set></think>
-Ok.  She is <star/>.   <srai>RESUMEACTION <get name="modecom"/></srai></template>
-</category></topic>
+Ok.  She is <star/>.   <srai>RESUMEACTION <get name="modecom"/></srai>
+    </template>
+  </category></topic>
 
-<category><pattern>RESOLVE CONTACTURI</pattern>
-<template><srai>CONTACTDEBUGINFO RESOLVE CONTACTURI</srai>
+
+  <category>
+    <pattern>RESOLVE CONTACTURI</pattern>
+    <template>
+      <srai>CONTACTDEBUGINFO RESOLVE CONTACTURI</srai>
 <think><set name="contactid"><srai>CONTACTID <get name="contactname"/></srai></set></think>
 <condition name="contactid">
 <li value="unknown">
@@ -524,15 +666,23 @@ You haven't yet added <condition name="contacttype"><li value="unknown">a phone<
     </li>
     </condition>
 </li>
-</condition></template>
-</category>
-<category><pattern>DIAL</pattern>
-<template><srai>CONTACTDEBUGINFO CALL</srai>
+</condition>
+    </template>
+  </category>
+
+  <category>
+    <pattern>DIAL</pattern>
+    <template>
+      <srai>CONTACTDEBUGINFO CALL</srai>
 <srai>CONTACTINIT</srai>
-<srai>CALLACTION</srai></template>
-</category>
-<category><pattern>ADDACTION</pattern>
-<template><srai>CONTACTDEBUGINFO ADDACTION</srai>
+<srai>CALLACTION</srai>
+    </template>
+  </category>
+
+  <category>
+    <pattern>ADDACTION</pattern>
+    <template>
+      <srai>CONTACTDEBUGINFO ADDACTION</srai>
 <think>
 <set name="modecom">ADD</set>
 <set name="forceaddcontact">true</set>
@@ -554,10 +704,14 @@ You haven't yet added <condition name="contacttype"><li value="unknown">a phone<
   </li>
   </condition>
 </li>
-</condition></template>
-</category>
-<category><pattern>CALLACTION</pattern>
-<template><srai>CONTACTDEBUGINFO CALLACTION</srai>
+</condition>
+    </template>
+  </category>
+
+  <category>
+    <pattern>CALLACTION</pattern>
+    <template>
+      <srai>CONTACTDEBUGINFO CALLACTION</srai>
 <think>
 <set name="modecom">CALL</set>
 </think>
@@ -586,10 +740,14 @@ You haven't yet added <condition name="contacttype"><li value="unknown">a phone<
 </li>
 </condition>
 </li>
-</condition></template>
-</category>
-<category><pattern>EMAILADDRESS UNKNOWN *</pattern>
-<template><think>
+</condition>
+    </template>
+  </category>
+
+  <category>
+    <pattern>EMAILADDRESS UNKNOWN *</pattern>
+    <template>
+      <think>
 <set name="emailaddress"><srai>EMAILADDRESS HOME <star/></srai></set>
 <condition name="emailaddress" value="unknown">
 <set name="emailaddress"><srai>EMAILADDRESS WORK <star/></srai></set>
@@ -598,10 +756,14 @@ You haven't yet added <condition name="contacttype"><li value="unknown">a phone<
 <set name="emailaddress"><srai>EMAILADDRESS CUSTOM <star/></srai></set>
 </condition>
 </think>
-<get name="emailaddress"/></template>
-</category>
-<category><pattern>QUERYINFO EXTERNAL</pattern>
-<template><srai>CONTACTDEBUGINFO QUERTYINFO CONTACTID</srai>
+<get name="emailaddress"/>
+    </template>
+  </category>
+
+  <category>
+    <pattern>QUERYINFO EXTERNAL</pattern>
+    <template>
+      <srai>CONTACTDEBUGINFO QUERTYINFO CONTACTID</srai>
 <condition name="contactquery">
 <li value="DISPLAYNAME"><sraix service="pannous">WHAT IS <get name="contactname"/>'s REAL NAME</sraix></li>
 <li value="BIRTHDAY"><sraix service="pannous">WHEN IS <get name="contactname"/>'s BIRTHDAY</sraix></li>
@@ -609,10 +771,14 @@ You haven't yet added <condition name="contacttype"><li value="unknown">a phone<
 <li value="EMAILADDRESS"><sraix service="pannous">WHAT IS <get name="contactname"/>'s EMAIL ADDREESS</sraix></li>
 <li><sraix service="pannous">WHO IS <get name="contactname"/></sraix>
 </li>
-</condition></template>
-</category>
-<category><pattern>QUERYINFO CONTACTID</pattern>
-<template><srai>CONTACTDEBUGINFO QUERTYINFO CONTACTID</srai>
+</condition>
+    </template>
+  </category>
+
+  <category>
+    <pattern>QUERYINFO CONTACTID</pattern>
+    <template>
+      <srai>CONTACTDEBUGINFO QUERTYINFO CONTACTID</srai>
 <think><set name="displayname"><srai>DISPLAYNAME <get name="contactid"/></srai></set>
 <set name="contacttype"><lowercase><get name="contacttype"/></lowercase></set>
 <set name="contactbirthday"><srai>CONTACTBIRTHDAY <get name="contactid"/></srai></set>
@@ -656,69 +822,113 @@ emailaddress work: <srai>EMAILADDRESS WORK <get name="contactid"/></srai>
 birthday: <srai>CONTACTBIRTHDAY <get name="contactid"/></srai>
 -->
 </li>
-</condition></template>
-</category>
-<category><pattern>$EMAIL *</pattern>
-<template><srai>CONTACTINIT</srai>
+</condition>
+    </template>
+  </category>
+
+  <category>
+    <pattern>$EMAIL *</pattern>
+    <template>
+      <srai>CONTACTINIT</srai>
 <think><set name="contactname"><star/></set></think>
-<srai>EMAILACTION</srai></template>
-</category>
-<category><pattern>$EMAIL * AT *</pattern>
-<template><srai>CONTACTINIT</srai>
+<srai>EMAILACTION</srai>
+    </template>
+  </category>
+
+  <category>
+    <pattern>$EMAIL * AT *</pattern>
+    <template>
+      <srai>CONTACTINIT</srai>
 <think><set name="contactname"><star/></set>
 <set name="contacttype"><star index="2"/></set>
 </think>
-<srai>EMAILACTION</srai> <srai>CONTACTFINALIZE</srai></template>
-</category>
-<category><pattern>$EMAIL * AT * DOT *</pattern>
-<template><srai>CONTACTINIT</srai>
+<srai>EMAILACTION</srai> <srai>CONTACTFINALIZE</srai>
+    </template>
+  </category>
+
+  <category>
+    <pattern>$EMAIL * AT * DOT *</pattern>
+    <template>
+      <srai>CONTACTINIT</srai>
 <think><set name="contactname"><star/> at <star index="2"/> dot <star index="3"/></set></think>
-<srai>EMAILACTION</srai></template>
-</category>
-<category><pattern>$EMAIL * MESSAGEBODY *</pattern>
-<template><srai>CONTACTINIT</srai>
+<srai>EMAILACTION</srai>
+    </template>
+  </category>
+
+  <category>
+    <pattern>$EMAIL * MESSAGEBODY *</pattern>
+    <template>
+      <srai>CONTACTINIT</srai>
 <think><set name="contactname"><star/></set>
 <set name="messagebody"><star index="2"/></set>
 </think>
-<srai>EMAILACTION</srai></template>
-</category>
-<category><pattern>$EMAIL MESSAGEBODY *</pattern>
-<template><srai>CONTACTINIT</srai>
+<srai>EMAILACTION</srai>
+    </template>
+  </category>
+
+  <category>
+    <pattern>$EMAIL MESSAGEBODY *</pattern>
+    <template>
+      <srai>CONTACTINIT</srai>
 <think>
 <set name="messagebody"><star/></set>
 </think>
-<srai>EMAILACTION</srai></template>
-</category>
-<category><pattern>CALL</pattern>
-<template><srai>DIAL</srai></template>
-</category>
-<category><pattern>CALL ME AT *</pattern>
-<template><srai>CONTACTDEBUGINFO CALL <star/></srai>
+<srai>EMAILACTION</srai>
+    </template>
+  </category>
+
+  <category>
+    <pattern>CALL</pattern>
+    <template>
+      <srai>DIAL</srai>
+    </template>
+  </category>
+
+  <category>
+    <pattern>CALL ME AT *</pattern>
+    <template>
+      <srai>CONTACTDEBUGINFO CALL <star/></srai>
 <srai>CONTACTINIT</srai>
 <think><set name="contactname">ME</set>
 <set name="contacttype"><star index="2"/></set>
 </think>
-<srai>CALLACTION</srai></template>
-</category>
-<category><pattern>CALL *</pattern>
-<template><srai>CONTACTDEBUGINFO CALL <star/></srai>
+<srai>CALLACTION</srai>
+    </template>
+  </category>
+
+  <category>
+    <pattern>CALL *</pattern>
+    <template>
+      <srai>CONTACTDEBUGINFO CALL <star/></srai>
 <srai>CONTACTINIT</srai>
 <think><set name="contactname"><star/></set></think>
-<srai>CALLACTION</srai></template>
-</category>
-<category><pattern>CALL * AT *</pattern>
-<template><srai>CONTACTDEBUGINFO CALL <star/></srai>
+<srai>CALLACTION</srai>
+    </template>
+  </category>
+
+  <category>
+    <pattern>CALL * AT *</pattern>
+    <template>
+      <srai>CONTACTDEBUGINFO CALL <star/></srai>
 <srai>CONTACTINIT</srai>
 <think><set name="contactname"><star/></set>
 <set name="contacttype"><star index="2"/></set>
 </think>
-<srai>CALLACTION</srai></template>
-</category>
-<category><pattern>ADD CONTACT</pattern>
-<template><srai>NEW CONTACT</srai></template>
-</category>
-<category><pattern>SMSACTION</pattern>
-<template><srai>CONTACTDEBUGINFO SMSACTION</srai>
+<srai>CALLACTION</srai>
+    </template>
+  </category>
+
+  <category>
+    <pattern>ADD CONTACT</pattern>
+    <template>
+      <srai>NEW CONTACT</srai>
+    </template>
+  </category>
+
+  <category>
+    <pattern>SMSACTION</pattern>
+    <template>
+      <srai>CONTACTDEBUGINFO SMSACTION</srai>
 <think>
 <set name="modecom">SMS</set>
 </think>
@@ -749,10 +959,14 @@ birthday: <srai>CONTACTBIRTHDAY <get name="contactid"/></srai>
 </li>
 </condition>
 </li>
-</condition></template>
-</category>
-<category><pattern>CONTACTDEBUGINFO *</pattern>
-<template><condition name="debugcontact" value="true">
+</condition>
+    </template>
+  </category>
+
+  <category>
+    <pattern>CONTACTDEBUGINFO *</pattern>
+    <template>
+      <condition name="debugcontact" value="true">
 <star/>:
 checkedfamiliarname: <get name="checkedfamiliarname"/>.
 checkedhimher: <get name="checkedhimher"/>.
@@ -782,99 +996,179 @@ modecom: <get name="modecom"/>.
 multipleids: <get name="multipleids"/>.
 savedtopic: <get name="savedtopic"/>.
 topic: <get name="topic"/>.
-</condition></template>
-</category>
-<category><pattern>SET ALL CONTACTINFO</pattern>
-<template><think>
+</condition>
+    </template>
+  </category>
+
+  <category>
+    <pattern>SET ALL CONTACTINFO</pattern>
+    <template>
+      <think>
 <set name="displayname"><srai>DISPLAYNAME <get name="contactid"/></srai></set>
 <set name="dialnumber"><srai>DIALNUMBER <get name="contacttype"/> <get name="contactid"/></srai></set>
 <set name="emailaddress"><srai>EMAILADDRESS <get name="contacttype"/> <get name="contactid"/></srai></set>
 <set name="contactbirthday"><srai>CONTACTBIRTHDAY <get name="contacttype"/> <get name="contactid"/></srai></set>
-</think></template>
-</category>
-<category><pattern>WHEN IS * S BIRTHDAY</pattern>
-<template><srai>CONTACTINIT</srai>
+</think>
+    </template>
+  </category>
+
+  <category>
+    <pattern>WHEN IS * S BIRTHDAY</pattern>
+    <template>
+      <srai>CONTACTINIT</srai>
 <think>
 <set name="contactname"><star/></set>
 <set name="contactquery">BIRTHDAY</set>
 </think>
-<srai>QUERYACTION</srai></template>
-</category>
-<category><pattern>WHEN IS HIS BIRTHDAY</pattern>
-<template><srai>CONTACTINIT</srai>
+<srai>QUERYACTION</srai>
+    </template>
+  </category>
+
+  <category>
+    <pattern>WHEN IS HIS BIRTHDAY</pattern>
+    <template>
+      <srai>CONTACTINIT</srai>
 <think>
 <set name="contactname">him</set>
 <set name="contactquery">BIRTHDAY</set>
 </think>
-<srai>QUERYACTION</srai></template>
-</category>
-<category><pattern>WHEN IS HER BIRTHDAY</pattern>
-<template><srai>CONTACTINIT</srai>
+<srai>QUERYACTION</srai>
+    </template>
+  </category>
+
+  <category>
+    <pattern>WHEN IS HER BIRTHDAY</pattern>
+    <template>
+      <srai>CONTACTINIT</srai>
 <think>
 <set name="contactname">her</set>
 <set name="contactquery">BIRTHDAY</set>
 </think>
-<srai>QUERYACTION</srai></template>
-</category>
-<category><pattern>WHAT IS MY PHONE NUMBER</pattern>
-<template><srai>WHAT IS ME S UNKNOWN NUMBER</srai></template>
-</category>
-<category><pattern>WHAT IS MY * NUMBER</pattern>
-<template><srai>WHAT IS ME S <star/> NUMBER</srai></template>
-</category>
-<category><pattern>WHAT IS * S PHONE NUMBER</pattern>
-<template><srai>WHAT IS <star/>'s UNKNOWN NUMBER</srai></template>
-</category>
-<category><pattern>WHAT IS * S * NUMBER</pattern>
-<template><srai>CONTACTINIT</srai>
+<srai>QUERYACTION</srai>
+    </template>
+  </category>
+
+  <category>
+    <pattern>WHAT IS MY PHONE NUMBER</pattern>
+    <template>
+      <srai>WHAT IS ME S UNKNOWN NUMBER</srai>
+    </template>
+  </category>
+
+  <category>
+    <pattern>WHAT IS MY * NUMBER</pattern>
+    <template>
+      <srai>WHAT IS ME S <star/> NUMBER</srai>
+    </template>
+  </category>
+
+  <category>
+    <pattern>WHAT IS * S PHONE NUMBER</pattern>
+    <template>
+      <srai>WHAT IS <star/>'s UNKNOWN NUMBER</srai>
+    </template>
+  </category>
+
+  <category>
+    <pattern>WHAT IS * S * NUMBER</pattern>
+    <template>
+      <srai>CONTACTINIT</srai>
 <think>
 <set name="contactname"><star/></set>
 <set name="contacttype"><star index="2"/></set>
 <set name="contactquery">DIALNUMBER</set>
 </think>
-<srai>QUERYACTION</srai></template>
-</category>
-<category><pattern>COMMASEPARATENAMES *</pattern>
-<template><srai>DISPLAYNAME <star/></srai></template>
-</category>
-<category><pattern>COMMASEPARATENAMES * *</pattern>
-<template><srai>DISPLAYNAME <star/></srai>, <srai>COMMASEPARATENAMES <star index="2"/></srai></template>
-</category>
-<category><pattern>MULTIPLENAMES *</pattern>
-<template><think>
+<srai>QUERYACTION</srai>
+    </template>
+  </category>
+
+  <category>
+    <pattern>COMMASEPARATENAMES *</pattern>
+    <template>
+      <srai>DISPLAYNAME <star/></srai>
+    </template>
+  </category>
+
+  <category>
+    <pattern>COMMASEPARATENAMES * *</pattern>
+    <template>
+      <srai>DISPLAYNAME <star/></srai>, <srai>COMMASEPARATENAMES <star index="2"/></srai>
+    </template>
+  </category>
+
+  <category>
+    <pattern>MULTIPLENAMES *</pattern>
+    <template>
+      <think>
 <set name="multipleids"><srai>MULTIPLEIDS <star/></srai></set>
 </think>
 <condition name="multipleids">
 <li value="false">false</li>
 <li><srai>COMMASEPARATENAMES <get name="multipleids"/></srai></li>
-</condition></template>
-</category>
-<category><pattern>CONTACTLIST *</pattern>
-<template><item><srai>DISPLAYNAME <star/></srai></item></template>
-</category>
-<category><pattern>CONTACTLIST * *</pattern>
-<template><srai>CONTACTLIST <star/></srai><srai>CONTACTLIST <star index="2"/></srai></template>
-</category>
-<category><pattern>RESUMEACTION QUERY</pattern>
-<template><srai>QUERYACTION</srai></template>
-</category>
-<category><pattern>RESUMEACTION CALL</pattern>
-<template><srai>CALLACTION</srai></template>
-</category>
-<category><pattern>RESUMEACTION *</pattern>
-<template>Stopped processing.</template>
-</category>
-<category><pattern>RESUMEACTION EMAIL</pattern>
-<template><srai>EMAILACTION</srai></template>
-</category>
-<category><pattern>RESUMEACTION SMS</pattern>
-<template><srai>SMSACTION</srai></template>
-</category>
-<category><pattern>RESUMEACTION ADD</pattern>
-<template><srai>ADDACTION</srai></template>
-</category>
-<category><pattern>QUERYACTION</pattern>
-<template><srai>CONTACTDEBUGINFO QUERYACTION</srai>
+</condition>
+    </template>
+  </category>
+
+  <category>
+    <pattern>CONTACTLIST *</pattern>
+    <template>
+      <item><srai>DISPLAYNAME <star/></srai></item>
+    </template>
+  </category>
+
+  <category>
+    <pattern>CONTACTLIST * *</pattern>
+    <template>
+      <srai>CONTACTLIST <star/></srai><srai>CONTACTLIST <star index="2"/></srai>
+    </template>
+  </category>
+
+  <category>
+    <pattern>RESUMEACTION QUERY</pattern>
+    <template>
+      <srai>QUERYACTION</srai>
+    </template>
+  </category>
+
+  <category>
+    <pattern>RESUMEACTION CALL</pattern>
+    <template>
+      <srai>CALLACTION</srai>
+    </template>
+  </category>
+
+  <category>
+    <pattern>RESUMEACTION *</pattern>
+    <template>
+      Stopped processing.
+    </template>
+  </category>
+
+  <category>
+    <pattern>RESUMEACTION EMAIL</pattern>
+    <template>
+      <srai>EMAILACTION</srai>
+    </template>
+  </category>
+
+  <category>
+    <pattern>RESUMEACTION SMS</pattern>
+    <template>
+      <srai>SMSACTION</srai>
+    </template>
+  </category>
+
+  <category>
+    <pattern>RESUMEACTION ADD</pattern>
+    <template>
+      <srai>ADDACTION</srai>
+    </template>
+  </category>
+
+  <category>
+    <pattern>QUERYACTION</pattern>
+    <template>
+      <srai>CONTACTDEBUGINFO QUERYACTION</srai>
 <think>
 <set name="modecom">QUERY</set>
 </think>
@@ -900,36 +1194,62 @@ topic: <get name="topic"/>.
   </li>
   </condition>
 </li>
-</condition></template>
-</category>
-<category><pattern>HOW OLD IS *</pattern>
-<template><srai>WHEN IS <star/> S BIRTHDAY</srai></template>
-</category>
-<category><pattern>$SMS</pattern>
-<template><srai>CONTACTDEBUGINFO SMS</srai>
+</condition>
+    </template>
+  </category>
+
+  <category>
+    <pattern>HOW OLD IS *</pattern>
+    <template>
+      <srai>WHEN IS <star/> S BIRTHDAY</srai>
+    </template>
+  </category>
+
+  <category>
+    <pattern>$SMS</pattern>
+    <template>
+      <srai>CONTACTDEBUGINFO SMS</srai>
 <srai>CONTACTINIT</srai>
-<srai>SMSACTION</srai></template>
-</category>
-<category><pattern>$SMS SMESSAGE *</pattern>
-<template><srai>CONTACTINIT</srai>
+<srai>SMSACTION</srai>
+    </template>
+  </category>
+
+  <category>
+    <pattern>$SMS SMESSAGE *</pattern>
+    <template>
+      <srai>CONTACTINIT</srai>
 <think>
 <set name="messagebody"><star/></set>
 </think>
-<srai>SMSACTION</srai></template>
-</category>
-<category><pattern>$SMS *</pattern>
-<template><srai>CONTACTINIT</srai>
+<srai>SMSACTION</srai>
+    </template>
+  </category>
+
+  <category>
+    <pattern>$SMS *</pattern>
+    <template>
+      <srai>CONTACTINIT</srai>
 <think><set name="contactname"><star/></set></think>
-<srai>SMSACTION</srai></template>
-</category>
-<category><pattern>$SMS * SMESSAGE *</pattern>
-<template><srai>CONTACTINIT</srai>
+<srai>SMSACTION</srai>
+    </template>
+  </category>
+
+  <category>
+    <pattern>$SMS * SMESSAGE *</pattern>
+    <template>
+      <srai>CONTACTINIT</srai>
 <think><set name="contactname"><star/></set>
 <set name="messagebody"><star index="2"/></set>
 </think>
-<srai>SMSACTION</srai></template>
-</category>
-<category><pattern>TESTCALL *</pattern>
-<template>Now dialing <star/>.  <oob><dial><star/></dial></oob></template>
-</category>
+<srai>SMSACTION</srai>
+    </template>
+  </category>
+
+  <category>
+    <pattern>TESTCALL *</pattern>
+    <template>
+      Now dialing <star/>.  <oob><dial><star/></dial></oob>
+    </template>
+  </category>
+
 </aiml>
