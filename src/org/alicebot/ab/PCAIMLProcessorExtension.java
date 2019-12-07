@@ -73,8 +73,7 @@ public class PCAIMLProcessorExtension implements AIMLProcessorExtension {
 		}
 		log.info("Adding new contact " + displayName + " " + phoneType + " " + dialNumber + " " + emailType + " " + emailAddress + " " + birthday);
 		@SuppressWarnings("unused")
-		final
-		Contact contact = new Contact(displayName, phoneType, dialNumber, emailType, emailAddress, birthday);
+		final Contact contact = new Contact(displayName, phoneType, dialNumber, emailType, emailAddress, birthday);
 		return "";
 	}
 
@@ -166,4 +165,5 @@ public class PCAIMLProcessorExtension implements AIMLProcessorExtension {
 			return "";
 		}
 	}
+
 }

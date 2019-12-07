@@ -43,21 +43,6 @@ public class Category {
 	private AIMLSet matches;
 
 	/**
-	 * Return a set of inputs matching the category
-	 *
-	 * @param bot bot
-	 * @return and AIML Set of elements matching this category
-	 * 
-	 */
-//	private AIMLSet getMatches(Bot bot) {
-//		if (matches != null) {
-//			return matches;
-//		} else {
-//			return new AIMLSet("No Matches", bot);
-//		}
-//	}
-
-	/**
 	 * number of times a category was activated by inputs
 	 *
 	 * @return integer number of activations
@@ -139,67 +124,6 @@ public class Category {
 			return filename;
 		}
 	}
-//
-//	/**
-//	 * increment the category activation count
-//	 */
-//	private void incrementActivationCnt() {
-//		activationCnt++;
-//	}
-//
-//	/**
-//	 * set category activation count
-//	 *
-//	 * @param cnt activation count
-//	 */
-//	private void setActivationCnt(int cnt) {
-//		activationCnt = cnt;
-//	}
-//
-//	/**
-//	 * set category filename
-//	 * 
-//	 * @param filename name of AIML file
-//	 */
-//	private void setFilename(String filename) {
-//		this.filename = filename;
-//	}
-//
-//	/**
-//	 * set category template
-//	 * 
-//	 * @param template AIML template
-//	 */
-//	private void setTemplate(String template) {
-//		this.template = template;
-//	}
-//
-//	/**
-//	 * set category pattern
-//	 *
-//	 * @param pattern AIML pattern
-//	 */
-//	private void setPattern(String pattern) {
-//		this.pattern = pattern;
-//	}
-//
-//	/**
-//	 * set category that pattern
-//	 *
-//	 * @param that AIML that pattern
-//	 */
-//	private void setThat(String that) {
-//		this.that = that;
-//	}
-//
-//	/**
-//	 * set category topic
-//	 *
-//	 * @param topic AIML topic pattern
-//	 */
-//	private void setTopic(String topic) {
-//		this.topic = topic;
-//	}
 
 	/**
 	 * return a string represeting the full pattern path as
@@ -329,7 +253,7 @@ public class Category {
 //	}
 
 	final static String NL = System.getProperty("line.separator");
-	
+
 	/**
 	 * convert a Category object to AIML syntax
 	 *
@@ -356,7 +280,7 @@ public class Category {
 		try {
 
 			if (category.getTopic().equals("*")) {
-				
+
 				String thatStatement = "";
 				if (!category.getThat().equals("*")) {
 					thatStatement = "      <that>" + category.getThat() + "</that>" + NL;
@@ -368,17 +292,17 @@ public class Category {
 				}
 				result = //
 						"  <category>" + NL + //
-						"    <pattern>" + NL + //
-						"      " + pattern + NL + //
-						"    </pattern>" + NL + //
-						thatStatement + //
-						"    <template>" + NL + //
-						template + //
-						"    </template>" + NL + //
-						"  </category>" + NL;
-				
+								"    <pattern>" + NL + //
+								"      " + pattern + NL + //
+								"    </pattern>" + NL + //
+								thatStatement + //
+								"    <template>" + NL + //
+								template + //
+								"    </template>" + NL + //
+								"  </category>" + NL;
+
 			} else {
-				
+
 				String thatStatement = "";
 				if (!category.getThat().equals("*")) {
 					thatStatement = "      <that>" + category.getThat() + "</that>" + NL;
@@ -390,17 +314,17 @@ public class Category {
 				}
 				result = //
 						"  <topic name=\"" + category.getTopic() + "\">" + NL + //
-						"    <category>" + NL + //
-						"      <pattern>" + NL + //
-						"        " + pattern + NL + //
-						"      </pattern>" + NL + //
-						thatStatement + //
-						"      <template>" + NL + //
-						template + //
-						"      </template>" + NL + //
-						"    </category>" + NL + //
-						"  </topic>" + NL;
-				
+								"    <category>" + NL + //
+								"      <pattern>" + NL + //
+								"        " + pattern + NL + //
+								"      </pattern>" + NL + //
+								thatStatement + //
+								"      <template>" + NL + //
+								template + //
+								"      </template>" + NL + //
+								"    </category>" + NL + //
+								"  </topic>" + NL;
+
 			}
 
 		} catch (final Exception ex) {

@@ -38,11 +38,11 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class Sraix {
 
-	public static HashMap<String, String> custIdMap = new HashMap<String, String>();
+	private static HashMap<String, String> custIdMap = new HashMap<String, String>();
 
-	public static String custid = "1"; // customer ID number for Pandorabots
+	private static String custid = "1"; // customer ID number for Pandorabots
 
-	public static String sraix(Chat chatSession, String input, String defaultResponse, String hint, String host, String botid, String apiKey, String limit) {
+	static String sraix(Chat chatSession, String input, String defaultResponse, String hint, String host, String botid, String apiKey, String limit) {
 		String response;
 		if (!MagicBooleans.enable_network_connection) {
 			response = MagicStrings.sraix_failed;
@@ -62,7 +62,7 @@ public class Sraix {
 		return response;
 	}
 
-	public static String sraixPandorabots(String input, Chat chatSession, String host, String botid) {
+	private static String sraixPandorabots(String input, Chat chatSession, String host, String botid) {
 		// log.info("Entering SRAIX with input="+input+" host ="+host+"
 		// botid="+botid);
 		final String responseContent = pandorabotsRequest(input, host, botid);
@@ -73,7 +73,7 @@ public class Sraix {
 		}
 	}
 
-	public static String pandorabotsRequest(String input, String host, String botid) {
+	private static String pandorabotsRequest(String input, String host, String botid) {
 		try {
 			custid = "0";
 			final String key = host + ":" + botid;
@@ -113,7 +113,7 @@ public class Sraix {
 		}
 	}
 
-	public static String pandorabotsResponse(String sraixResponse, Chat chatSession, String host, String botid) {
+	private static String pandorabotsResponse(String sraixResponse, Chat chatSession, String host, String botid) {
 		String botResponse = MagicStrings.sraix_failed;
 		try {
 			int n1 = sraixResponse.indexOf("<that>");
@@ -144,7 +144,7 @@ public class Sraix {
 		return botResponse;
 	}
 
-	public static String sraixPannous(String input, String hint, Chat chatSession) {
+	private static String sraixPannous(String input, String hint, Chat chatSession) {
 		try {
 			final String rawInput = input;
 			if (hint == null) {
@@ -286,10 +286,10 @@ public class Sraix {
 		}
 		return MagicStrings.sraix_failed;
 	} // sraixPannous
-	
+
 	final static String NL = System.getProperty("line.separator");
-	
-	public static void log(String pattern, String template) {
+
+	private static void log(String pattern, String template) {
 		log.info("Logging " + pattern);
 		template = template.trim();
 		if (MagicBooleans.cache_sraix) {
@@ -312,4 +312,5 @@ public class Sraix {
 			}
 		}
 	}
+
 }

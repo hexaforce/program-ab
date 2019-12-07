@@ -71,75 +71,12 @@ public class Bot {
 	public HashMap<String, AIMLMap> mapMap = new HashMap<String, AIMLMap>();
 	public HashSet<String> pronounSet = new HashSet<String>();
 
-//	public String bot_path = "";
-//	public String bot_name_path = "";
-//	public String aimlif_path = "";
-//	public String aiml_path = "";
-//	public String config_path = "";
-//	public String log_path = "";
-//	public String sets_path = "";
-//	public String maps_path = "";
 	public final String aimlif_path;
 	public final String aiml_path;
 	public final String config_path;
 	public final String log_path;
 	public final File sets_path;
 	public final File maps_path;
-
-	/**
-	 * Set all directory path variables for this bot
-	 *
-	 * @param root root directory of Program AB
-	 * @param name name of bot
-	 */
-//	public void setAllPaths(String root, String name) {
-//		bot_path = workingDirectory + "/bots";
-//		bot_name_path = workingDirectory + "/bots/" + botName;
-//
-//		log.debug("Name = " + name + " Path = " + bot_name_path);
-//
-//		aiml_path = bot_name_path + "/aiml";
-//		aimlif_path = bot_name_path + "/aimlif";
-//		config_path = bot_name_path + "/config";
-//		log_path = bot_name_path + "/logs";
-//		sets_path = bot_name_path + "/sets";
-//		maps_path = bot_name_path + "/maps";
-//
-//		log.debug(bot_path);
-//		log.debug(bot_name_path);
-//		log.debug(aiml_path);
-//		log.debug(aimlif_path);
-//		log.debug(config_path);
-//		log.debug(log_path);
-//		log.debug(sets_path);
-//		log.debug(maps_path);
-//	}
-
-//	/**
-//	 * Constructor (default action, default path, default bot name)
-//	 */
-//	public Bot() {
-//		this(MagicStrings.default_bot);
-//	}
-//
-//	/**
-//	 * Constructor (default action, default path)
-//	 * 
-//	 * @param name name
-//	 */
-//	public Bot(String name) {
-//		this(name, MagicStrings.root_path);
-//	}
-//
-//	/**
-//	 * Constructor (default action)
-//	 *
-//	 * @param name name
-//	 * @param path path
-//	 */
-//	public Bot(String name, String path) {
-//		this(name, path, "auto");
-//	}
 
 	/**
 	 * Constructor
@@ -193,17 +130,7 @@ public class Bot {
 		final Date aimlDate = new Date(new File(aiml_path).lastModified());
 		final Date aimlIFDate = new Date(new File(aimlif_path).lastModified());
 		log.debug("AIML modified " + aimlDate + " AIMLIF modified " + aimlIFDate);
-		// readUnfinishedIFCategories();
-//		MagicStrings.pannous_api_key = Utilities.getPannousAPIKey(this);
-//		MagicStrings.pannous_login = Utilities.getPannousLogin(this);
-//		if (action.equals("aiml2csv")) {
-//			addCategoriesFromAIML();
-//		} else if (action.equals("csv2aiml")) {
-//			addCategoriesFromAIMLIF();
-//		} else if (action.equals("chat-app")) {
-//			log.debug("Loading only AIMLIF files");
-//			cnt = addCategoriesFromAIMLIF();
-//		} else 
+
 		if (aimlDate.after(aimlIFDate)) {
 			log.debug("AIML modified after AIMLIF");
 			cnt = addCategoriesFromAIML();
@@ -215,14 +142,16 @@ public class Bot {
 				cnt = addCategoriesFromAIML();
 			}
 		}
+
 		final Category c = new Category(0, "PROGRAM VERSION", "*", "*", MagicStrings.program_name_version, "update.aiml");
 		brain.addCategory(c);
 		brain.nodeStats();
 		learnfGraph.nodeStats();
 
 	}
-	
+
 	final static String NL = System.getProperty("line.separator");
+
 	HashSet<String> getPronouns() throws IOException {
 		final HashSet<String> pronounSet = new HashSet<String>();
 		final String pronouns = FileUtils.readFileToString(new File(config_path + "/pronouns.txt"), Charset.defaultCharset());
@@ -328,66 +257,6 @@ public class Bot {
 		 * updateUnfinishedCategories(); writeUnfinishedIFCategories();
 		 */
 	}
-
-	/**
-	 * read categories from specified AIMLIF file into specified graph
-	 *
-	 * @param graph    Graphmaster to store categories
-	 * @param fileName file name of AIMLIF file
-	 * @return count
-	 */
-//	public int readCertainIFCategories(Graphmaster graph, String fileName) {
-//		int cnt = 0;
-//		final File file = new File(aimlif_path + "/" + fileName + MagicStrings.aimlif_file_suffix);
-//		if (file.exists()) {
-//			try {
-//				final ArrayList<Category> certainCategories = readIFCategories(aimlif_path + "/" + fileName + MagicStrings.aimlif_file_suffix);
-//				for (final Category d : certainCategories) {
-//					graph.addCategory(d);
-//				}
-//				cnt = certainCategories.size();
-//				log.info("readCertainIFCategories " + cnt + " categories from " + fileName + MagicStrings.aimlif_file_suffix);
-//			} catch (final Exception iex) {
-//				log.info("Problem loading " + fileName);
-//				log.error(iex.getMessage(), iex);
-//			}
-//		} else {
-//			log.info("No " + aimlif_path + "/" + fileName + MagicStrings.aimlif_file_suffix + " file found");
-//		}
-//		return cnt;
-//	}
-
-	/**
-	 * write certain specified categories as AIMLIF files
-	 *
-	 * @param graph the Graphmaster containing the categories to write
-	 * @param file  the destination AIMLIF file
-	 */
-//	public void writeCertainIFCategories() {
-//		log.debug("writeCertainIFCaegories " + MagicStrings.learnf_aiml_file + " size= " + learnfGraph.getCategories().size());
-//		writeIFCategories(learnfGraph.getCategories(), MagicStrings.learnf_aiml_file + MagicStrings.aimlif_file_suffix);
-//		
-//	}
-
-	/**
-	 * write deleted categories to AIMLIF file
-	 */
-
-	/**
-	 * write learned categories to AIMLIF file
-	 */
-//	public void writeLearnfIFCategories() {
-//		writeCertainIFCategories();
-//	}
-
-	/**
-	 * write unfinished categories to AIMLIF file
-	 */
-	/*
-	 * public void writeUnfinishedIFCategories() {
-	 * writeCertainIFCategories(unfinishedGraph, MagicStrings.unfinished_aiml_file);
-	 * }
-	 */
 
 	/**
 	 * write categories to AIMLIF file
@@ -538,17 +407,6 @@ public class Bot {
 		new File(aiml_path).setLastModified(new Date().getTime());
 	}
 
-//	/**
-//	 * load bot properties
-//	 */
-//	void addProperties() {
-//		try {
-//			properties.getProperties(config_path + "/properties.txt");
-//		} catch (final Exception ex) {
-//			log.error(ex.getMessage(), ex);
-//		}
-//	}
-
 	/**
 	 * read AIMLIF categories from a file into bot brain
 	 *
@@ -652,55 +510,4 @@ public class Bot {
 		learnGraph = new Graphmaster(this, "brain");
 	}
 
-	/**
-	 * check Graphmaster for shadowed categories
-	 */
-//	public void shadowChecker() {
-//		shadowChecker(brain.root);
-//	}
-
-	/**
-	 * traverse graph and test all categories found in leaf nodes for shadows
-	 *
-	 * @param node
-	 */
-//	void shadowChecker(Nodemapper node) {
-//		if (NodemapperOperator.isLeaf(node)) {
-//			String input = node.category.getPattern();
-//			input = brain.replaceBotProperties(input);
-//			input = input.replace("*", "XXX").replace("_", "XXX").replace("^", "").replace("#", "");
-//			final String that = node.category.getThat().replace("*", "XXX").replace("_", "XXX").replace("^", "").replace("#", "");
-//			final String topic = node.category.getTopic().replace("*", "XXX").replace("_", "XXX").replace("^", "").replace("#", "");
-//			input = instantiateSets(input);
-//			log.info("shadowChecker: input=" + input);
-//			final Nodemapper match = brain.match(input, that, topic);
-//			if (match != node) {
-//				log.info("" + Graphmaster.inputThatTopic(input, that, topic));
-//				log.info("MATCHED:     " + match.category.inputThatTopic());
-//				log.info("SHOULD MATCH:" + node.category.inputThatTopic());
-//			}
-//		} else {
-//			for (final String key : NodemapperOperator.keySet(node)) {
-//				shadowChecker(NodemapperOperator.get(node, key));
-//			}
-//		}
-//	}
-
-//	public String instantiateSets(String pattern) {
-//		final String[] splitPattern = pattern.split(" ");
-//		pattern = "";
-//		for (String x : splitPattern) {
-//			if (x.startsWith("<SET>")) {
-//				final String setName = AIMLProcessor.trimTag(x, "SET");
-//				final AIMLSet set = setMap.get(setName);
-//				if (set != null) {
-//					x = "FOUNDITEM";
-//				} else {
-//					x = "NOTFOUND";
-//				}
-//			}
-//			pattern = pattern + " " + x;
-//		}
-//		return pattern.trim();
-//	}
 }

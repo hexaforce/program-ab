@@ -9,10 +9,34 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class Tuple extends HashMap<String, String> {
 	private static final long serialVersionUID = 1L;
-	public static int index = 0;
-	public static HashMap<String, Tuple> tupleMap = new HashMap<String, Tuple>();
-	public HashSet<String> visibleVars = new HashSet<String>();
+
+	private static int index = 0;
+	static HashMap<String, Tuple> tupleMap = new HashMap<String, Tuple>();
+	private HashSet<String> visibleVars = new HashSet<String>();
 	String name;
+
+	Tuple(HashSet<String> varSet, HashSet<String> visibleVars, Tuple tuple) {
+		super();
+		// log.info("varSet="+varSet);
+		// log.info("visbileVars="+visibleVars);
+		if (visibleVars != null) {
+			this.visibleVars.addAll(visibleVars);
+		}
+		if (varSet == null && tuple != null) {
+			for (final String key : tuple.keySet()) {
+				put(key, tuple.get(key));
+			}
+			this.visibleVars.addAll(tuple.visibleVars);
+		}
+		if (varSet != null) {
+			for (final String key : varSet) {
+				put(key, MagicStrings.unbound_variable);
+			}
+		}
+		name = "tuple" + index;
+		index++;
+		tupleMap.put(name, this);
+	}
 
 	@Override
 	public boolean equals(Object o) {
@@ -71,54 +95,11 @@ public class Tuple extends HashMap<String, String> {
 		return result;
 	}
 
-	public Tuple(HashSet<String> varSet, HashSet<String> visibleVars, Tuple tuple) {
-		super();
-		// log.info("varSet="+varSet);
-		// log.info("visbileVars="+visibleVars);
-		if (visibleVars != null) {
-			this.visibleVars.addAll(visibleVars);
-		}
-		if (varSet == null && tuple != null) {
-			for (final String key : tuple.keySet()) {
-				put(key, tuple.get(key));
-			}
-			this.visibleVars.addAll(tuple.visibleVars);
-		}
-		if (varSet != null) {
-			for (final String key : varSet) {
-				put(key, MagicStrings.unbound_variable);
-			}
-		}
-		name = "tuple" + index;
-		index++;
-		tupleMap.put(name, this);
-	}
-
-	public Tuple(Tuple tuple) {
-		this(null, null, tuple);
-	}
-
-	public Tuple(HashSet<String> varSet, HashSet<String> visibleVars) {
-		this(varSet, visibleVars, null);
-	}
-
-	public Set<String> getVars() {
+	Set<String> getVars() {
 		return keySet();
 	}
 
-	public String printVars() {
-		String result = "";
-		for (final String x : getVars()) {
-			if (visibleVars.contains(x)) {
-				result = result + " " + x;
-			} else {
-				result = result + " [" + x + "]";
-			}
-		}
-		return result;
-	}
-
-	public String getValue(String var) {
+	String getValue(String var) {
 		final String result = get(var);
 		if (result == null) {
 			return MagicStrings.default_get;
@@ -127,7 +108,7 @@ public class Tuple extends HashMap<String, String> {
 		}
 	}
 
-	public void bind(String var, String value) {
+	void bind(String var, String value) {
 		if (get(var) != null && !get(var).equals(MagicStrings.unbound_variable)) {
 			log.info(var + " already bound to " + get(var));
 		} else {
@@ -135,10 +116,10 @@ public class Tuple extends HashMap<String, String> {
 		}
 
 	}
-	
+
 	final static String NL = System.getProperty("line.separator");
-	
-	public String printTuple() {
+
+	String printTuple() {
 		String result = NL;
 		for (final String x : keySet()) {
 			result += x + "=" + get(x) + NL;

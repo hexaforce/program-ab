@@ -24,20 +24,17 @@ package org.alicebot.ab;
 
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.Set;
 
-import lombok.extern.slf4j.Slf4j;
-
-@Slf4j
 public class NodemapperOperator {
+
 	/**
 	 * number of branches from node
 	 *
 	 * @param node Nodemapper object
 	 * @return number of branches
 	 */
-	public static int size(Nodemapper node) {
+	static int size(Nodemapper node) {
 		final HashSet<String> set = new HashSet<String>();
 		if (node.shortCut) {
 			set.add("<THAT>");
@@ -58,7 +55,7 @@ public class NodemapperOperator {
 	 * @param key   key word
 	 * @param value word maps to this next node
 	 */
-	public static void put(Nodemapper node, String key, Nodemapper value) {
+	static void put(Nodemapper node, String key, Nodemapper value) {
 		if (node.map != null) {
 			node.map.put(key, value);
 		} else { // node.type == unary_node_mapper
@@ -75,7 +72,7 @@ public class NodemapperOperator {
 	 * @param key  key word to map
 	 * @return the mapped node or null if the key is not found
 	 */
-	public static Nodemapper get(Nodemapper node, String key) {
+	static Nodemapper get(Nodemapper node, String key) {
 		if (node.map != null) {
 			return node.map.get(key);
 		} else {// node.type == unary_node_mapper
@@ -95,7 +92,7 @@ public class NodemapperOperator {
 	 * @param key  key to test
 	 * @return true or false
 	 */
-	public static boolean containsKey(Nodemapper node, String key) {
+	static boolean containsKey(Nodemapper node, String key) {
 		// log.info("containsKey: Node="+node+" Map="+node.map);
 		if (node.map != null) {
 			return node.map.containsKey(key);
@@ -109,25 +106,12 @@ public class NodemapperOperator {
 	}
 
 	/**
-	 * print all node keys
-	 *
-	 * @param node Nodemapper object
-	 */
-	public static void printKeys(Nodemapper node) {
-		final Set<String> set = keySet(node);
-		final Iterator<String> iter = set.iterator();
-		while (iter.hasNext()) {
-			log.info("" + iter.next());
-		}
-	}
-
-	/**
 	 * get key set of a node
 	 *
 	 * @param node Nodemapper object
 	 * @return set of keys
 	 */
-	public static Set<String> keySet(Nodemapper node) {
+	static Set<String> keySet(Nodemapper node) {
 		if (node.map != null) {
 			return node.map.keySet();
 		} else {// node.type == unary_node_mapper
@@ -137,7 +121,6 @@ public class NodemapperOperator {
 			}
 			return set;
 		}
-
 	}
 
 	/**
@@ -146,7 +129,7 @@ public class NodemapperOperator {
 	 * @param node Nodemapper object
 	 * @return true or false
 	 */
-	public static boolean isLeaf(Nodemapper node) {
+	static boolean isLeaf(Nodemapper node) {
 		return (node.category != null);
 	}
 
@@ -155,7 +138,7 @@ public class NodemapperOperator {
 	 *
 	 * @param node Nodemapper object
 	 */
-	public static void upgrade(Nodemapper node) {
+	static void upgrade(Nodemapper node) {
 		// log.info("Upgrading "+node.id);
 		// node.type = MagicNumbers.hash_node_mapper;
 		node.map = new HashMap<String, Nodemapper>();

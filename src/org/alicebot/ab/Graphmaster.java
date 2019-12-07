@@ -197,16 +197,6 @@ public class Graphmaster {
 		}
 	}
 
-//	/**
-//	 * test if category is already in graph
-//	 *
-//	 * @param c Category
-//	 * @return true or false
-//	 */
-//	private boolean existsCategory(Category c) {
-//		return (findNode(c) != null);
-//	}
-
 	/**
 	 * test if category is already in graph
 	 *
@@ -267,7 +257,9 @@ public class Graphmaster {
 			return null;
 		}
 	}
+
 	final static String NL = System.getProperty("line.separator");
+
 	/**
 	 * Find the matching leaf node given an input, that state and topic value
 	 *

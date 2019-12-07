@@ -20,7 +20,7 @@ public class Contact {
 	public HashMap<String, String> phones;
 	public HashMap<String, String> emails;
 
-	public static String multipleIds(String contactName) {
+	static String multipleIds(String contactName) {
 		String patternString = " (" + contactName.toUpperCase() + ") ";
 		while (patternString.contains(" ")) {
 			patternString = patternString.replace(" ", "(.*)");
@@ -43,7 +43,7 @@ public class Contact {
 		return result.trim();
 	}
 
-	public static String contactId(String contactName) {
+	static String contactId(final String contactName) {
 		String patternString = " " + contactName.toUpperCase() + " ";
 		while (patternString.contains(" ")) {
 			patternString = patternString.replace(" ", ".*");
@@ -61,7 +61,7 @@ public class Contact {
 		return result.trim();
 	}
 
-	public static String displayName(String id) {
+	static String displayName(String id) {
 		final Contact c = idContactMap.get(id.toUpperCase());
 		String result = "unknown";
 		if (c != null) {
@@ -70,7 +70,7 @@ public class Contact {
 		return result;
 	}
 
-	public static String dialNumber(String type, String id) {
+	static String dialNumber(String type, String id) {
 		String result = "unknown";
 		final Contact c = idContactMap.get(id.toUpperCase());
 		if (c != null) {
@@ -82,7 +82,7 @@ public class Contact {
 		return result;
 	}
 
-	public static String emailAddress(String type, String id) {
+	static String emailAddress(String type, String id) {
 		String result = "unknown";
 		final Contact c = idContactMap.get(id.toUpperCase());
 		if (c != null) {
@@ -94,7 +94,7 @@ public class Contact {
 		return result;
 	}
 
-	public static String birthday(String id) {
+	static String birthday(String id) {
 		final Contact c = idContactMap.get(id.toUpperCase());
 		if (c == null) {
 			return "unknown";
@@ -103,7 +103,7 @@ public class Contact {
 		}
 	}
 
-	public Contact(String displayName, String phoneType, String dialNumber, String emailType, String emailAddress, String birthday) {
+	Contact(String displayName, String phoneType, String dialNumber, String emailType, String emailAddress, String birthday) {
 		contactId = "ID" + contactCount;
 		contactCount++;
 		phones = new HashMap<String, String>();
@@ -115,21 +115,21 @@ public class Contact {
 		addBirthday(birthday);
 	}
 
-	public void addPhone(String type, String dialNumber) {
+	private void addPhone(String type, String dialNumber) {
 		phones.put(type.toUpperCase(), dialNumber);
 	}
 
-	public void addEmail(String type, String emailAddress) {
+	private void addEmail(String type, String emailAddress) {
 		emails.put(type.toUpperCase(), emailAddress);
 	}
 
-	public void addName(String name) {
+	private void addName(String name) {
 		displayName = name;
 		nameIdMap.put(displayName.toUpperCase(), contactId);
 		// log.info(nameIdMap.toString());
 	}
 
-	public void addBirthday(String birthday) {
+	private void addBirthday(String birthday) {
 		this.birthday = birthday;
 	}
 

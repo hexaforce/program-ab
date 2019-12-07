@@ -54,20 +54,7 @@ public class Chat {
 	public static boolean locationKnown = false;
 	public static String longitude;
 	public static String latitude;
-	public TripleStore tripleStore = new TripleStore("anon", this);
-
-//	/**
-//	 * Constructor (defualt customer ID)
-//	 *
-//	 * @param bot the bot to chat with
-//	 */
-//	public Chat(Bot bot) {
-//		this(bot, true, "0");
-//	}
-//
-//	public Chat(Bot bot, boolean doWrites) {
-//		this(bot, doWrites, "0");
-//	}
+	public TripleStore tripleStore = new TripleStore("anon", bot);
 
 	/**
 	 * Constructor
@@ -76,7 +63,7 @@ public class Chat {
 	 * @param doWrites   doWrites
 	 * @param customerId unique customer identifier
 	 */
-	//public Chat(Bot bot, boolean doWrites, String customerId) {
+	// public Chat(Bot bot, boolean doWrites, String customerId) {
 	public Chat(Bot bot, String customerId) {
 		this.customerId = customerId;
 		this.bot = bot;
@@ -240,7 +227,9 @@ public class Chat {
 		}
 		return respond(input, that, predicates.get("topic"), contextThatHistory);
 	}
+
 	final static String NL = System.getProperty("line.separator");
+
 	/**
 	 * return a compound response to a multiple-sentence request. "Multiple" means
 	 * one or more.
@@ -278,7 +267,7 @@ public class Chat {
 		}
 
 //		if (doWrites) {
-			bot.writeIFCategories();
+		bot.writeIFCategories();
 //		}
 		// MagicBooleans.trace("in chat.multisentenceRespond(), returning: " +
 		// response);
