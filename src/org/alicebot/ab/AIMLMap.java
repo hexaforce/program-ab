@@ -31,6 +31,8 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.HashMap;
 
+import org.alicebot.ab.utils.Inflector;
+
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.extern.slf4j.Slf4j;
@@ -45,6 +47,7 @@ import lombok.extern.slf4j.Slf4j;
 @Data
 @Slf4j
 @EqualsAndHashCode(callSuper = false)
+public
 class AIMLMap extends HashMap<String, String> {
 	private static final long serialVersionUID = 1L;
 
@@ -52,7 +55,7 @@ class AIMLMap extends HashMap<String, String> {
 	private String host; // for external maps
 	private String botid; // for external maps
 	private boolean isExternal = false;
-	private Inflector inflector = new Inflector();
+	private Inflector inflector = Inflector.getInstance();
 	private Bot bot;
 
 	/**
@@ -61,7 +64,7 @@ class AIMLMap extends HashMap<String, String> {
 	 * @param name the name of the map
 	 * @param bot  bot
 	 */
-	AIMLMap(String name, Bot bot) {
+	public AIMLMap(String name, Bot bot) {
 		super();
 		this.bot = bot;
 		this.mapName = name;
@@ -122,7 +125,7 @@ class AIMLMap extends HashMap<String, String> {
 		return super.put(key, value);
 	}
 
-	void writeAIMLMap() {
+	public void writeAIMLMap() {
 		log.info("Writing AIML Map " + mapName);
 		try {
 			// Create file

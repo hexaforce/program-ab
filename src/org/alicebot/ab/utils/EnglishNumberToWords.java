@@ -1,4 +1,4 @@
-package org.alicebot.ab;
+package org.alicebot.ab.utils;
 
 /**
 
@@ -12,6 +12,10 @@ package org.alicebot.ab;
 
 import java.text.DecimalFormat;
 
+import org.alicebot.ab.AIMLMap;
+import org.alicebot.ab.AIMLSet;
+import org.alicebot.ab.Bot;
+
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
@@ -19,9 +23,6 @@ class EnglishNumberToWords {
 	private static final String[] tensNames = { "", " ten", " twenty", " thirty", " forty", " fifty", " sixty", " seventy", " eighty", " ninety" };
 
 	private static final String[] numNames = { "", " one", " two", " three", " four", " five", " six", " seven", " eight", " nine", " ten", " eleven", " twelve", " thirteen", " fourteen", " fifteen", " sixteen", " seventeen", " eighteen", " nineteen" };
-
-	private EnglishNumberToWords() {
-	}
 
 	private static String convertLessThanOneThousand(int number) {
 		String soFar;
@@ -32,7 +33,6 @@ class EnglishNumberToWords {
 		} else {
 			soFar = numNames[number % 10];
 			number /= 10;
-
 			soFar = tensNames[number % 10] + soFar;
 			number /= 10;
 		}

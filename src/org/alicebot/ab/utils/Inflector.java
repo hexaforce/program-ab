@@ -1,4 +1,4 @@
-package org.alicebot.ab;
+package org.alicebot.ab.utils;
 /*
  * JBoss DNA (http://www.jboss.org/dna)
  * See the COPYRIGHT.txt file distributed with this work for information

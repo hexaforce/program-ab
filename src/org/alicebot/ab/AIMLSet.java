@@ -43,6 +43,7 @@ import lombok.extern.slf4j.Slf4j;
 @Data
 @Slf4j
 @EqualsAndHashCode(callSuper = false)
+public
 class AIMLSet extends HashSet<String> {
 	private static final long serialVersionUID = 1L;
 
@@ -61,7 +62,7 @@ class AIMLSet extends HashSet<String> {
 	 * @param name name of set
 	 * @param bot  bot
 	 */
-	AIMLSet(String name, Bot bot) {
+	public AIMLSet(String name, Bot bot) {
 		super();
 		this.bot = bot;
 		this.setName = name.toLowerCase();
@@ -105,7 +106,7 @@ class AIMLSet extends HashSet<String> {
 		}
 	}
 
-	void writeAIMLSet() {
+	public void writeAIMLSet() {
 		log.info("Writing AIML Set " + setName);
 		try {
 			// Create file

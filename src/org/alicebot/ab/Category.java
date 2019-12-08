@@ -185,7 +185,6 @@ class Category {
 	 */
 	static Category IFToCategory(String IF) {
 		final String[] split = IF.split(",");
-		// log.info("Read: "+split);
 		return new Category(Integer.parseInt(split[0]), split[1], split[2], split[3], lineToTemplate(split[4]), split[5]);
 	}
 
@@ -196,10 +195,10 @@ class Category {
 	 * @return category in AIML format
 	 */
 	static String categoryToIF(Category category) {
-		// log.info("categoryToIF:
-		// template="+templateToLine(category.getTemplate()));
 		final String c = ",";
-		return category.getActivationCnt() + c + category.getPattern() + c + category.getThat() + c + category.getTopic() + c + templateToLine(category.getTemplate()) + c + category.getFilename();
+		String result = category.getActivationCnt() + c + category.getPattern() + c + category.getThat() + c + category.getTopic() + c + templateToLine(category.getTemplate()) + c + category.getFilename();
+		log.debug(result);
+		return 	result;
 	}
 
 	final static String NL = System.getProperty("line.separator");

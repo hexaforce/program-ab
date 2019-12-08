@@ -51,10 +51,6 @@ class Graphmaster {
 	 *
 	 * @param bot the bot the graph belongs to.
 	 */
-//	Graphmaster(Bot bot) {
-//		this(bot, "brain");
-//	}
-
 	Graphmaster(Bot bot, String name) {
 		root = new Nodemapper();
 		this.bot = bot;
@@ -88,10 +84,8 @@ class Graphmaster {
 			final Matcher matcher = botPropPattern.matcher(pattern);
 			while (matcher.find()) {
 				final String propname = matcher.group(1).toLowerCase();
-				// log.info(matcher.group(1));
 				final String property = bot.properties.get(propname).toUpperCase();
 				pattern = pattern.replaceFirst("(?i)" + botPropRegex, property);
-				// log.info("addCategory: Replaced pattern with: "+inputThatTopic);
 			}
 		}
 		return pattern;
@@ -99,17 +93,7 @@ class Graphmaster {
 
 	void addCategory(Category category) {
 		String inputThatTopic = inputThatTopic(category.getPattern(), category.getThat(), category.getTopic());
-		// log.info("addCategory: "+inputThatTopic);
 		inputThatTopic = replaceBotProperties(inputThatTopic);
-		/*
-		 * if (inputThatTopic.contains("<B")) { Matcher matcher =
-		 * botPropPattern.matcher(inputThatTopic); while (matcher.find()) { String
-		 * propname = matcher.group(1).toLowerCase(); //log.info(matcher.group(1));
-		 * String property = bot.properties.get(propname).toUpperCase(); inputThatTopic
-		 * = inputThatTopic.replaceFirst("(?i)"+botPropRegex, property);
-		 * //log.info("addCategory: Replaced pattern with: "+inputThatTopic); } }
-		 */
-		//
 		final Path p = Path.sentenceToPath(inputThatTopic);
 		addPath(p, category);
 		categoryCnt++;
@@ -117,13 +101,10 @@ class Graphmaster {
 
 	private boolean thatStarTopicStar(Path path) {
 		final String tail = Path.pathToSentence(path).trim();
-		// log.info("thatStarTopicStar "+tail+" "+tail.equals("<THAT> *
-		// <TOPIC> *"));
 		return tail.equals("<THAT> * <TOPIC> *");
 	}
 
 	private void addSets(String type, Bot bot, Nodemapper node, String filename) {
-		// log.info("adding Set "+type+" from "+bot.setMap);
 		final String setName = Utilities.tagTrim(type, "SET").toLowerCase();
 		// AIMLSet aimlSet;
 		if (bot.setMap.containsKey(setName)) {
@@ -132,7 +113,6 @@ class Graphmaster {
 			}
 			if (!node.sets.contains(setName)) {
 				node.sets.add(setName);
-				// log.info("sets = "+node.sets);
 			}
 		} else {
 			log.info("No AIML Set found for <set>" + setName + "</set> in " + bot.botName + " " + filename);
@@ -158,8 +138,6 @@ class Graphmaster {
 	 * @param category AIML Category
 	 */
 	private void addPath(Nodemapper node, Path path, Category category) {
-		// if (path != null) log.info("Enable shortcuts = "+enableShortCuts+"
-		// path="+Path.pathToSentence(path)+" "+thatStarTopicStar(path));
 		if (path == null) {
 			node.category = category;
 			node.height = 0;
@@ -224,7 +202,6 @@ class Graphmaster {
 		return result;
 	}
 
-//	static boolean verbose = false;
 
 	/**
 	 * Recursively find a leaf node given a starting node and a path.

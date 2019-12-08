@@ -53,6 +53,7 @@ import lombok.extern.slf4j.Slf4j;
  * Class representing the AIML bot
  */
 @Slf4j
+public
 class Bot {
 
 	final Properties properties = new Properties();
@@ -195,13 +196,14 @@ class Bot {
 		}
 	}
 
+	final Timer timer = new Timer();
+	
 	private final IOFileFilter aimlFileExtension = FileFilterUtils.suffixFileFilter(".aiml");
 
 	/**
 	 * Load all brain categories from AIML directory
 	 */
 	private int addCategoriesFromAIML() {
-		final Timer timer = new Timer();
 		timer.start();
 		int cnt = 0;
 
@@ -226,7 +228,6 @@ class Bot {
 	 * @return count
 	 */
 	int addCategoriesFromAIMLIF() {
-		final Timer timer = new Timer();
 		timer.start();
 		int cnt = 0;
 
@@ -262,18 +263,21 @@ class Bot {
 	 */
 	void writeIFCategories() {
 
+		ArrayList<Category> cats = learnfGraph.getCategories();
+		if (cats.isEmpty()) {
+			return;
+		}
+
 		final File existsPath = new File(aimlif_path);
 		if (!existsPath.exists()) {
 			existsPath.mkdir();
 		}
 
-		ArrayList<Category> cats = learnfGraph.getCategories();
 		String filename = Properties.learnf_aiml_file + Properties.aimlif_file_suffix;
 
 		File f = new File(aimlif_path + "/" + filename);
 		log.debug("writeIFCategories {}", f.getPath());
 
-		// log.info("writeIFCategories "+filename);
 		BufferedWriter bw = null;
 		try {
 			// Construct the bw object
@@ -342,7 +346,6 @@ class Bot {
 		} catch (final Exception ex) {
 			log.error(ex.getMessage(), ex);
 		}
-
 		existsPath.setLastModified(new Date().getTime());
 	}
 
@@ -366,7 +369,6 @@ class Bot {
 		try {
 			for (final Category c : brainCategories) {
 				if (!c.getFilename().equals(Properties.null_aiml_file)) {
-					// log.info("Writing "+c.getCategoryNumber()+" "+c.inputThatTopic());
 					BufferedWriter bw;
 					final String fileName = c.getFilename();
 					if (fileMap.containsKey(fileName)) {
@@ -380,11 +382,11 @@ class Bot {
 						bw.write("<?xml version=\"1.0\" encoding=\"UTF-8\"?>" + NL + "<aiml version=\"2.1\">" + NL);
 						bw.write("<!--" + NL);
 						bw.write(copyright + NL);
-						bw.write("-->" + NL + NL);
-						// bw.newLine();
+						bw.write("-->" + NL);
+						bw.newLine();
 					}
-					bw.write(Category.categoryToAIML(c) + NL);
-					// bw.newLine();
+					bw.write(Category.categoryToAIML(c));
+					bw.newLine();
 				}
 			}
 			for (final String key : fileMap.keySet()) {
@@ -412,8 +414,7 @@ class Bot {
 	ArrayList<Category> readIFCategories(String filename) {
 		final ArrayList<Category> categories = new ArrayList<Category>();
 		try {
-			// Open the file that is the first
-			// command line parameter
+			// Open the file that is the first command line parameter
 			final FileInputStream fstream = new FileInputStream(filename);
 			// Get the object
 			final BufferedReader br = new BufferedReader(new InputStreamReader(fstream));
@@ -429,7 +430,8 @@ class Bot {
 			}
 			// Close the input stream
 			br.close();
-		} catch (final Exception e) {// Catch exception if any
+		} catch (final Exception e) {
+			// Catch exception if any
 			log.error("Error: " + e.getMessage());
 		}
 		return categories;
@@ -442,9 +444,6 @@ class Bot {
 	 */
 	int addAIMLSets() {
 		int cnt = 0;
-		final Timer timer = new Timer();
-		timer.start();
-
 		if (sets_path.exists()) {
 			final Map<String, String> mapFiles = FileUtils.listFiles(sets_path, setFileExtension, FileFilterUtils.trueFileFilter()).stream().collect(Collectors.toMap(File::getName, File::getAbsolutePath));
 			for (final Entry<String, String> x : mapFiles.entrySet()) {
@@ -455,7 +454,6 @@ class Bot {
 				setMap.put(setName, aimlSet);
 			}
 		}
-
 		return cnt;
 	}
 
@@ -466,8 +464,6 @@ class Bot {
 	 */
 	int addAIMLMaps() {
 		int cnt = 0;
-		final Timer timer = new Timer();
-		timer.start();
 		if (maps_path.exists()) {
 			final Map<String, String> mapFiles = FileUtils.listFiles(maps_path, mapFileExtension, FileFilterUtils.trueFileFilter()).stream().collect(Collectors.toMap(File::getName, File::getAbsolutePath));
 			for (final Entry<String, String> x : mapFiles.entrySet()) {
@@ -478,7 +474,6 @@ class Bot {
 				mapMap.put(mapName, aimlMap);
 			}
 		}
-
 		return cnt;
 	}
 

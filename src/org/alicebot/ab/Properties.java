@@ -173,6 +173,7 @@ public class Properties extends HashMap<String, String> {
 					final String property = strLine.substring(0, strLine.indexOf(":"));
 					final String value = strLine.substring(strLine.indexOf(":") + 1);
 					put(property, value);
+					log.debug("load Properties key:{} value:{}",property,value);
 					cnt++;
 				}
 			}
