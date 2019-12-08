@@ -29,7 +29,7 @@ import org.alicebot.ab.utils.IOUtils;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
-public class Main {
+public class AIMLMain {
 
 	public static void main(String[] args) throws IOException {
 		AIMLProcessor.extension = new AIMLProcessorExtensionPC();

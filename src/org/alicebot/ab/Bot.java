@@ -64,7 +64,6 @@ class Bot {
 	// Graphmaster unfinishedGraph;
 	// final ArrayList<Category> categories;
 
-	final String workingDirectory;
 	final String botName;
 
 	HashMap<String, AIMLSet> setMap = new HashMap<String, AIMLSet>();
@@ -89,8 +88,6 @@ class Bot {
 	// Bot(String name, String path, String action) {
 	Bot(String workingDirectory, String botName) throws IOException {
 		int cnt = 0;
-//		final int elementCnt = 0;
-		this.workingDirectory = workingDirectory;
 		this.botName = botName;
 		String currentDirectory = workingDirectory + "/bots/" + botName;
 		this.aiml_path = currentDirectory + "/aiml";
@@ -102,7 +99,6 @@ class Bot {
 
 //		setAllPaths(path, name);
 		this.brain = new Graphmaster(this, "brain");
-
 		this.learnfGraph = new Graphmaster(this, "learnf");
 		this.learnGraph = new Graphmaster(this, "learn");
 		// this.unfinishedGraph = new Graphmaster(this);
