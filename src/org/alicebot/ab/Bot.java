@@ -211,7 +211,7 @@ class Bot {
 		final Map<String, Node> rootNodes = aimlFiles.parallelStream().collect(Collectors.toMap(File::getName, DomUtils::parseFile));
 		for (final Entry<String, Node> x : rootNodes.entrySet()) {
 			log.debug("Loading AIML files from " + x.getKey());
-			final ArrayList<Category> moreCategories = AIMLProcessor.AIMLToCategories(x.getKey(), x.getValue());
+			final ArrayList<Category> moreCategories = AIMLToCategories.toCategories(x.getKey(), x.getValue());
 			addMoreCategories(x.getKey(), moreCategories);
 			cnt += moreCategories.size();
 		}

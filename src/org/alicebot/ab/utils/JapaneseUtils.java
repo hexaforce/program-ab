@@ -1,6 +1,6 @@
 package org.alicebot.ab.utils;
 
-import org.alicebot.ab.AIMLProcessor;
+import org.alicebot.ab.AIMLToCategories;
 import org.alicebot.ab.Properties;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
@@ -67,7 +67,7 @@ public class JapaneseUtils {
 		} catch (Exception e) {
 			log.error(e.getMessage(), e);
 		}
-		return AIMLProcessor.trimTag(response, "sentence");
+		return AIMLToCategories.trimTag(response, "sentence");
 	}
 
 	private static String recursEval(Node node) {
@@ -114,9 +114,7 @@ public class JapaneseUtils {
 		String attributes = "";
 		if (node.hasAttributes()) {
 			NamedNodeMap XMLAttributes = node.getAttributes();
-			for (int i = 0; i < XMLAttributes.getLength(); i++)
-
-			{
+			for (int i = 0; i < XMLAttributes.getLength(); i++){
 				attributes += " " + XMLAttributes.item(i).getNodeName() + "=\"" + XMLAttributes.item(i).getNodeValue() + "\"";
 			}
 		}

@@ -43,127 +43,10 @@ import lombok.extern.slf4j.Slf4j;
  * https://docs.google.com/document/d/1wNT25hJRyupcG51aO89UcQEiG-HkXRXusukADpFnDs4/pub
  */
 @Slf4j
-public
-class AIMLProcessor {
+public class AIMLProcessor {
 
 	// static private boolean DEBUG = false;
 	static AIMLProcessorExtension extension;
-
-	/**
-	 * when parsing an AIML file, process a category element.
-	 *
-	 * @param n          current XML parse node.
-	 * @param categories list of categories found so far.
-	 * @param topic      value of topic in case this category is wrapped in a
-	 *                   {@code <topic>} tag
-	 * @param aimlFile   name of AIML file being parsed.
-	 */
-	private static Category categoryProcessor(Node n, String topic, String aimlFile, String language) {
-		String pattern, that, template;
-
-		final NodeList children = n.getChildNodes();
-		pattern = "*";
-		that = "*";
-		template = "";
-		for (int j = 0; j < children.getLength(); j++) {
-			// log.info("CHILD: " + children.item(j).getNodeName());
-			final Node m = children.item(j);
-			final String mName = m.getNodeName();
-			// log.info("mName: " + mName);
-			if (mName.equals("#text")) {
-				/* skip */} else if (mName.equals("pattern")) {
-				pattern = DomUtils.nodeToString(m);
-			} else if (mName.equals("that")) {
-				that = DomUtils.nodeToString(m);
-			} else if (mName.equals("topic")) {
-				topic = DomUtils.nodeToString(m);
-			} else if (mName.equals("template")) {
-				template = DomUtils.nodeToString(m);
-			} else {
-				log.info("categoryProcessor: unexpected " + mName + " in " + DomUtils.nodeToString(m));
-			}
-		}
-		// log.info("categoryProcessor: pattern="+pattern);
-		pattern = trimTag(pattern, "pattern");
-		that = trimTag(that, "that");
-		topic = trimTag(topic, "topic");
-		pattern = cleanPattern(pattern);
-		that = cleanPattern(that);
-		topic = cleanPattern(topic);
-
-		template = trimTag(template, "template");
-		final String morphPattern = JapaneseUtils.tokenizeSentence(pattern);
-		pattern = morphPattern;
-		final String morphThatPattern = JapaneseUtils.tokenizeSentence(that);
-		that = morphThatPattern;
-		final String morphTopicPattern = JapaneseUtils.tokenizeSentence(topic);
-		topic = morphTopicPattern;
-
-		final Category c = new Category(0, pattern, that, topic, template, aimlFile);
-		/*
-		 * if (template == null) log.info("Template is null"); if (template.length()==0)
-		 * log.info("Template is zero length");
-		 */
-		if (template == null || template.length() == 0) {
-			log.info("Category " + c.inputThatTopic() + " discarded due to blank or missing <template>.");
-		}
-		return c;
-	}
-
-	private static String cleanPattern(String pattern) {
-		pattern = pattern.replaceAll("(\r\n|\n\r|\r|\n)", " ");
-		pattern = pattern.replaceAll("  ", " ");
-		return pattern.trim();
-	}
-
-	public static String trimTag(String s, String tagName) {
-		final String stag = "<" + tagName + ">";
-		final String etag = "</" + tagName + ">";
-		if (s.startsWith(stag) && s.endsWith(etag)) {
-			s = s.substring(stag.length());
-			s = s.substring(0, s.length() - etag.length());
-		}
-		return s.trim();
-	}
-
-	/**
-	 * convert an AIML file to a list of categories.
-	 *
-	 * @param directory directory containing the AIML file.
-	 * @param aimlFile  AIML file name.
-	 * @return list of categories.
-	 */
-	static ArrayList<Category> AIMLToCategories(String aimlFileName, Node root) {
-		try {
-			final ArrayList<Category> categories = new ArrayList<Category>();
-			final NodeList nodelist = root.getChildNodes();
-			for (int i = 0; i < nodelist.getLength(); i++) {
-				final Node n = nodelist.item(i);
-				// log.info("AIML child: " +n.getNodeName());
-				if (n.getNodeName().equals("category")) {
-					final Category c = categoryProcessor(n, "*", aimlFileName, Properties.default_language);
-					categories.add(c);
-				} else if (n.getNodeName().equals("topic")) {
-					final String topic = n.getAttributes().getNamedItem("name").getTextContent();
-					// log.info("topic: " + topic);
-					final NodeList children = n.getChildNodes();
-					for (int j = 0; j < children.getLength(); j++) {
-						final Node m = children.item(j);
-						// log.info("Topic child: " + m.getNodeName());
-						if (m.getNodeName().equals("category")) {
-							final Category c = categoryProcessor(m, topic, aimlFileName, Properties.default_language);
-							categories.add(c);
-						}
-					}
-				}
-			}
-			return categories;
-		} catch (final Exception ex) {
-			log.info("AIMLToCategories: " + ex);
-			log.error(ex.getMessage(), ex);
-			return null;
-		}
-	}
 
 	private static int sraiCount = 0;
 
@@ -222,7 +105,6 @@ class AIMLProcessor {
 	 * @param string the string to capitalize
 	 * @return the capitalized string
 	 */
-
 	private static String capitalizeString(String string) {
 		final char[] chars = string.toLowerCase().toCharArray();
 		boolean found = false;
