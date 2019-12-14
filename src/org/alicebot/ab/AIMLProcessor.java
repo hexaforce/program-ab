@@ -33,7 +33,6 @@ import org.alicebot.ab.utils.IntervalUtils;
 import org.alicebot.ab.utils.JapaneseUtils;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -147,26 +146,12 @@ public class AIMLProcessor {
 	 * @return the result of evaluating the tag contents.
 	 */
 	static String evalTagContent(Node node, ParseState ps, Set<String> ignoreAttributes) {
-		// Properties.trace("AIMLProcessor.evalTagContent(node: " + node + ", ps: " +
-		// ps + ", ignoreAttributes: " + ignoreAttributes);
-		// Properties.trace("in AIMLProcessor.evalTagContent, node string: " +
-		// DomUtils.nodeToString(node));
 		String result = "";
-		try {
-			final NodeList childList = node.getChildNodes();
-			for (int i = 0; i < childList.getLength(); i++) {
-				final Node child = childList.item(i);
-				// Properties.trace("in AIMLProcessor.evalTagContent(), child: " + child);
-				if (ignoreAttributes == null || !ignoreAttributes.contains(child.getNodeName())) {
-					result += recursEval(child, ps);
-					// Properties.trace("in AIMLProcessor.evalTagContent(), result: " + result);
-				}
+		for (Node child : new IterableNodeList(node.getChildNodes())) {
+			if (ignoreAttributes == null || !ignoreAttributes.contains(child.getNodeName())) {
+				result += recursEval(child, ps);
 			}
-		} catch (final Exception ex) {
-			log.info("Something went wrong with evalTagContent");
-			log.error(ex.getMessage(), ex);
 		}
-		// Properties.trace("AIMLProcessor.evalTagContent() returning: " + result);
 		return result;
 	}
 
@@ -282,14 +267,10 @@ public class AIMLProcessor {
 		String result = "";
 		final Node m = node.getAttributes().getNamedItem(attributeName);
 		if (m == null) {
-			final NodeList childList = node.getChildNodes();
-			result = null; // no attribute or tag named attributeName
-			for (int i = 0; i < childList.getLength(); i++) {
-				final Node child = childList.item(i);
-				// log.info("getAttributeOrTagValue child = "+child.getNodeName());
+			result = null;
+			for (Node child : new IterableNodeList(node.getChildNodes())) {
 				if (child.getNodeName().equals(attributeName)) {
 					result = evalTagContent(child, ps, null);
-					// log.info("getAttributeOrTagValue result from child = "+result);
 				}
 			}
 		} else {
@@ -469,8 +450,8 @@ public class AIMLProcessor {
 	private static String interval(Node node, ParseState ps) {
 		// HashSet<String> attributeNames =
 		// Utilities.stringSet("style","jformat","from","to");
-		String style = getAttributeOrTagValue(node, ps, "style"); // AIML 2.1
-		String jformat = getAttributeOrTagValue(node, ps, "jformat"); // AIML 2.1
+		String style = getAttributeOrTagValue(node, ps, "style");
+		String jformat = getAttributeOrTagValue(node, ps, "jformat");
 		String from = getAttributeOrTagValue(node, ps, "from");
 		String to = getAttributeOrTagValue(node, ps, "to");
 		if (style == null) {
@@ -897,13 +878,10 @@ public class AIMLProcessor {
 	 * @return response randomly selected from the list
 	 */
 	private static String random(Node node, ParseState ps) {
-		final NodeList childList = node.getChildNodes();
 		final ArrayList<Node> liList = new ArrayList<Node>();
-		@SuppressWarnings("unused")
-		final String setName = getAttributeOrTagValue(node, ps, "set");
-		for (int i = 0; i < childList.getLength(); i++) {
-			if (childList.item(i).getNodeName().equals("li")) {
-				liList.add(childList.item(i));
+		for (Node child : new IterableNodeList(node.getChildNodes())) {
+			if ("li".equals(child.getNodeName())) {
+				liList.add(child);
 			}
 		}
 		int index = (int) (Math.random() * liList.size());
@@ -931,9 +909,7 @@ public class AIMLProcessor {
 
 	private static String learnEvalTagContent(Node node, ParseState ps) {
 		String result = "";
-		final NodeList childList = node.getChildNodes();
-		for (int i = 0; i < childList.getLength(); i++) {
-			final Node child = childList.item(i);
+		for (Node child : new IterableNodeList(node.getChildNodes())) {
 			result += recursLearn(child, ps);
 		}
 		return result;
@@ -941,23 +917,25 @@ public class AIMLProcessor {
 
 	final static String NL = System.getProperty("line.separator");
 
-	private static String learn(Node node, ParseState ps) { // learn, learnf AIML 2.1
-		final NodeList childList = node.getChildNodes();
+	private static String learn(Node node, ParseState ps) {
+
 		String pattern = "";
 		String that = "*";
 		String template = "";
-		for (int i = 0; i < childList.getLength(); i++) {
-			if (childList.item(i).getNodeName().equals("category")) {
-				final NodeList grandChildList = childList.item(i).getChildNodes();
-				for (int j = 0; j < grandChildList.getLength(); j++) {
-					if (grandChildList.item(j).getNodeName().equals("pattern")) {
-						pattern = recursLearn(grandChildList.item(j), ps);
-					} else if (grandChildList.item(j).getNodeName().equals("that")) {
-						that = recursLearn(grandChildList.item(j), ps);
-					} else if (grandChildList.item(j).getNodeName().equals("template")) {
-						template = recursLearn(grandChildList.item(j), ps);
+
+		for (Node child : new IterableNodeList(node.getChildNodes())) {
+			if ("category".equals(child.getNodeName())) {
+
+				for (Node grandchild : new IterableNodeList(child.getChildNodes())) {
+					if ("pattern".equals(grandchild.getNodeName())) {
+						pattern = recursLearn(grandchild, ps);
+					} else if ("that".equals(grandchild.getNodeName())) {
+						that = recursLearn(grandchild, ps);
+					} else if ("template".equals(grandchild.getNodeName())) {
+						template = recursLearn(grandchild, ps);
 					}
 				}
+
 				pattern = pattern.substring("<pattern>".length(), pattern.length() - "</pattern>".length());
 				log.debug("Learn Pattern = " + pattern);
 				if (template.length() >= "<template></template>".length()) {
@@ -977,18 +955,17 @@ public class AIMLProcessor {
 				log.debug("Learn Template = " + template);
 				Category c;
 				if (node.getNodeName().equals("learn")) {
-					// log.info("node is <learn>");
 					c = new Category(0, pattern, that, "*", template, Properties.null_aiml_file);
 					ps.chatSession.bot.learnGraph.addCategory(c);
-				} else {// learnf
-						// log.info("node is <learnf>");
+				} else {
+					// learnf
 					c = new Category(0, pattern, that, "*", template, Properties.learnf_aiml_file);
 					ps.chatSession.bot.learnfGraph.addCategory(c);
 				}
 				ps.chatSession.bot.brain.addCategory(c);
-				// ps.chatSession.bot.brain.printgraph();
 			}
 		}
+
 		return "";
 	}
 
@@ -1032,32 +1009,30 @@ public class AIMLProcessor {
 	 * @return result of conditional expression
 	 */
 	private static String condition(Node node, ParseState ps) {
-		final String result = "";
-		// boolean loop = true;
-		final NodeList childList = node.getChildNodes();
+
+		// Make a list of all the <li> child nodes:
 		final ArrayList<Node> liList = new ArrayList<Node>();
+		for (Node child : new IterableNodeList(node.getChildNodes())) {
+			if ("li".equals(child.getNodeName())) {
+				liList.add(child);
+			}
+		}
+
 		String predicate = null, varName = null, value = null; // Node p=null, v=null;
 		final HashSet<String> attributeNames = Utilities.stringSet("name", "var", "value");
 		// First check if the <condition> has an attribute "name". If so, get the
 		// predicate name.
 		predicate = getAttributeOrTagValue(node, ps, "name");
 		varName = getAttributeOrTagValue(node, ps, "var");
-		// Make a list of all the <li> child nodes:
-		for (int i = 0; i < childList.getLength(); i++) {
-			if (childList.item(i).getNodeName().equals("li")) {
-				liList.add(childList.item(i));
-			}
-		}
+
 		// if there are no <li> nodes, this is a one-shot condition.
 		if (liList.size() == 0 && (value = getAttributeOrTagValue(node, ps, "value")) != null && predicate != null && ps.chatSession.predicates.get(predicate).equalsIgnoreCase(value)) {
 			return evalTagContent(node, ps, attributeNames);
 		} else if (liList.size() == 0 && (value = getAttributeOrTagValue(node, ps, "value")) != null && varName != null && ps.vars.get(varName).equalsIgnoreCase(value)) {
 			return evalTagContent(node, ps, attributeNames);
-		}
-		// otherwise this is a <condition> with <li> items:
-		else {
-			for (int i = 0; i < liList.size() && result.equals(""); i++) {
-				final Node n = liList.get(i);
+		} else {
+			// otherwise this is a <condition> with <li> items:
+			for (Node n : liList) {
 				String liPredicate = predicate;
 				String liVarName = varName;
 				if (liPredicate == null) {
@@ -1100,33 +1075,21 @@ public class AIMLProcessor {
 		return ps.chatSession.tripleStore.addTriple(subject, predicate, object);
 	}
 
-	/*
-	 * private static String qnotq(Node node, ParseState ps, Boolean affirm) {
-	 * String subject = getAttributeOrTagValue(node, ps, "subj"); String predicate =
-	 * getAttributeOrTagValue(node, ps, "pred"); String object =
-	 * getAttributeOrTagValue(node, ps, "obj"); TripleStore ts =
-	 * ps.chatSession.tripleStore; HashSet<String> triples = ts.getTriples(subject,
-	 * predicate, object); if (!affirm) { HashSet<String> U = new
-	 * HashSet<String>(ts.allTriples()); U.removeAll(triples); triples = U; } return
-	 * ts.formatAIMLTripleList(triples); } private static String q(Node node,
-	 * ParseState ps) { return qnotq(node, ps, true); } private static String
-	 * notq(Node node, ParseState ps) { return qnotq(node, ps, false); }
-	 */
 	private static String uniq(Node node, ParseState ps) {
+
 		final HashSet<String> vars = new HashSet<String>();
 		final HashSet<String> visibleVars = new HashSet<String>();
 		String subj = "?subject";
 		String pred = "?predicate";
 		String obj = "?object";
-		final NodeList childList = node.getChildNodes();
-		for (int j = 0; j < childList.getLength(); j++) {
-			final Node childNode = childList.item(j);
-			final String contents = evalTagContent(childNode, ps, null);
-			if (childNode.getNodeName().equals("subj")) {
+
+		for (Node child : new IterableNodeList(node.getChildNodes())) {
+			final String contents = evalTagContent(child, ps, null);
+			if ("subj".equals(child.getNodeName())) {
 				subj = contents;
-			} else if (childNode.getNodeName().equals("pred")) {
+			} else if ("pred".equals(child.getNodeName())) {
 				pred = contents;
-			} else if (childNode.getNodeName().equals("obj")) {
+			} else if ("obj".equals(child.getNodeName())) {
 				obj = contents;
 			}
 			if (contents.startsWith("?")) {
@@ -1134,36 +1097,42 @@ public class AIMLProcessor {
 				vars.add(contents);
 			}
 		}
+
 		final Tuple partial = new Tuple(vars, visibleVars, null);
 		final Clause clause = new Clause(subj, pred, obj);
 		final HashSet<Tuple> tuples = ps.chatSession.tripleStore.selectFromSingleClause(partial, clause, true);
+
 		String tupleList = "";
 		for (final Tuple tuple : tuples) {
 			tupleList = tuple.name + " " + tupleList;
 		}
+
 		tupleList = tupleList.trim();
+
 		if (tupleList.length() == 0) {
 			tupleList = "NIL";
 		}
+
 		String var = "";
 		for (final String x : visibleVars) {
 			var = x;
 		}
+
 		final String firstTuple = firstWord(tupleList);
 		final String result = tupleGet(firstTuple, var);
 		return result;
 	}
 
 	private static String select(Node node, ParseState ps) {
+
 		final ArrayList<Clause> clauses = new ArrayList<Clause>();
-		final NodeList childList = node.getChildNodes();
-		// String[] splitTuple;
 		final HashSet<String> vars = new HashSet<String>();
 		final HashSet<String> visibleVars = new HashSet<String>();
-		for (int i = 0; i < childList.getLength(); i++) {
-			final Node childNode = childList.item(i);
-			if (childNode.getNodeName().equals("vars")) {
-				final String contents = evalTagContent(childNode, ps, null);
+
+		for (Node child : new IterableNodeList(node.getChildNodes())) {
+			if ("vars".equals(child.getNodeName())) {
+
+				final String contents = evalTagContent(child, ps, null);
 				final String[] splitVars = contents.split(" ");
 				for (String var : splitVars) {
 					var = var.trim();
@@ -1171,36 +1140,34 @@ public class AIMLProcessor {
 						visibleVars.add(var);
 					}
 				}
-				// log.info("AIML Processor select: visible vars "+visibleVars);
-			}
 
-			else if (childNode.getNodeName().equals("q") || childNode.getNodeName().equals("notq")) {
-				final Boolean affirm = !childNode.getNodeName().equals("notq");
-				final NodeList grandChildList = childNode.getChildNodes();
+			} else if ("q".equals(child.getNodeName()) || "notq".equals(child.getNodeName())) {
+
+				final Boolean affirm = !"notq".equals(child.getNodeName());
 				String subj = null;
 				String pred = null;
 				String obj = null;
-				for (int j = 0; j < grandChildList.getLength(); j++) {
-					final Node grandChildNode = grandChildList.item(j);
-					final String contents = evalTagContent(grandChildNode, ps, null);
-					if (grandChildNode.getNodeName().equals("subj")) {
+
+				for (Node grandchild : new IterableNodeList(child.getChildNodes())) {
+					final String contents = evalTagContent(grandchild, ps, null);
+					if ("subj".equals(grandchild.getNodeName())) {
 						subj = contents;
-					} else if (grandChildNode.getNodeName().equals("pred")) {
+					} else if ("pred".equals(grandchild.getNodeName())) {
 						pred = contents;
-					} else if (grandChildNode.getNodeName().equals("obj")) {
+					} else if ("obj".equals(grandchild.getNodeName())) {
 						obj = contents;
 					}
 					if (contents.startsWith("?")) {
 						vars.add(contents);
 					}
-
 				}
+
 				final Clause clause = new Clause(subj, pred, obj, affirm);
-				// log.info("Vars "+vars+" Clause "+subj+" "+pred+" "+obj+" "+affirm);
 				clauses.add(clause);
 
 			}
 		}
+
 		final HashSet<Tuple> tuples = ps.chatSession.tripleStore.select(vars, visibleVars, clauses);
 		String result = "";
 		for (final Tuple tuple : tuples) {
@@ -1211,14 +1178,12 @@ public class AIMLProcessor {
 			result = "NIL";
 		}
 		return result;
+
 	}
 
 	private static String javascript(Node node, ParseState ps) {
-		// Properties.trace("AIMLProcessor.javascript(node: " + node + ", ps: " + ps
-		// + ")");
 		String result = Properties.bad_javascript;
 		final String script = evalTagContent(node, ps, null);
-
 		try {
 			result = IOUtils.evalScript("JavaScript", script);
 		} catch (final Exception ex) {
@@ -1262,13 +1227,11 @@ public class AIMLProcessor {
 		String content = evalTagContent(node, ps, null);
 		content = ps.chatSession.bot.preProcessor.normalize(content);
 		return restWords(content);
-
 	}
 
 	private static String resetlearnf(Node node, ParseState ps) {
 		ps.chatSession.bot.deleteLearnfCategories();
 		return "Deleted Learnf Categories";
-
 	}
 
 	private static String resetlearn(Node node, ParseState ps) {
@@ -1286,93 +1249,19 @@ public class AIMLProcessor {
 	 */
 
 	private static String recursEval(Node node, ParseState ps) {
-		// Properties.trace("AIMLProcessor.recursEval(node: " + node + ", ps: " + ps
-		// + ")");
+
+		if ("#text".equals(node.getNodeName())) {
+			return node.getNodeValue();
+		} else if ("#comment".equals(node.getNodeName())) {
+			return "";
+		}
+
 		try {
-			// Properties.trace("in AIMLProcessor.recursEval(), node string: " +
-			// DomUtils.nodeToString(node));
 			final String nodeName = node.getNodeName();
-			// Properties.trace("in AIMLProcessor.recursEval(), nodeName: " + nodeName);
-			// Properties.trace("in AIMLProcessor.recursEval(), node.getNodeValue(): " +
-			// node.getNodeValue());
-			if (nodeName.equals("#text")) {
-				return node.getNodeValue();
-			} else if (nodeName.equals("#comment")) {
-				// Properties.trace("in AIMLProcessor.recursEval(), comment =
-				// "+node.getTextContent());
-				return "";
-			} else if (nodeName.equals("template")) {
-				return evalTagContent(node, ps, null);
-			} else if (nodeName.equals("random")) {
-				return random(node, ps);
-			} else if (nodeName.equals("condition")) {
-				return loopCondition(node, ps);
-			} else if (nodeName.equals("srai")) {
-				return srai(node, ps);
-			} else if (nodeName.equals("sr")) {
-				return respond(ps.starBindings.inputStars.star(0), ps.that, ps.topic, ps.chatSession, sraiCount);
-			} else if (nodeName.equals("sraix")) {
-				return sraix(node, ps);
-			} else if (nodeName.equals("set")) {
-				return set(node, ps);
-			} else if (nodeName.equals("get")) {
-				return get(node, ps);
-			} else if (nodeName.equals("map")) {
-				return map(node, ps);
-			} else if (nodeName.equals("bot")) {
-				return bot(node, ps);
-			} else if (nodeName.equals("id")) {
-				return id(node, ps);
-			} else if (nodeName.equals("size")) {
-				return size(node, ps);
-			} else if (nodeName.equals("vocabulary")) {
+			if (nodeName.equals("vocabulary")) {
 				return vocabulary(node, ps);
-			} else if (nodeName.equals("program")) {
-				return program(node, ps);
-			} else if (nodeName.equals("date")) {
-				return date(node, ps);
-			} else if (nodeName.equals("interval")) {
-				return interval(node, ps);
-			} else if (nodeName.equals("think")) {
-				return think(node, ps);
 			} else if (nodeName.equals("system")) {
 				return system(node, ps);
-			} else if (nodeName.equals("explode")) {
-				return explode(node, ps);
-			} else if (nodeName.equals("normalize")) {
-				return normalize(node, ps);
-			} else if (nodeName.equals("denormalize")) {
-				return denormalize(node, ps);
-			} else if (nodeName.equals("uppercase")) {
-				return uppercase(node, ps);
-			} else if (nodeName.equals("lowercase")) {
-				return lowercase(node, ps);
-			} else if (nodeName.equals("formal")) {
-				return formal(node, ps);
-			} else if (nodeName.equals("sentence")) {
-				return sentence(node, ps);
-			} else if (nodeName.equals("person")) {
-				return person(node, ps);
-			} else if (nodeName.equals("person2")) {
-				return person2(node, ps);
-			} else if (nodeName.equals("gender")) {
-				return gender(node, ps);
-			} else if (nodeName.equals("star")) {
-				return inputStar(node, ps);
-			} else if (nodeName.equals("thatstar")) {
-				return thatStar(node, ps);
-			} else if (nodeName.equals("topicstar")) {
-				return topicStar(node, ps);
-			} else if (nodeName.equals("that")) {
-				return that(node, ps);
-			} else if (nodeName.equals("input")) {
-				return input(node, ps);
-			} else if (nodeName.equals("request")) {
-				return request(node, ps);
-			} else if (nodeName.equals("response")) {
-				return response(node, ps);
-			} else if (nodeName.equals("learn") || nodeName.equals("learnf")) {
-				return learn(node, ps);
 			} else if (nodeName.equals("addtriple")) {
 				return addTriple(node, ps);
 			} else if (nodeName.equals("deletetriple")) {
@@ -1383,10 +1272,6 @@ public class AIMLProcessor {
 				return select(node, ps);
 			} else if (nodeName.equals("uniq")) {
 				return uniq(node, ps);
-			} else if (nodeName.equals("first")) {
-				return first(node, ps);
-			} else if (nodeName.equals("rest")) {
-				return rest(node, ps);
 			} else if (nodeName.equals("resetlearnf")) {
 				return resetlearnf(node, ps);
 			} else if (nodeName.equals("resetlearn")) {
@@ -1394,7 +1279,93 @@ public class AIMLProcessor {
 			} else if (extension != null && extension.extensionTagSet().contains(nodeName)) {
 				return extension.recursEval(node, ps);
 			} else {
-				return (genericXML(node, ps));
+				switch (AIMLTag.valueOf(nodeName)) {
+				case bot:
+					return bot(node, ps);
+				case condition:
+					return loopCondition(node, ps);
+				case date:
+					return date(node, ps);
+				case denormalize:
+					return denormalize(node, ps);
+				case explode:
+					return explode(node, ps);
+				case first:
+					return first(node, ps);
+				case formal:
+					return formal(node, ps);
+				case gender:
+					return gender(node, ps);
+				case get:
+					return get(node, ps);
+				case id:
+					return id(node, ps);
+				case input:
+					return input(node, ps);
+				case interval:
+					return interval(node, ps);
+				case learn:
+				case learnf:
+					return learn(node, ps);
+				case lowercase:
+					return lowercase(node, ps);
+				case map:
+					return map(node, ps);
+				case normalize:
+					return normalize(node, ps);
+				case person:
+					return person(node, ps);
+				case person2:
+					return person2(node, ps);
+				case program:
+					return program(node, ps);
+				case random:
+					return random(node, ps);
+				case request:
+					return request(node, ps);
+				case response:
+					return response(node, ps);
+				case rest:
+					return rest(node, ps);
+				case sentence:
+					return sentence(node, ps);
+				case set:
+					return set(node, ps);
+				case size:
+					return size(node, ps);
+				case sr:
+					return respond(ps.starBindings.inputStars.star(0), ps.that, ps.topic, ps.chatSession, sraiCount);
+				case srai:
+					return srai(node, ps);
+				case sraix:
+					return sraix(node, ps);
+				case star:
+					return inputStar(node, ps);
+				case template:
+					return evalTagContent(node, ps, null);
+				case that:
+					return that(node, ps);
+				case thatstar:
+					return thatStar(node, ps);
+				case think:
+					return think(node, ps);
+				case topicstar:
+					return topicStar(node, ps);
+				case uppercase:
+					return uppercase(node, ps);
+				case aiml:
+				case br:
+				case category:
+				case eval:
+				case img:
+				case li:
+				case loop:
+				case oob:
+				case pattern:
+				case topic:
+				default:
+					return (genericXML(node, ps));
+				}
 			}
 		} catch (final Exception ex) {
 			log.error(ex.getMessage(), ex);
@@ -1410,8 +1381,6 @@ public class AIMLProcessor {
 	 * @return result of evaluating template.
 	 */
 	private static String evalTemplate(String template, ParseState ps) {
-		// Properties.trace("AIMLProcessor.evalTemplate(template: " + template + ",
-		// ps: " + ps + ")");
 		String response = Properties.template_failed;
 		try {
 			template = "<template>" + template + "</template>";
@@ -1420,8 +1389,6 @@ public class AIMLProcessor {
 		} catch (final Exception e) {
 			log.error(e.getMessage(), e);
 		}
-		// Properties.trace("in AIMLProcessor.evalTemplate() returning: " +
-		// response);
 		return response;
 	}
 

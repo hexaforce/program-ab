@@ -1,10 +1,10 @@
 package org.alicebot.ab;
 
 public enum AIMLTag {
-	//aiml,
+	aiml,
 	bot,
 	br,
-	//category,
+	category,
 	condition,
 	date,
 	denormalize,
@@ -42,10 +42,10 @@ public enum AIMLTag {
 	sraix ,
 	star,
 	template,
-	//that,
+	that,
 	thatstar,
 	think,
-	//topic,
+	topic,
 	topicstar,
 	uppercase
 }
