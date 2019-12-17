@@ -23,10 +23,8 @@ package org.alicebot.ab;
 */
 
 import java.io.BufferedReader;
-import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileWriter;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.HashSet;
@@ -103,23 +101,6 @@ class AIMLSet extends HashSet<String> {
 			return isanumber;
 		} else {
 			return super.contains(s);
-		}
-	}
-
-	public void writeAIMLSet() {
-		log.info("Writing AIML Set " + setName);
-		try {
-			// Create file
-			final FileWriter fstream = new FileWriter(bot.sets_path + "/" + setName + ".txt");
-			final BufferedWriter out = new BufferedWriter(fstream);
-			for (final String p : this) {
-				out.write(p.trim());
-				out.newLine();
-			}
-			// Close the output stream
-			out.close();
-		} catch (final Exception e) {// Catch exception if any
-			log.error("Error: " + e.getMessage());
 		}
 	}
 
