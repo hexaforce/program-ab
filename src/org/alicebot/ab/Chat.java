@@ -23,14 +23,11 @@ package org.alicebot.ab;
 */
 
 import java.io.BufferedReader;
-import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileWriter;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 
-import org.alicebot.ab.utils.IOUtils;
 import org.alicebot.ab.utils.JapaneseUtils;
 
 import lombok.extern.slf4j.Slf4j;
@@ -67,14 +64,23 @@ class Chat {
 	Chat(Bot bot, String customerId) {
 		this.customerId = customerId;
 		this.bot = bot;
-//		this.doWrites = doWrites;
 		final History<String> contextThatHistory = new History<String>();
 		contextThatHistory.add(Properties.default_that);
 		thatHistory.add(contextThatHistory);
-		try {
-			predicates.getPredicateDefaults(bot.config_path + "/predicates.txt");
-		} catch (final Exception ex) {
-			log.error(ex.getMessage(), ex);
+		final File file = new File(bot.config_path + "/predicates.txt");
+		if (file.exists()) {
+			try (BufferedReader buffer = new BufferedReader(new InputStreamReader(new FileInputStream(file)))) {
+				String stringLine;
+				while ((stringLine = buffer.readLine()) != null) {
+					if (stringLine.contains(":")) {
+						final String property = stringLine.substring(0, stringLine.indexOf(":"));
+						final String value = stringLine.substring(stringLine.indexOf(":") + 1);
+						predicates.put(property, value);
+					}
+				}
+			} catch (final Exception ex) {
+				log.error(ex.getMessage(), ex);
+			}
 		}
 		addTriples();
 		predicates.put("topic", Properties.default_topic);
@@ -115,34 +121,6 @@ class Chat {
 		}
 		log.debug("Loaded " + tripleCnt + " triples");
 		return tripleCnt;
-	}
-
-	/**
-	 * Chat session terminal interaction
-	 */
-	void chat() {
-		BufferedWriter bw = null;
-		final String logFile = bot.log_path + "/log_" + customerId + ".txt";
-		try {
-			// Construct the bw object
-			bw = new BufferedWriter(new FileWriter(logFile, true));
-			String request = "SET PREDICATES";
-			String response = multisentenceRespond(request);
-			while (!request.equals("quit")) {
-				System.out.print("Human: ");
-				request = IOUtils.readInputTextLine();
-				response = multisentenceRespond(request);
-				log.info("Robot: " + response);
-				bw.write("Human: " + request);
-				bw.newLine();
-				bw.write("Robot: " + response);
-				bw.newLine();
-				bw.flush();
-			}
-			bw.close();
-		} catch (final Exception ex) {
-			log.error(ex.getMessage(), ex);
-		}
 	}
 
 	/**

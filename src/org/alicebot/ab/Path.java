@@ -24,12 +24,9 @@ package org.alicebot.ab;
 
 import java.util.ArrayList;
 
-import lombok.extern.slf4j.Slf4j;
-
 /**
  * Linked list representation of Pattern Path and Input Path
  */
-@Slf4j
 class Path extends ArrayList<String> {
 	private static final long serialVersionUID = 1L;
 
@@ -98,44 +95,6 @@ class Path extends ArrayList<String> {
 		}
 		return head;
 		// return arrayToPath(array, 0);
-	}
-
-	/**
-	 * recursively convert an array to a Path
-	 *
-	 * @param array array of strings
-	 * @param index array index
-	 * @return Path form
-	 */
-	@SuppressWarnings("unused")
-	private static Path arrayToPath(String[] array, int index) {
-		if (index >= array.length) {
-			return null;
-		} else {
-			final Path newPath = new Path();
-			newPath.word = array[index];
-			newPath.next = arrayToPath(array, index + 1);
-			if (newPath.next == null) {
-				newPath.length = 1;
-			} else {
-				newPath.length = newPath.next.length + 1;
-			}
-			return newPath;
-		}
-	}
-
-	/**
-	 * print a Path
-	 */
-	void print() {
-		String result = "";
-		for (Path p = this; p != null; p = p.next) {
-			result += p.word + ",";
-		}
-		if (result.endsWith(",")) {
-			result = result.substring(0, result.length() - 1);
-		}
-		log.info(result);
 	}
 
 }
