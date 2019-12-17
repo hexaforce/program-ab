@@ -25,7 +25,6 @@ package org.alicebot.ab;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.InputStream;
 import java.io.InputStreamReader;
 
 import org.alicebot.ab.utils.JapaneseUtils;
@@ -67,9 +66,10 @@ class Chat {
 		final History<String> contextThatHistory = new History<String>();
 		contextThatHistory.add(Properties.default_that);
 		thatHistory.add(contextThatHistory);
-		final File file = new File(bot.config_path + "/predicates.txt");
-		if (file.exists()) {
-			try (BufferedReader buffer = new BufferedReader(new InputStreamReader(new FileInputStream(file)))) {
+		
+		final File predicatesFile = new File(bot.config_path + "/predicates.txt");
+		if (predicatesFile.exists()) {
+			try (BufferedReader buffer = new BufferedReader(new InputStreamReader(new FileInputStream(predicatesFile)))) {
 				String stringLine;
 				while ((stringLine = buffer.readLine()) != null) {
 					if (stringLine.contains(":")) {
@@ -82,45 +82,28 @@ class Chat {
 				log.error(ex.getMessage(), ex);
 			}
 		}
-		addTriples();
+
+		final File triplesFile = new File(bot.config_path + "/triples.txt");
+		if (triplesFile.exists()) {
+			try (BufferedReader buffer = new BufferedReader(new InputStreamReader(new FileInputStream(triplesFile)))) {
+				String stringLine;
+				while ((stringLine = buffer.readLine()) != null) {
+					final String[] triple = stringLine.split(":");
+					if (triple.length >= 3) {
+						final String subject = triple[0];
+						final String predicate = triple[1];
+						final String object = triple[2];
+						tripleStore.addTriple(subject, predicate, object);
+					}
+				}
+			} catch (final Exception ex) {
+				log.error(ex.getMessage(), ex);
+			}
+		}
+		
 		predicates.put("topic", Properties.default_topic);
 		predicates.put("jsenabled", Properties.js_enabled);
 		log.debug("Chat Session Created for bot " + bot.botName);
-	}
-
-	/**
-	 * Load Triple Store knowledge base
-	 */
-
-	private int addTriples() {
-		final File f = new File(bot.config_path + "/triples.txt");
-		if (!f.exists()) {
-			return 0;
-		}
-		int tripleCnt = 0;
-		log.debug("Loading Triples from " + f.getAbsolutePath());
-		try {
-			final InputStream is = new FileInputStream(f);
-			final BufferedReader br = new BufferedReader(new InputStreamReader(is));
-			String strLine;
-			// Read File Line By Line
-			while ((strLine = br.readLine()) != null) {
-				final String[] triple = strLine.split(":");
-				if (triple.length >= 3) {
-					final String subject = triple[0];
-					final String predicate = triple[1];
-					final String object = triple[2];
-					tripleStore.addTriple(subject, predicate, object);
-					// Log.i(TAG, "Added Triple:" + subject + " " + predicate + " " + object);
-					tripleCnt++;
-				}
-			}
-			is.close();
-		} catch (final Exception ex) {
-			log.error(ex.getMessage(), ex);
-		}
-		log.debug("Loaded " + tripleCnt + " triples");
-		return tripleCnt;
 	}
 
 	/**
