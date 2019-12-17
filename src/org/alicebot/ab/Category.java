@@ -284,62 +284,6 @@ class Category {
 
 	}
 
-//	/**
-//	 * check to see if a pattern expression is valid in AIML 2.1
-//	 *
-//	 * @param pattern pattern expression
-//	 * @return true or false
-//	 */
-//	private boolean validPatternForm(String pattern) {
-//		if (pattern.length() < 1) {
-//			validationMessage += "Zero length. ";
-//			return false;
-//		}
-////		final String[] words = pattern.split(" ");
-////		for (final String word : words) {
-////			// String word = words[i];
-////			/*
-////			 * if (!(word.matches("[\\p{Hiragana}\\p{Katakana}\\p{Han}\\p{Latin}]*+") ||
-////			 * word.equals("*") || word.equals("_"))) {
-////			 * log.info("Invalid pattern word "+word); return false; }
-////			 */
-////		}
-//		return true;
-//	}
-//
-//	private String validationMessage = "";
-
-//	/**
-//	 * check for valid Category format
-//	 *
-//	 * @return true or false
-//	 */
-//	private boolean validate() {
-//		validationMessage = "";
-//		if (!validPatternForm(pattern)) {
-//			validationMessage += "Badly formatted <pattern>";
-//			return false;
-//		}
-//		if (!validPatternForm(that)) {
-//			validationMessage += "Badly formatted <that>";
-//			return false;
-//		}
-//		if (!validPatternForm(topic)) {
-//			validationMessage += "Badly formatted <topic>";
-//			return false;
-//		}
-//		if (!AIMLProcessor.validTemplate(template)) {
-//			validationMessage += "Badly formatted <template>";
-//			return false;
-//		}
-//		if (!filename.endsWith(".aiml")) {
-//			validationMessage += "Filename suffix should be .aiml";
-//			return false;
-//		}
-//		return true;
-//
-//	}
-
 	/**
 	 * Constructor
 	 *
@@ -370,37 +314,6 @@ class Category {
 		// log.info("Creating "+categoryNumber+" "+inputThatTopic());
 	}
 
-//	/**
-//	 * Constructor
-//	 *
-//	 * @param activationCnt    category activation count
-//	 * @param patternThatTopic string representing Pattern Path
-//	 * @param template         AIML template
-//	 * @param filename         AIML category
-//	 */
-//	Category(int activationCnt, String patternThatTopic, String template, String filename) {
-//		this(activationCnt, patternThatTopic.substring(0, patternThatTopic.indexOf("<THAT>")), patternThatTopic.substring(patternThatTopic.indexOf("<THAT>") + "<THAT>".length(), patternThatTopic.indexOf("<TOPIC>")), patternThatTopic.substring(patternThatTopic.indexOf("<TOPIC>") + "<TOPIC>".length(), patternThatTopic.length()), template, filename);
-//	}
-
-//	/**
-//	 * compare two categories for sorting purposes based on activation count
-//	 */
-//	private static Comparator<Category> ACTIVATION_COMPARATOR = new Comparator<Category>() {
-//		@Override
-//		int compare(Category c1, Category c2) {
-//			return c2.getActivationCnt() - c1.getActivationCnt();
-//		}
-//	};
-//	/**
-//	 * compare two categories for sorting purposes based on alphabetical order of
-//	 * patterns
-//	 */
-//	private static Comparator<Category> PATTERN_COMPARATOR = new Comparator<Category>() {
-//		@Override
-//		int compare(Category c1, Category c2) {
-//			return String.CASE_INSENSITIVE_ORDER.compare(c1.inputThatTopic(), c2.inputThatTopic());
-//		}
-//	};
 	/**
 	 * compare two categories for sorting purposes based on category index number
 	 */

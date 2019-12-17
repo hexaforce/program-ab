@@ -1247,21 +1247,94 @@ public class AIMLProcessor {
 	 * @param node current XML parse node
 	 * @param ps   AIML parse state
 	 */
-
 	private static String recursEval(Node node, ParseState ps) {
-
-		if ("#text".equals(node.getNodeName())) {
-			return node.getNodeValue();
-		} else if ("#comment".equals(node.getNodeName())) {
-			return "";
-		}
-
+		// Properties.trace("AIMLProcessor.recursEval(node: " + node + ", ps: " + ps
+		// + ")");
 		try {
+			// Properties.trace("in AIMLProcessor.recursEval(), node string: " +
+			// DomUtils.nodeToString(node));
 			final String nodeName = node.getNodeName();
-			if (nodeName.equals("vocabulary")) {
+			// Properties.trace("in AIMLProcessor.recursEval(), nodeName: " + nodeName);
+			// Properties.trace("in AIMLProcessor.recursEval(), node.getNodeValue(): " +
+			// node.getNodeValue());
+			if (nodeName.equals("#text")) {
+				return node.getNodeValue();
+			} else if (nodeName.equals("#comment")) {
+				// Properties.trace("in AIMLProcessor.recursEval(), comment =
+				// "+node.getTextContent());
+				return "";
+			} else if (nodeName.equals("template")) {
+				return evalTagContent(node, ps, null);
+			} else if (nodeName.equals("random")) {
+				return random(node, ps);
+			} else if (nodeName.equals("condition")) {
+				return loopCondition(node, ps);
+			} else if (nodeName.equals("srai")) {
+				return srai(node, ps);
+			} else if (nodeName.equals("sr")) {
+				return respond(ps.starBindings.inputStars.star(0), ps.that, ps.topic, ps.chatSession, sraiCount);
+			} else if (nodeName.equals("sraix")) {
+				return sraix(node, ps);
+			} else if (nodeName.equals("set")) {
+				return set(node, ps);
+			} else if (nodeName.equals("get")) {
+				return get(node, ps);
+			} else if (nodeName.equals("map")) {
+				return map(node, ps);
+			} else if (nodeName.equals("bot")) {
+				return bot(node, ps);
+			} else if (nodeName.equals("id")) {
+				return id(node, ps);
+			} else if (nodeName.equals("size")) {
+				return size(node, ps);
+			} else if (nodeName.equals("vocabulary")) {
 				return vocabulary(node, ps);
+			} else if (nodeName.equals("program")) {
+				return program(node, ps);
+			} else if (nodeName.equals("date")) {
+				return date(node, ps);
+			} else if (nodeName.equals("interval")) {
+				return interval(node, ps);
+			} else if (nodeName.equals("think")) {
+				return think(node, ps);
 			} else if (nodeName.equals("system")) {
 				return system(node, ps);
+			} else if (nodeName.equals("explode")) {
+				return explode(node, ps);
+			} else if (nodeName.equals("normalize")) {
+				return normalize(node, ps);
+			} else if (nodeName.equals("denormalize")) {
+				return denormalize(node, ps);
+			} else if (nodeName.equals("uppercase")) {
+				return uppercase(node, ps);
+			} else if (nodeName.equals("lowercase")) {
+				return lowercase(node, ps);
+			} else if (nodeName.equals("formal")) {
+				return formal(node, ps);
+			} else if (nodeName.equals("sentence")) {
+				return sentence(node, ps);
+			} else if (nodeName.equals("person")) {
+				return person(node, ps);
+			} else if (nodeName.equals("person2")) {
+				return person2(node, ps);
+			} else if (nodeName.equals("gender")) {
+				return gender(node, ps);
+			} else if (nodeName.equals("star")) {
+				return inputStar(node, ps);
+			} else if (nodeName.equals("thatstar")) {
+				return thatStar(node, ps);
+			} else if (nodeName.equals("topicstar")) {
+				return topicStar(node, ps);
+			} else if (nodeName.equals("that")) {
+				return that(node, ps);
+			} else if (nodeName.equals("input")) {
+				return input(node, ps);
+			} else if (nodeName.equals("request")) {
+				return request(node, ps);
+			} else if (nodeName.equals("response")) {
+				return response(node, ps);
+			} else if (nodeName.equals("learn") || nodeName.equals("learnf")) {
+				return learn(node, ps);
 			} else if (nodeName.equals("addtriple")) {
 				return addTriple(node, ps);
 			} else if (nodeName.equals("deletetriple")) {
@@ -1272,6 +1345,10 @@ public class AIMLProcessor {
 				return select(node, ps);
 			} else if (nodeName.equals("uniq")) {
 				return uniq(node, ps);
+			} else if (nodeName.equals("first")) {
+				return first(node, ps);
+			} else if (nodeName.equals("rest")) {
+				return rest(node, ps);
 			} else if (nodeName.equals("resetlearnf")) {
 				return resetlearnf(node, ps);
 			} else if (nodeName.equals("resetlearn")) {
@@ -1279,93 +1356,7 @@ public class AIMLProcessor {
 			} else if (extension != null && extension.extensionTagSet().contains(nodeName)) {
 				return extension.recursEval(node, ps);
 			} else {
-				switch (AIMLTag.valueOf(nodeName)) {
-				case bot:
-					return bot(node, ps);
-				case condition:
-					return loopCondition(node, ps);
-				case date:
-					return date(node, ps);
-				case denormalize:
-					return denormalize(node, ps);
-				case explode:
-					return explode(node, ps);
-				case first:
-					return first(node, ps);
-				case formal:
-					return formal(node, ps);
-				case gender:
-					return gender(node, ps);
-				case get:
-					return get(node, ps);
-				case id:
-					return id(node, ps);
-				case input:
-					return input(node, ps);
-				case interval:
-					return interval(node, ps);
-				case learn:
-				case learnf:
-					return learn(node, ps);
-				case lowercase:
-					return lowercase(node, ps);
-				case map:
-					return map(node, ps);
-				case normalize:
-					return normalize(node, ps);
-				case person:
-					return person(node, ps);
-				case person2:
-					return person2(node, ps);
-				case program:
-					return program(node, ps);
-				case random:
-					return random(node, ps);
-				case request:
-					return request(node, ps);
-				case response:
-					return response(node, ps);
-				case rest:
-					return rest(node, ps);
-				case sentence:
-					return sentence(node, ps);
-				case set:
-					return set(node, ps);
-				case size:
-					return size(node, ps);
-				case sr:
-					return respond(ps.starBindings.inputStars.star(0), ps.that, ps.topic, ps.chatSession, sraiCount);
-				case srai:
-					return srai(node, ps);
-				case sraix:
-					return sraix(node, ps);
-				case star:
-					return inputStar(node, ps);
-				case template:
-					return evalTagContent(node, ps, null);
-				case that:
-					return that(node, ps);
-				case thatstar:
-					return thatStar(node, ps);
-				case think:
-					return think(node, ps);
-				case topicstar:
-					return topicStar(node, ps);
-				case uppercase:
-					return uppercase(node, ps);
-				case aiml:
-				case br:
-				case category:
-				case eval:
-				case img:
-				case li:
-				case loop:
-				case oob:
-				case pattern:
-				case topic:
-				default:
-					return (genericXML(node, ps));
-				}
+				return (genericXML(node, ps));
 			}
 		} catch (final Exception ex) {
 			log.error(ex.getMessage(), ex);
