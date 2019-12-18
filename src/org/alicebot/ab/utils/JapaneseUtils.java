@@ -24,12 +24,9 @@ public class JapaneseUtils {
 	final static Tokenizer jp = new Tokenizer();
 
 	public static String tokenizeFragment(String fragment) {
-		// log.info("buildFragment "+fragment);
 		String result = "";
 		for (Token e : jp.tokenize(fragment)) {
 			result += e.getSurface() + " ";
-			//
-			// log.info("Feature "+e.feature+" Surface="+e.surface);
 		}
 		return result.trim();
 	}
@@ -42,23 +39,17 @@ public class JapaneseUtils {
 	 *         and AIML $ operation
 	 */
 	public static String tokenizeSentence(String sentence) {
-		// log.info("tokenizeSentence "+sentence);
-		String result = "";
-		result = tokenizeXML(sentence);
+		String result = tokenizeXML(sentence);
 		while (result.contains("$ "))
 			result = result.replace("$ ", "$");
 		while (result.contains("  "))
 			result = result.replace("  ", " ");
 		while (result.contains("anon "))
 			result = result.replace("anon ", "anon"); // for Triple Store
-		result = result.trim();
-		// if (Properties.trace_mode) log.info("tokenizeSentence
-		// '"+sentence+"'-->'"+result+"'");
-		return result;
+		return result.trim();
 	}
 
 	public static String tokenizeXML(String xmlExpression) {
-		// log.info("tokenizeXML "+xmlExpression);
 		String response = Properties.template_failed;
 		try {
 			xmlExpression = "<sentence>" + xmlExpression + "</sentence>";
@@ -72,9 +63,7 @@ public class JapaneseUtils {
 
 	private static String recursEval(Node node) {
 		try {
-
 			String nodeName = node.getNodeName();
-			// log.info("recursEval "+nodeName);
 			if (nodeName.equals("#text"))
 				return tokenizeFragment(node.getNodeValue());
 			else if (nodeName.equals("sentence"))
@@ -88,14 +77,12 @@ public class JapaneseUtils {
 	}
 
 	public static String genericXML(Node node) {
-		// log.info("genericXML "+node.getNodeName());
 		String result = evalTagContent(node);
 		return unevaluatedXML(result, node);
 	}
 
 	public static String evalTagContent(Node node) {
 		String result = "";
-		// log.info("evalTagContent "+node.getNodeName());
 		try {
 			NodeList childList = node.getChildNodes();
 			for (int i = 0; i < childList.getLength(); i++) {

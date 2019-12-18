@@ -191,16 +191,12 @@ public class TripleStore {
 			subjectSet = allTriples();
 		} else {
 			s = s.toUpperCase();
-			// log.info("subjectTriples.keySet()="+subjectTriples.keySet());
-			// log.info("subjectTriples.get("+s+")="+subjectTriples.get(s));
-			// log.info("subjectTriples.containsKey("+s+")="+subjectTriples.containsKey(s));
 			if (subjectTriples.containsKey(s)) {
 				subjectSet = subjectTriples.get(s);
 			} else {
 				subjectSet = emptySet();
 			}
 		}
-		// log.info("subjectSet="+subjectSet);
 
 		if (p == null || p.startsWith("?")) {
 			predicateSet = allTriples();

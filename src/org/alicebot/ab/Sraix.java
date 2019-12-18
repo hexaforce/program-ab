@@ -63,8 +63,6 @@ public class Sraix {
 	}
 
 	private static String sraixPandorabots(String input, Chat chatSession, String host, String botid) {
-		// log.info("Entering SRAIX with input="+input+" host ="+host+"
-		// botid="+botid);
 		final String responseContent = pandorabotsRequest(input, host, botid);
 		if (responseContent == null) {
 			return Properties.sraix_failed;
@@ -80,32 +78,9 @@ public class Sraix {
 			if (custIdMap.containsKey(key)) {
 				custid = custIdMap.get(key);
 			}
-			// log.info("--> custid = "+custid);
-			// log.info("Pandorabots Request "+input);
 			final String spec = NetworkUtils.spec(host, botid, custid, input);
-			// String fragment = "?botid="+botid+"&custid="+custid+"input="+input;
-			// URI uri = new URI("http", host, "/pandora/talk-xml", fragment);
-			/*
-			 * String scheme = "http"; String authority = host; String path =
-			 * "/pandora/talk-xml"; String query =
-			 * "botid="+botid+"&custid="+custid+"&input="+input; String fragment = null; URI
-			 * uri=null; String out; try { uri = new URI(scheme, authority, path, query,
-			 * fragment); out = "\n"; out += "URI example:\n"; out +=
-			 * "        URI string: "+uri.toString()+"\n"; System.out.print(out); } catch
-			 * (Exception e) { log.error(e.getMessage(), e); }
-			 */
-			// uri = new URI(spec);
-			// String subInput = input;
-			// while (subInput.contains(" ")) subInput = subInput.replace(" ", "+");
-			// spec =
-			// "http://"+host+"/pandora/talk-xml?botid="+botid+"&custid="+custid+"input="+subInput;
-
 			log.debug("Spec = " + spec);
-			// log.info("URI="+uri);
-			// http://isengard.pandorabots.com:8008/pandora/talk-xml?botid=835f69388e345ab2&custid=dd3155d18e344a7c&input=%E3%81%93%E3%82%93%E3%81%AB%E3%81%A1%E3%81%AF
-
 			final String responseContent = NetworkUtils.responseContent(spec);
-			// log.info("Sraix: Response="+responseContent);
 			return responseContent;
 		} catch (final Exception ex) {
 			log.error(ex.getMessage(), ex);
@@ -132,11 +107,10 @@ public class Sraix {
 					custid = "0";
 				}
 				final String key = host + ":" + botid;
-				// log.info("--> Map "+key+" --> "+custid);
 				custIdMap.put(key, custid);
 			}
 			if (botResponse.endsWith(".")) {
-				botResponse = botResponse.substring(0, botResponse.length() - 1); // snnoying Pandorabots extra "."
+				botResponse = botResponse.substring(0, botResponse.length() - 1);
 			}
 		} catch (final Exception ex) {
 			log.error(ex.getMessage(), ex);

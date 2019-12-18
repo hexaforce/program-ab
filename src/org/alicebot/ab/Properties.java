@@ -25,7 +25,6 @@ package org.alicebot.ab;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.HashMap;
 
@@ -37,7 +36,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class Properties extends HashMap<String, String> {
 	private static final long serialVersionUID = 1L;
-	
+
 	// General global strings
 	public static String program_name_version = "Program AB 0.0.6.26 beta -- AI Foundation Reference AIML 2.1 implementation";
 //	public static String comment = "Added repetition detection.";
@@ -112,7 +111,7 @@ public class Properties extends HashMap<String, String> {
 	public static String map_predecessor = "predecessor";
 	public static String map_singular = "singular";
 	public static String map_plural = "plural";
-	
+
 	//
 	public static int node_activation_cnt = 4; // minimum number of activations to suggest atomic pattern
 	public static int node_size = 4; // minimum number of branches to suggest wildcard pattern
@@ -129,7 +128,7 @@ public class Properties extends HashMap<String, String> {
 //	public static int estimated_brain_size = 5000;
 //	public static int max_natural_number_digits = 10000;
 	public static int brain_print_size = 100; // largest size of brain to print to System.out
-	
+
 	//
 //	public static boolean trace_mode = true;
 	public static boolean enable_external_sets = true;
@@ -140,7 +139,7 @@ public class Properties extends HashMap<String, String> {
 	public static boolean cache_sraix = false;
 	public static boolean qa_test_mode = false;
 	public static boolean make_verbs_sets_maps = false;
-	
+
 	/**
 	 * get the value of a bot property.
 	 *
@@ -148,39 +147,9 @@ public class Properties extends HashMap<String, String> {
 	 * @return property value or a string indicating the property is undefined
 	 */
 	String get(String key) {
-		final String result = super.get(key);
-		if (result == null) {
-			return Properties.default_property;
-		} else {
-			return result;
-		}
-	}
-
-	/**
-	 * Read bot properties from an input stream.
-	 *
-	 * @param in Input stream
-	 * @return count
-	 */
-	int getPropertiesFromInputStream(InputStream in) {
-		int cnt = 0;
-		final BufferedReader br = new BufferedReader(new InputStreamReader(in));
-		String strLine;
-		// Read File Line By Line
-		try {
-			while ((strLine = br.readLine()) != null) {
-				if (strLine.contains(":")) {
-					final String property = strLine.substring(0, strLine.indexOf(":"));
-					final String value = strLine.substring(strLine.indexOf(":") + 1);
-					put(property, value);
-					log.debug("load Properties key:{} value:{}",property,value);
-					cnt++;
-				}
-			}
-		} catch (final Exception ex) {
-			log.error(ex.getMessage(), ex);
-		}
-		return cnt;
+		if (containsKey(key))
+			return super.get(key);
+		return Properties.default_property;
 	}
 
 	/**
@@ -191,21 +160,23 @@ public class Properties extends HashMap<String, String> {
 	 */
 	int getProperties(String filename) {
 		int cnt = 0;
-		log.debug("Get Properties: " + filename);
-		try {
-			// Open the file that is the first
-			// command line parameter
-			final File file = new File(filename);
-			if (file.exists()) {
-				log.debug("Exists: " + filename);
-				final FileInputStream fstream = new FileInputStream(filename);
-				// Get the object
-				cnt = getPropertiesFromInputStream(fstream);
-				// Close the input stream
-				fstream.close();
+		File file = new File(filename);
+		if (file.exists()) {
+			log.debug("Get Properties: " + filename);
+			try (final BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(file)))) {
+				String strLine;
+				while ((strLine = br.readLine()) != null) {
+					if (strLine.contains(":")) {
+						final String property = strLine.substring(0, strLine.indexOf(":"));
+						final String value = strLine.substring(strLine.indexOf(":") + 1);
+						put(property, value);
+						log.debug("load Properties key:{} value:{}", property, value);
+						cnt++;
+					}
+				}
+			} catch (final Exception e) {
+				log.error("Error: " + e.getMessage());
 			}
-		} catch (final Exception e) {// Catch exception if any
-			log.error("Error: " + e.getMessage());
 		}
 		return cnt;
 	}

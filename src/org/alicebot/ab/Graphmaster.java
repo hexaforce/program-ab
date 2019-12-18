@@ -195,11 +195,7 @@ class Graphmaster {
 	 * @return leaf node or null if no matching node is found
 	 */
 	private Nodemapper findNode(String input, String that, String topic) {
-		final Nodemapper result = findNode(root, Path.sentenceToPath(inputThatTopic(input, that, topic)));
-//		if (verbose) {
-//			log.info("findNode " + inputThatTopic(input, that, topic) + " " + result);
-//		}
-		return result;
+		return findNode(root, Path.sentenceToPath(inputThatTopic(input, that, topic)));
 	}
 
 
@@ -212,25 +208,13 @@ class Graphmaster {
 	 */
 	private Nodemapper findNode(Nodemapper node, Path path) {
 		if (path == null && node != null) {
-//			if (verbose) {
-//				log.info("findNode: path is null, returning node " + node.category.inputThatTopic());
-//			}
 			return node;
 		} else if (Path.pathToSentence(path).trim().equals("<THAT> * <TOPIC> *") && node.shortCut && path.word.equals("<THAT>")) {
-//			if (verbose) {
-//				log.info("findNode: shortcut, returning " + node.category.inputThatTopic());
-//			}
 			return node;
 		} else if (NodemapperOperator.containsKey(node, path.word)) {
-//			if (verbose) {
-//				log.info("findNode: node contains " + path.word);
-//			}
 			final Nodemapper nextNode = NodemapperOperator.get(node, path.word.toUpperCase());
 			return findNode(nextNode, path.next);
 		} else {
-//			if (verbose) {
-//				log.info("findNode: returning null");
-//			}
 			return null;
 		}
 	}

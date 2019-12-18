@@ -31,9 +31,7 @@ import java.util.HashMap;
  * NodemapperOperator class
  */
 class Nodemapper {
-	/*
-	 * static int idCnt=0; int id;
-	 */
+
 	Category category = null;
 	int height = Properties.max_graph_height;
 	StarBindings starBindings = null;
@@ -42,8 +40,5 @@ class Nodemapper {
 	Nodemapper value = null;
 	boolean shortCut = false;
 	ArrayList<String> sets;
-	/*
-	 * Nodemapper () { id = idCnt++; }
-	 */
 
 }

@@ -136,9 +136,7 @@ class Chat {
 			input = Properties.repetition_detected;
 		}
 
-		String response;
-
-		response = AIMLProcessor.respond(input, that, topic, this);
+		String response = AIMLProcessor.respond(input, that, topic, this);
 		// Properties.trace("in chat.respond(), response: " + response);
 		String normResponse = bot.preProcessor.normalize(response);
 		// Properties.trace("in chat.respond(), normResponse: " + normResponse);

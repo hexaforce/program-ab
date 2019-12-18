@@ -61,7 +61,6 @@ public class NodemapperOperator {
 		} else { // node.type == unary_node_mapper
 			node.key = key;
 			node.value = value;
-
 		}
 	}
 
@@ -82,7 +81,6 @@ public class NodemapperOperator {
 				return null;
 			}
 		}
-
 	}
 
 	/**
