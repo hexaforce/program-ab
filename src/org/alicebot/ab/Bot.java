@@ -39,6 +39,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.stream.Collectors;
 
+import org.alicebot.ab.AIMLMap.BuiltInMap;
 import org.alicebot.ab.utils.DomUtils;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.filefilter.FileFilterUtils;
@@ -112,15 +113,15 @@ public class Bot {
 		this.pronounSet = getPronouns();
 		final AIMLSet number = new AIMLSet(Properties.natural_number_set_name, this);
 		setMap.put(Properties.natural_number_set_name, number);
-		final AIMLMap successor = new AIMLMap(Properties.map_successor, this);
-		mapMap.put(Properties.map_successor, successor);
-		final AIMLMap predecessor = new AIMLMap(Properties.map_predecessor, this);
-		mapMap.put(Properties.map_predecessor, predecessor);
-		final AIMLMap singular = new AIMLMap(Properties.map_singular, this);
-		mapMap.put(Properties.map_singular, singular);
-		final AIMLMap plural = new AIMLMap(Properties.map_plural, this);
-		mapMap.put(Properties.map_plural, plural);
-		// log.info("setMap = "+setMap);
+
+		for (BuiltInMap builtIn : BuiltInMap.values()) {
+			File file = builtIn.file(maps_path.getPath());
+			if (file.exists()) {
+				final AIMLMap builtInMap = new AIMLMap(file, this);
+				mapMap.put(builtIn.name(), builtInMap);
+			}
+		}
+
 		final Date aimlDate = new Date(new File(aiml_path).lastModified());
 		final Date aimlIFDate = new Date(new File(aimlif_path).lastModified());
 		log.debug("AIML modified " + aimlDate + " AIMLIF modified " + aimlIFDate);
@@ -195,7 +196,7 @@ public class Bot {
 
 		final Map<String, Node> rootNodes = FileUtils.listFiles(new File(aiml_path), aimlFileExtension, FileFilterUtils.trueFileFilter())//
 				.parallelStream().collect(Collectors.toMap(File::getName, DomUtils::parseFile));
-		
+
 		for (final Entry<String, Node> x : rootNodes.entrySet()) {
 			log.debug("Loading AIML files from " + x.getKey());
 			final ArrayList<Category> moreCategories = AIMLToCategories.toCategories(x.getKey(), x.getValue());
@@ -422,14 +423,10 @@ public class Bot {
 	int addAIMLMaps() {
 		int cnt = 0;
 		if (maps_path.exists()) {
-			final Map<String, String> mapFiles = FileUtils.listFiles(maps_path, mapFileExtension, FileFilterUtils.trueFileFilter()).stream()//
-					.collect(Collectors.toMap(File::getName, File::getAbsolutePath));
-			for (final Entry<String, String> x : mapFiles.entrySet()) {
-				final String mapName = x.getKey().substring(0, x.getKey().length() - ".txt".length());
-				log.debug("Read AIML Map " + mapName);
-				final AIMLMap aimlMap = new AIMLMap(mapName, this);
-				cnt += aimlMap.readAIMLMap(this);
-				mapMap.put(mapName, aimlMap);
+			for (File file : FileUtils.listFiles(maps_path, mapFileExtension, FileFilterUtils.trueFileFilter())) {
+				final AIMLMap aimlMap = new AIMLMap(file, this);
+				cnt += aimlMap.getCnt();
+				mapMap.put(aimlMap.mapName, aimlMap);
 			}
 		}
 		return cnt;
