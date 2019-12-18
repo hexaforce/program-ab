@@ -34,7 +34,6 @@ import org.alicebot.ab.utils.Inflector;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 
 /**
@@ -51,13 +50,13 @@ public class AIMLMap extends HashMap<String, String> {
 	private static final long serialVersionUID = 1L;
 
 	public final String mapName;
+	public final File file;
 	private String host; // for external maps
 	private String botid; // for external maps
 	private boolean isExternal = false;
 	private Inflector inflector = Inflector.getInstance();
 	private Bot bot;
 
-	@Getter
 	private int cnt = 0;
 
 	enum BuiltInMap {
@@ -75,9 +74,10 @@ public class AIMLMap extends HashMap<String, String> {
 	 */
 	public AIMLMap(File file, Bot bot) {
 		super();
+		this.file = file;
 		this.bot = bot;
 		this.mapName = file.getName().substring(0, file.getName().length() - ".txt".length());
-
+		
 		try (BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(file)))) {
 			String strLine;
 			while ((strLine = reader.readLine()) != null && strLine.length() > 0) {
@@ -113,27 +113,16 @@ public class AIMLMap extends HashMap<String, String> {
 	 * @return the range element or a string indicating the key was not found
 	 */
 	String get(String key) {
-		String value;
-		if (mapName.equals(Properties.map_successor)) {
-			try {
-				final int number = Integer.parseInt(key);
-				return String.valueOf(number + 1);
-			} catch (final Exception ex) {
-				return Properties.default_map;
-			}
-		} else if (mapName.equals(Properties.map_predecessor)) {
-			try {
-				final int number = Integer.parseInt(key);
-				return String.valueOf(number - 1);
-			} catch (final Exception ex) {
-				return Properties.default_map;
-			}
-		} else if (mapName.equals("singular")) {
+		String value = Properties.default_map;
+		if (BuiltInMap.successor.name().equals(mapName)) {
+			return String.valueOf(Integer.parseInt(key) + 1);
+		} else if (BuiltInMap.predecessor.name().equals(mapName)) {
+			return String.valueOf(Integer.parseInt(key) - 1);
+		} else if (BuiltInMap.singular.name().equals(mapName)) {
 			return inflector.singularize(key).toLowerCase();
-		} else if (mapName.equals("plural")) {
+		} else if (BuiltInMap.plural.name().equals(mapName)) {
 			return inflector.pluralize(key).toLowerCase();
 		} else if (isExternal && Properties.enable_external_sets) {
-			// String[] split = key.split(" ");
 			final String query = mapName.toUpperCase() + " " + key;
 			final String response = Sraix.sraix(null, query, Properties.default_map, null, host, botid, null, "0");
 			log.info("External " + mapName + "(" + key + ")=" + response);
@@ -141,28 +130,18 @@ public class AIMLMap extends HashMap<String, String> {
 		} else {
 			value = super.get(key);
 		}
-		if (value == null) {
-			value = Properties.default_map;
-		}
-		// log.info("AIMLMap get "+key+"="+value);
 		return value;
 	}
 
 	public void writeAIMLMap() {
 		log.info("Writing AIML Map " + mapName);
-		try {
-			// Create file
-			final FileWriter fstream = new FileWriter(bot.maps_path + "/" + mapName + ".txt");
-			final BufferedWriter out = new BufferedWriter(fstream);
-			for (String p : this.keySet()) {
-				p = p.trim();
-				// log.info(p+"-->"+this.get(p));
-				out.write(p + ":" + this.get(p).trim());
-				out.newLine();
+		try (final BufferedWriter writer = new BufferedWriter(new FileWriter(file))){
+			for (String key : this.keySet()) {
+				key = key.trim();
+				writer.write(key + ":" + this.get(key).trim());
+				writer.newLine();
 			}
-			// Close the output stream
-			out.close();
-		} catch (final Exception e) {// Catch exception if any
+		} catch (final Exception e) {
 			log.error("Error: " + e.getMessage());
 		}
 	}

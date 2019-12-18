@@ -378,9 +378,7 @@ public class Bot {
 	 * @return array list of categories read
 	 */
 	ArrayList<Category> readIFCategories(String filename) {
-
 		final ArrayList<Category> categories = new ArrayList<Category>();
-
 		try (final BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(filename)))) {
 			String strLine;
 			while ((strLine = reader.readLine()) != null) {
@@ -389,9 +387,7 @@ public class Bot {
 		} catch (final Exception e) {
 			log.error("Error: " + e.getMessage());
 		}
-
 		return categories;
-
 	}
 
 	private final IOFileFilter setFileExtension = FileFilterUtils.suffixFileFilter(".txt");
@@ -402,13 +398,11 @@ public class Bot {
 	int addAIMLSets() {
 		int cnt = 0;
 		if (sets_path.exists()) {
-			final Map<String, String> mapFiles = FileUtils.listFiles(sets_path, setFileExtension, FileFilterUtils.trueFileFilter()).stream()//
-					.collect(Collectors.toMap(File::getName, File::getAbsolutePath));
-			for (final Entry<String, String> x : mapFiles.entrySet()) {
-				final String setName = x.getKey().substring(0, x.getKey().length() - ".txt".length());
+			for (File file : FileUtils.listFiles(sets_path, setFileExtension, FileFilterUtils.trueFileFilter())) {
+				final String setName = file.getName().substring(0, file.getName().length() - ".txt".length());
 				log.debug("Read AIML Set " + setName);
 				final AIMLSet aimlSet = new AIMLSet(setName, this);
-				cnt += aimlSet.readAIMLSet(this);
+				cnt += aimlSet.getCnt();
 				setMap.put(setName, aimlSet);
 			}
 		}
@@ -425,6 +419,7 @@ public class Bot {
 		if (maps_path.exists()) {
 			for (File file : FileUtils.listFiles(maps_path, mapFileExtension, FileFilterUtils.trueFileFilter())) {
 				final AIMLMap aimlMap = new AIMLMap(file, this);
+				log.debug("Read AIML Map " + aimlMap.mapName);
 				cnt += aimlMap.getCnt();
 				mapMap.put(aimlMap.mapName, aimlMap);
 			}

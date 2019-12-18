@@ -25,7 +25,6 @@ package org.alicebot.ab;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.HashSet;
 import java.util.regex.Matcher;
@@ -54,6 +53,8 @@ class AIMLSet extends HashSet<String> {
 	private final HashSet<String> inCache = new HashSet<String>();
 	private final HashSet<String> outCache = new HashSet<String>();
 
+	private int cnt = 0;
+	
 	/**
 	 * constructor
 	 * 
@@ -66,6 +67,46 @@ class AIMLSet extends HashSet<String> {
 		this.setName = name.toLowerCase();
 		if (setName.equals(Properties.natural_number_set_name)) {
 			maxLength = 1;
+		}
+
+		final File file = new File(bot.sets_path + "/" + setName + ".txt");
+		if (file.exists()) {
+			
+			try (final BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(file)))){
+				String strLine;
+				while ((strLine = br.readLine()) != null && strLine.length() > 0) {
+					cnt++;
+					// strLine = bot.preProcessor.normalize(strLine).toUpperCase();
+					// assume the set is pre-normalized for faster loading
+					if (strLine.startsWith("external")) {
+						final String[] splitLine = strLine.split(":");
+						if (splitLine.length >= 4) {
+							host = splitLine[1];
+							botid = splitLine[2];
+							maxLength = Integer.parseInt(splitLine[3]);
+							isExternal = true;
+							log.info("Created external set at " + host + " " + botid);
+						}
+					} else {
+						strLine = strLine.toUpperCase().trim();
+						final String[] splitLine = strLine.split(" ");
+						final int length = splitLine.length;
+						if (length > maxLength) {
+							maxLength = length;
+						}
+						// log.info("readAIMLSetFromInputStream "+strLine);
+						add(strLine.trim());
+					}
+					/*
+					 * Category c = new Category(0,
+					 * "ISA"+setName.toUpperCase()+" "+strLine.toUpperCase(), "*", "*", "true",
+					 * Properties.null_aiml_file); bot.brain.addCategory(c);
+					 */
+				}
+			} catch (final Exception e) {
+				log.error("Error: " + e.getMessage());
+			}
+			
 		}
 	}
 
@@ -102,71 +143,6 @@ class AIMLSet extends HashSet<String> {
 		} else {
 			return super.contains(s);
 		}
-	}
-
-	int readAIMLSetFromInputStream(InputStream in, Bot bot) {
-		final BufferedReader br = new BufferedReader(new InputStreamReader(in));
-		String strLine;
-		int cnt = 0;
-		// Read File Line By Line
-		try {
-			while ((strLine = br.readLine()) != null && strLine.length() > 0) {
-				cnt++;
-				// strLine = bot.preProcessor.normalize(strLine).toUpperCase();
-				// assume the set is pre-normalized for faster loading
-				if (strLine.startsWith("external")) {
-					final String[] splitLine = strLine.split(":");
-					if (splitLine.length >= 4) {
-						host = splitLine[1];
-						botid = splitLine[2];
-						maxLength = Integer.parseInt(splitLine[3]);
-						isExternal = true;
-						log.info("Created external set at " + host + " " + botid);
-					}
-				} else {
-					strLine = strLine.toUpperCase().trim();
-					final String[] splitLine = strLine.split(" ");
-					final int length = splitLine.length;
-					if (length > maxLength) {
-						maxLength = length;
-					}
-					// log.info("readAIMLSetFromInputStream "+strLine);
-					add(strLine.trim());
-				}
-				/*
-				 * Category c = new Category(0,
-				 * "ISA"+setName.toUpperCase()+" "+strLine.toUpperCase(), "*", "*", "true",
-				 * Properties.null_aiml_file); bot.brain.addCategory(c);
-				 */
-			}
-		} catch (final Exception ex) {
-			log.error(ex.getMessage(), ex);
-		}
-		return cnt;
-	}
-
-	int readAIMLSet(Bot bot) {
-		int cnt = 0;
-
-		final File file = new File(bot.sets_path + "/" + setName + ".txt");
-		if (!file.exists()) {
-			log.info(file.getPath() + " not found");
-			return cnt;
-		}
-		log.debug("Reading AIML Set " + file.getPath());
-
-		try {
-			// Open the file that is the first
-			// command line parameter
-			final FileInputStream fstream = new FileInputStream(file);
-			// Get the object
-			cnt = readAIMLSetFromInputStream(fstream, bot);
-			fstream.close();
-		} catch (final Exception e) {// Catch exception if any
-			log.error("Error: " + e.getMessage());
-		}
-		return cnt;
-
 	}
 
 }
