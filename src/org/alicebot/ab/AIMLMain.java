@@ -60,7 +60,8 @@ public class AIMLMain {
 			if (textLine.equals("q")) {
 				System.exit(0);
 			} else if (textLine.equals("wq")) {
-				bot.writeQuit();
+				bot.writeAIMLIFFiles();
+				bot.writeAIMLFiles();
 				System.exit(0);
 			} else {
 				final String request = textLine;

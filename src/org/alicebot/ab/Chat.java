@@ -188,23 +188,17 @@ class Chat {
 	 * @return string
 	 */
 	String multisentenceRespond(String request) {
-
-		// Properties.trace("chat.multisentenceRespond(request: " + request + ")");
 		String response = "";
 		matchTrace = "";
 		try {
 			String normalized = bot.preProcessor.normalize(request);
 			normalized = JapaneseUtils.tokenizeSentence(normalized);
-			// Properties.trace("in chat.multisentenceRespond(), normalized: " +
-			// normalized);
 			final String sentences[] = bot.preProcessor.sentenceSplit(normalized);
 			final History<String> contextThatHistory = new History<String>("contextThat");
 			for (final String sentence : sentences) {
-				// log.info("Human: "+sentences[i]);
 				AIMLProcessor.trace_count = 0;
 				final String reply = respond(sentence, contextThatHistory);
 				response += "  " + reply;
-				// log.info("Robot: "+reply);
 			}
 			requestHistory.add(request);
 			responseHistory.add(response);
@@ -215,12 +209,7 @@ class Chat {
 			log.error(ex.getMessage(), ex);
 			return Properties.error_bot_response;
 		}
-
-//		if (doWrites) {
 		bot.writeIFCategories();
-//		}
-		// Properties.trace("in chat.multisentenceRespond(), returning: " +
-		// response);
 		return response;
 	}
 
