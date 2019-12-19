@@ -25,7 +25,6 @@ package org.alicebot.ab;
 import java.util.Set;
 
 import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -44,98 +43,85 @@ class AIMLProcessorExtensionPC implements AIMLProcessorExtension {
 	}
 
 	private String newContact(Node node, ParseState ps) {
-		final NodeList childList = node.getChildNodes();
+		
 		String emailAddress = "unknown";
 		String displayName = "unknown";
 		String dialNumber = "unknown";
 		String emailType = "unknown";
 		String phoneType = "unknown";
 		String birthday = "unknown";
-		for (int i = 0; i < childList.getLength(); i++) {
-			if (childList.item(i).getNodeName().equals("birthday")) {
-				birthday = AIMLProcessor.evalTagContent(childList.item(i), ps, null);
-			}
-			if (childList.item(i).getNodeName().equals("phonetype")) {
-				phoneType = AIMLProcessor.evalTagContent(childList.item(i), ps, null);
-			}
-			if (childList.item(i).getNodeName().equals("emailtype")) {
-				emailType = AIMLProcessor.evalTagContent(childList.item(i), ps, null);
-			}
-			if (childList.item(i).getNodeName().equals("dialnumber")) {
-				dialNumber = AIMLProcessor.evalTagContent(childList.item(i), ps, null);
-			}
-			if (childList.item(i).getNodeName().equals("displayname")) {
-				displayName = AIMLProcessor.evalTagContent(childList.item(i), ps, null);
-			}
-			if (childList.item(i).getNodeName().equals("emailaddress")) {
-				emailAddress = AIMLProcessor.evalTagContent(childList.item(i), ps, null);
+
+		for (Node child : new IterableNodeList(node.getChildNodes())) {
+			String content = AIMLProcessor.evalTagContent(child, ps, null);;
+			if (child.getNodeName().equals("birthday")) {
+				birthday = content;
+			} else if (child.getNodeName().equals("phonetype")) {
+				phoneType = content;
+			} else if (child.getNodeName().equals("emailtype")) {
+				emailType = content;
+			} else if (child.getNodeName().equals("dialnumber")) {
+				dialNumber = content;
+			} else if (child.getNodeName().equals("displayname")) {
+				displayName = content;
+			} else if (child.getNodeName().equals("emailaddress")) {
+				emailAddress = content;
 			}
 		}
+		
 		log.info("Adding new contact " + displayName + " " + phoneType + " " + dialNumber + " " + emailType + " " + emailAddress + " " + birthday);
-		@SuppressWarnings("unused")
-		final Contact contact = new Contact(displayName, phoneType, dialNumber, emailType, emailAddress, birthday);
+		new Contact(displayName, phoneType, dialNumber, emailType, emailAddress, birthday);
 		return "";
 	}
 
 	private String contactId(Node node, ParseState ps) {
 		final String displayName = AIMLProcessor.evalTagContent(node, ps, null);
 		final String result = Contact.contactId(displayName);
-		// log.info("contactId("+displayName+")="+result);
 		return result;
 	}
 
 	private String multipleIds(Node node, ParseState ps) {
 		final String contactName = AIMLProcessor.evalTagContent(node, ps, null);
 		final String result = Contact.multipleIds(contactName);
-		// log.info("multipleIds("+contactName+")="+result);
 		return result;
 	}
 
 	private String displayName(Node node, ParseState ps) {
 		final String id = AIMLProcessor.evalTagContent(node, ps, null);
 		final String result = Contact.displayName(id);
-		// log.info("displayName("+id+")="+result);
 		return result;
 	}
 
 	private String dialNumber(Node node, ParseState ps) {
-		final NodeList childList = node.getChildNodes();
 		String id = "unknown";
 		String type = "unknown";
-		for (int i = 0; i < childList.getLength(); i++) {
-			if (childList.item(i).getNodeName().equals("id")) {
-				id = AIMLProcessor.evalTagContent(childList.item(i), ps, null);
-			}
-			if (childList.item(i).getNodeName().equals("type")) {
-				type = AIMLProcessor.evalTagContent(childList.item(i), ps, null);
+		for (Node child : new IterableNodeList(node.getChildNodes())) {
+			String content = AIMLProcessor.evalTagContent(child, ps, null);
+			if (child.getNodeName().equals("id")) {
+				id = content;
+			} else if (child.getNodeName().equals("type")) {
+				type = content;
 			}
 		}
-		final String result = Contact.dialNumber(type, id);
-		// log.info("dialNumber("+id+")="+result);
-		return result;
+		return Contact.dialNumber(type, id);
 	}
 
 	private String emailAddress(Node node, ParseState ps) {
-		final NodeList childList = node.getChildNodes();
 		String id = "unknown";
 		String type = "unknown";
-		for (int i = 0; i < childList.getLength(); i++) {
-			if (childList.item(i).getNodeName().equals("id")) {
-				id = AIMLProcessor.evalTagContent(childList.item(i), ps, null);
-			}
-			if (childList.item(i).getNodeName().equals("type")) {
-				type = AIMLProcessor.evalTagContent(childList.item(i), ps, null);
+		for (Node child : new IterableNodeList(node.getChildNodes())) {
+			String content = AIMLProcessor.evalTagContent(child, ps, null);
+			if (child.getNodeName().equals("id")) {
+				id = content;
+			} else if (child.getNodeName().equals("type")) {
+				type = content;
 			}
 		}
-		final String result = Contact.emailAddress(type, id);
-		// log.info("emailAddress("+id+")="+result);
-		return result;
+		return Contact.emailAddress(type, id);
 	}
 
 	private String contactBirthday(Node node, ParseState ps) {
 		final String id = AIMLProcessor.evalTagContent(node, ps, null);
 		final String result = Contact.birthday(id);
-		// log.info("birthday("+id+")="+result);
 		return result;
 	}
 

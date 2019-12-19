@@ -34,19 +34,6 @@ public class DomUtils {
 		return null;
 	}
 
-//	public static Node parseFile(String fileName) throws Exception {
-//		File file = new File(fileName);
-//
-//		DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
-//		DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
-//		// from AIMLProcessor.evalTemplate and AIMLProcessor.validTemplate:
-//		// dbFactory.setIgnoringComments(true); // fix this
-//		Document doc = dBuilder.parse(file);
-//		doc.getDocumentElement().normalize();
-//		Node root = doc.getDocumentElement();
-//		return root;
-//	}
-
 	public static Node parseString(String string) throws Exception {
 		DocumentBuilder dBuilder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
 		Document doc = dBuilder.parse(new ByteArrayInputStream(string.getBytes("UTF-16")));

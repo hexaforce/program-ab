@@ -80,8 +80,7 @@ public class Sraix {
 			}
 			final String spec = NetworkUtils.spec(host, botid, custid, input);
 			log.debug("Spec = " + spec);
-			final String responseContent = NetworkUtils.responseContent(spec);
-			return responseContent;
+			return NetworkUtils.responseContent(spec);
 		} catch (final Exception ex) {
 			log.error(ex.getMessage(), ex);
 			return null;
@@ -93,7 +92,6 @@ public class Sraix {
 		try {
 			int n1 = sraixResponse.indexOf("<that>");
 			int n2 = sraixResponse.indexOf("</that>");
-
 			if (n2 > n1) {
 				botResponse = sraixResponse.substring(n1 + "<that>".length(), n2);
 			}
@@ -247,7 +245,6 @@ public class Sraix {
 							// log.info(i+". "+sentences[i]);
 						}
 					}
-
 					clippedPage = clippedPage + " " + imgRef + " " + urlRef;
 					clippedPage = clippedPage.trim();
 					log(rawInput, clippedPage);

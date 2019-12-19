@@ -23,12 +23,13 @@ package org.alicebot.ab;
 */
 
 import java.io.BufferedReader;
-import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileWriter;
-import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -40,38 +41,28 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 class PreProcessor {
 
-	int normalCount = 0;
-	int denormalCount = 0;
-	int personCount = 0;
-	int person2Count = 0;
-	int genderCount = 0;
-	String[] normalSubs = new String[Properties.max_substitutions];
-	Pattern[] normalPatterns = new Pattern[Properties.max_substitutions];
-	String[] denormalSubs = new String[Properties.max_substitutions];
-	Pattern[] denormalPatterns = new Pattern[Properties.max_substitutions];
-	String[] personSubs = new String[Properties.max_substitutions];
-	Pattern[] personPatterns = new Pattern[Properties.max_substitutions];
-	String[] person2Subs = new String[Properties.max_substitutions];
-	Pattern[] person2Patterns = new Pattern[Properties.max_substitutions];
-	String[] genderSubs = new String[Properties.max_substitutions];
-	Pattern[] genderPatterns = new Pattern[Properties.max_substitutions];
-
+	enum Substitution {
+		normal, denormal, person, person2, gender;
+		File file(String dir) {
+			return new File(dir + "/" + name() + ".txt");
+		}
+	}
+	final private Bot bot;
+	final private Map<String, List<String>> substitutions = new HashMap<String, List<String>>();
+	final private Map<String, List<Pattern>> patterns= new HashMap<String, List<Pattern>>();
+	
 	/**
 	 * Constructor given bot
 	 *
 	 * @param bot AIML bot
 	 */
 	PreProcessor(Bot bot) {
-
-		normalCount = readSubstitutions(bot.config_path + "/normal.txt", normalPatterns, normalSubs);
-		denormalCount = readSubstitutions(bot.config_path + "/denormal.txt", denormalPatterns, denormalSubs);
-		personCount = readSubstitutions(bot.config_path + "/person.txt", personPatterns, personSubs);
-		person2Count = readSubstitutions(bot.config_path + "/person2.txt", person2Patterns, person2Subs);
-		genderCount = readSubstitutions(bot.config_path + "/gender.txt", genderPatterns, genderSubs);
-
-		log.debug("Preprocessor: " + normalCount + " norms " + personCount + " persons " + person2Count + " person2 ");
+		this.bot = bot;
+		for (Substitution s :Substitution.values()) {
+			readSubstitutions(s);
+		}
 	}
-
+	
 	/**
 	 * apply normalization substitutions to a request
 	 *
@@ -79,11 +70,8 @@ class PreProcessor {
 	 * @return normalized client input
 	 */
 	String normalize(String request) {
-		log.debug("PreProcessor.normalize(request: " + request + ")");
-		String result = substitute(request, normalPatterns, normalSubs, normalCount);
-		result = result.replaceAll("(\r\n|\n\r|\r|\n)", " ");
-		log.debug("PreProcessor.normalize() returning: " + result);
-		return result;
+		String result = substitute(request, Substitution.normal);
+		return result.replaceAll("(\r\n|\n\r|\r|\n)", " ");
 	}
 
 	/**
@@ -93,7 +81,7 @@ class PreProcessor {
 	 * @return normalized client input
 	 */
 	String denormalize(String request) {
-		return substitute(request, denormalPatterns, denormalSubs, denormalCount);
+		return substitute(request, Substitution.denormal);
 	}
 
 	/**
@@ -102,9 +90,8 @@ class PreProcessor {
 	 * @param input sentence
 	 * @return sentence with pronouns swapped
 	 */
-	String person(String input) {
-		return substitute(input, personPatterns, personSubs, personCount);
-
+	String person(String request) {
+		return substitute(request, Substitution.person);
 	}
 
 	/**
@@ -113,9 +100,8 @@ class PreProcessor {
 	 * @param input sentence
 	 * @return sentence with pronouns swapped
 	 */
-	String person2(String input) {
-		return substitute(input, person2Patterns, person2Subs, person2Count);
-
+	String person2(String request) {
+		return substitute(request, Substitution.person2);
 	}
 
 	/**
@@ -124,9 +110,8 @@ class PreProcessor {
 	 * @param input sentence
 	 * @return sentence with pronouns swapped
 	 */
-	String gender(String input) {
-		return substitute(input, genderPatterns, genderSubs, genderCount);
-
+	String gender(String request) {
+		return substitute(request, Substitution.gender);
 	}
 
 	/**
@@ -138,70 +123,22 @@ class PreProcessor {
 	 * @param count    number of patterns and substitutions
 	 * @return result of applying substitutions to input
 	 */
-	String substitute(String request, Pattern[] patterns, String[] subs, int count) {
+	private String substitute(String request, Substitution key) {
 		String result = " " + request + " ";
-		int index = 0;
-		try {
-			for (int i = 0; i < count; i++) {
-				index = i;
-				final String replacement = subs[i];
-				final Pattern p = patterns[i];
-				final Matcher m = p.matcher(result);
-				// log.info(i+" "+patterns[i].pattern()+"-->"+subs[i]);
-				if (m.find()) {
-					// log.info(i+" "+patterns[i].pattern()+"-->"+subs[i]);
-					// log.info(m.group());
-					result = m.replaceAll(replacement);
-				}
-
-				// log.info(result);
+		List<String> sub = substitutions.get(key.name());
+		List<Pattern> pat = patterns.get(key.name());
+		for (int i = 0; i < sub.size(); i++) {
+			final String replacement = sub.get(i);
+			final Pattern p = pat.get(i);
+			final Matcher m = p.matcher(result);
+			if (m.find()) {
+				result = m.replaceAll(replacement);
 			}
-			while (result.contains("  ")) {
-				result = result.replace("  ", " ");
-			}
-			result = result.trim();
-			// log.info("Normalized: "+result);
-		} catch (final Exception ex) {
-			log.error(ex.getMessage(), ex);
-			log.info("Request " + request + " Result " + result + " at " + index + " " + patterns[index] + " " + subs[index]);
+		}
+		while (result.contains("  ")) {
+			result = result.replace("  ", " ");
 		}
 		return result.trim();
-	}
-
-	/**
-	 * read substitutions from input stream
-	 *
-	 * @param in       input stream
-	 * @param patterns array of patterns
-	 * @param subs     array of substitution values
-	 * @return number of patterns substitutions read
-	 */
-	int readSubstitutionsFromInputStream(InputStream in, Pattern[] patterns, String[] subs) {
-		final BufferedReader br = new BufferedReader(new InputStreamReader(in));
-		String strLine;
-		// Read File Line By Line
-		int subCount = 0;
-		try {
-			while ((strLine = br.readLine()) != null) {
-				// log.info(strLine);
-				strLine = strLine.trim();
-				if (!strLine.startsWith(Properties.text_comment_mark)) {
-					final Pattern pattern = Pattern.compile("\"(.*?)\",\"(.*?)\"", Pattern.DOTALL);
-					final Matcher matcher = pattern.matcher(strLine);
-					if (matcher.find() && subCount < Properties.max_substitutions) {
-						subs[subCount] = matcher.group(2);
-						final String quotedPattern = Pattern.quote(matcher.group(1));
-						// log.info("quoted pattern="+quotedPattern);
-						patterns[subCount] = Pattern.compile(quotedPattern, Pattern.CASE_INSENSITIVE);
-						subCount++;
-					}
-				}
-
-			}
-		} catch (final Exception ex) {
-			log.error(ex.getMessage(), ex);
-		}
-		return subCount;
 	}
 
 	/**
@@ -212,24 +149,35 @@ class PreProcessor {
 	 * @param subs     array of substitution values
 	 * @return number of patterns and substitutions read
 	 */
-	int readSubstitutions(String filename, Pattern[] patterns, String[] subs) {
-		int subCount = 0;
-		try {
+	private void readSubstitutions(Substitution key) {
 
-			// Open the file that is the first
-			// command line parameter
-			final File file = new File(filename);
-			if (file.exists()) {
-				final FileInputStream fstream = new FileInputStream(filename);
-				// Get the object of DataInputStream
-				subCount = readSubstitutionsFromInputStream(fstream, patterns, subs);
-				// Close the input stream
-				fstream.close();
+		final File file = key.file(bot.config_path);
+		if (!file.exists()) {
+			return;
+		}
+		
+		try (final BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(file)))) {
+			final List<String> substitutionList = new ArrayList<String>();
+			final List<Pattern> patternList = new ArrayList<Pattern>();
+			String strLine;
+			while ((strLine = br.readLine()) != null) {
+				strLine = strLine.trim();
+				if (!strLine.startsWith(Properties.text_comment_mark)) {
+					final Pattern pattern = Pattern.compile("\"(.*?)\",\"(.*?)\"", Pattern.DOTALL);
+					final Matcher matcher = pattern.matcher(strLine);
+					if (matcher.find()) {
+						substitutionList.add(matcher.group(2));
+						final String quotedPattern = Pattern.quote(matcher.group(1));
+						patternList.add(Pattern.compile(quotedPattern, Pattern.CASE_INSENSITIVE));
+					}
+				}
 			}
-		} catch (final Exception e) {// Catch exception if any
+			substitutions.put(key.name(), substitutionList);
+			patterns.put(key.name(), patternList);
+		} catch (final Exception e) {
 			log.error("Error: " + e.getMessage());
 		}
-		return (subCount);
+		
 	}
 
 	/**
@@ -243,7 +191,6 @@ class PreProcessor {
 		line = line.replace("。", ".");
 		line = line.replace("？", "?");
 		line = line.replace("！", "!");
-		// log.info("Sentence split "+line);
 		final String result[] = line.split("[\\.!\\?]");
 		for (int i = 0; i < result.length; i++) {
 			result[i] = result[i].trim();
@@ -251,46 +198,4 @@ class PreProcessor {
 		return result;
 	}
 
-	/**
-	 * normalize a file consisting of sentences, one sentence per line.
-	 *
-	 * @param infile  input file
-	 * @param outfile output file to write results
-	 */
-	void normalizeFile(String infile, String outfile) {
-		try {
-			BufferedWriter bw = null;
-			final FileInputStream fstream = new FileInputStream(infile);
-			final BufferedReader br = new BufferedReader(new InputStreamReader(fstream));
-			bw = new BufferedWriter(new FileWriter(outfile));
-			String strLine;
-			// Read File Line By Line
-			while ((strLine = br.readLine()) != null) {
-				strLine = strLine.trim();
-				if (strLine.length() > 0) {
-					final String norm = normalize(strLine).toUpperCase();
-					final String sentences[] = sentenceSplit(norm);
-					{
-						if (sentences.length > 1) {
-							for (final String s : sentences) {
-								log.info(norm + "-->" + s);
-							}
-						}
-						for (String sentence : sentences) {
-							sentence = sentence.trim();
-							if (sentence.length() > 0) {
-								// log.info("'"+strLine+"'-->'"+norm+"'");
-								bw.write(sentence);
-								bw.newLine();
-							}
-						}
-					}
-				}
-			}
-			bw.close();
-			br.close();
-		} catch (final Exception ex) {
-			log.error(ex.getMessage(), ex);
-		}
-	}
 }

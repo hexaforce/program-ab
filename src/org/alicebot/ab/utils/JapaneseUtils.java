@@ -1,10 +1,10 @@
 package org.alicebot.ab.utils;
 
 import org.alicebot.ab.AIMLToCategories;
+import org.alicebot.ab.IterableNodeList;
 import org.alicebot.ab.Properties;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
 
 import com.atilika.kuromoji.ipadic.Token;
 import com.atilika.kuromoji.ipadic.Tokenizer;
@@ -83,15 +83,8 @@ public class JapaneseUtils {
 
 	public static String evalTagContent(Node node) {
 		String result = "";
-		try {
-			NodeList childList = node.getChildNodes();
-			for (int i = 0; i < childList.getLength(); i++) {
-				Node child = childList.item(i);
-				result += recursEval(child);
-			}
-		} catch (Exception ex) {
-			log.info("Something went wrong with evalTagContent");
-			log.error(ex.getMessage(), ex);
+		for (Node child : new IterableNodeList(node.getChildNodes())) {
+			result += recursEval(child);
 		}
 		return result;
 	}
