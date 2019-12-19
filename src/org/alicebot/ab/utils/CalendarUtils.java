@@ -11,13 +11,6 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class CalendarUtils {
 
-	public static String formatTime(String formatString, long msSinceEpoch) {
-		SimpleDateFormat dateFormat = new SimpleDateFormat(formatString);
-		Calendar cal = Calendar.getInstance();
-		dateFormat.setCalendar(cal);
-		return dateFormat.format(new Date(msSinceEpoch));
-	}
-
 	public static int timeZoneOffset() {
 		Calendar cal = Calendar.getInstance();
 		int offset = (cal.get(Calendar.ZONE_OFFSET) + cal.get(Calendar.DST_OFFSET)) / (60 * 1000);
