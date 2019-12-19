@@ -1,7 +1,5 @@
 package org.alicebot.ab;
 
-import lombok.extern.slf4j.Slf4j;
-
 /* 
 	Program AB Reference AIML 2.1 implementation
 
@@ -29,10 +27,10 @@ import lombok.extern.slf4j.Slf4j;
  *
  * @param <T> type of history object
  */
-@Slf4j
 class History<T> {
 
 	private Object[] history;
+	@SuppressWarnings("unused")
 	private String name;
 
 	/**
@@ -98,20 +96,6 @@ class History<T> {
 			}
 		} else {
 			return null;
-		}
-	}
-
-	/**
-	 * print history
-	 */
-	void printHistory() {
-		int i;
-		for (i = 0; get(i) != null; i++) {
-			log.info(name + "History " + (i + 1) + " = " + get(i));
-			log.info("{}", String.valueOf(get(i).getClass()).contains("History"));
-			if (String.valueOf(get(i).getClass()).contains("History")) {
-				((History<?>) get(i)).printHistory();
-			}
 		}
 	}
 

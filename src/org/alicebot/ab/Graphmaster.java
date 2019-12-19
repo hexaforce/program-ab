@@ -95,7 +95,7 @@ class Graphmaster {
 		String inputThatTopic = inputThatTopic(category.getPattern(), category.getThat(), category.getTopic());
 		inputThatTopic = replaceBotProperties(inputThatTopic);
 		final Path p = Path.sentenceToPath(inputThatTopic);
-		addPath(p, category);
+		addPath(root, p, category);
 		categoryCnt++;
 	}
 
@@ -110,23 +110,12 @@ class Graphmaster {
 		if (bot.setMap.containsKey(setName)) {
 			if (node.sets == null) {
 				node.sets = new ArrayList<String>();
-			}
-			if (!node.sets.contains(setName)) {
+			} else if (!node.sets.contains(setName)) {
 				node.sets.add(setName);
 			}
 		} else {
 			log.info("No AIML Set found for <set>" + setName + "</set> in " + bot.botName + " " + filename);
 		}
-	}
-
-	/**
-	 * add a path to the graph from the root to a Category
-	 *
-	 * @param path     Pattern path
-	 * @param category AIML category
-	 */
-	private void addPath(Path path, Category category) {
-		addPath(root, path, category);
 	}
 
 	/**
@@ -182,22 +171,8 @@ class Graphmaster {
 	 * @return true or false
 	 */
 	Nodemapper findNode(Category c) {
-		return findNode(c.getPattern(), c.getThat(), c.getTopic());
+		return findNode(root, Path.sentenceToPath(inputThatTopic(c.getPattern(), c.getThat(), c.getTopic())));
 	}
-
-	/**
-	 * Given an input pattern, that pattern and topic pattern, find the leaf node
-	 * associated with this path.
-	 *
-	 * @param input input pattern
-	 * @param that  that pattern
-	 * @param topic topic pattern
-	 * @return leaf node or null if no matching node is found
-	 */
-	private Nodemapper findNode(String input, String that, String topic) {
-		return findNode(root, Path.sentenceToPath(inputThatTopic(input, that, topic)));
-	}
-
 
 	/**
 	 * Recursively find a leaf node given a starting node and a path.
@@ -361,7 +336,7 @@ class Graphmaster {
 	 * @param trace Match trace info
 	 */
 	private void fail(String mode, String trace) {
-		// log.info("Match failed ("+mode+") "+trace);
+		log.info("Match failed (" + mode + ") " + trace);
 	}
 
 	/**

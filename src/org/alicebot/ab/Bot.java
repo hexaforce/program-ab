@@ -60,9 +60,6 @@ public class Bot {
 	Graphmaster learnfGraph;
 	Graphmaster learnGraph;
 
-	// Graphmaster unfinishedGraph;
-	// final ArrayList<Category> categories;
-
 	final String botName;
 
 	HashMap<String, AIMLSet> setMap = new HashMap<String, AIMLSet>();
