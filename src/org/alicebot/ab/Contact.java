@@ -25,7 +25,6 @@ class Contact {
 		while (patternString.contains(" ")) {
 			patternString = patternString.replace(" ", "(.*)");
 		}
-		// log.info("Pattern='"+patternString+"'");
 		final Pattern pattern = Pattern.compile(patternString);
 		final Set<String> keys = nameIdMap.keySet();
 		String result = "";
@@ -48,7 +47,6 @@ class Contact {
 		while (patternString.contains(" ")) {
 			patternString = patternString.replace(" ", ".*");
 		}
-		// log.info("Pattern='"+patternString+"'");
 		final Pattern pattern = Pattern.compile(patternString);
 		final Set<String> keys = nameIdMap.keySet();
 		String result = "unknown";
@@ -126,7 +124,6 @@ class Contact {
 	private void addName(String name) {
 		displayName = name;
 		nameIdMap.put(displayName.toUpperCase(), contactId);
-		// log.info(nameIdMap.toString());
 	}
 
 	private void addBirthday(String birthday) {

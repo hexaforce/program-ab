@@ -129,7 +129,7 @@ public class Bot {
 			writeAIMLIFFiles();
 		} else {
 			addCategoriesFromAIMLIF();
-			if (brain.getCategories().size() == 0) {
+			if (brain.getCategoriesSize() == 0) {
 				log.info("No AIMLIF Files found.  Looking for AIML");
 				cnt = addCategoriesFromAIML();
 			}

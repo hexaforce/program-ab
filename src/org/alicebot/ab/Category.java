@@ -144,7 +144,6 @@ class Category {
 	void addMatch(String input, Bot bot) {
 		if (matches == null) {
 			final String setName = this.inputThatTopic().replace("*", "STAR").replace("_", "UNDERSCORE").replace(" ", "-").replace("<THAT>", "THAT").replace("<TOPIC>", "TOPIC");
-			// log.info("Created match set "+setName);
 			matches = new AIMLSet(setName, bot);
 		}
 		matches.add(input);
@@ -198,7 +197,7 @@ class Category {
 		final String c = ",";
 		String result = category.getActivationCnt() + c + category.getPattern() + c + category.getThat() + c + category.getTopic() + c + templateToLine(category.getTemplate()) + c + category.getFilename();
 		log.debug(result);
-		return 	result;
+		return result;
 	}
 
 	final static String NL = System.getProperty("line.separator");
@@ -239,16 +238,15 @@ class Category {
 				for (String t : templates) {
 					template += "      " + t.trim() + NL;
 				}
-				result = //
-						"  <category>" + NL + //
-								"    <pattern>" + NL + //
-								"      " + pattern + NL + //
-								"    </pattern>" + NL + //
-								thatStatement + //
-								"    <template>" + NL + //
-								template + //
-								"    </template>" + NL + //
-								"  </category>" + NL;
+				result = "  <category>" + NL + //
+						"    <pattern>" + NL + //
+						"      " + pattern + NL + //
+						"    </pattern>" + NL + //
+						thatStatement + //
+						"    <template>" + NL + //
+						template + //
+						"    </template>" + NL + //
+						"  </category>" + NL;
 
 			} else {
 
@@ -261,18 +259,17 @@ class Category {
 				for (String t : templates) {
 					template += "      " + t.trim() + NL;
 				}
-				result = //
-						"  <topic name=\"" + category.getTopic() + "\">" + NL + //
-								"    <category>" + NL + //
-								"      <pattern>" + NL + //
-								"        " + pattern + NL + //
-								"      </pattern>" + NL + //
-								thatStatement + //
-								"      <template>" + NL + //
-								template + //
-								"      </template>" + NL + //
-								"    </category>" + NL + //
-								"  </topic>" + NL;
+				result = "  <topic name=\"" + category.getTopic() + "\">" + NL + //
+						"    <category>" + NL + //
+						"      <pattern>" + NL + //
+						"        " + pattern + NL + //
+						"      </pattern>" + NL + //
+						thatStatement + //
+						"      <template>" + NL + //
+						template + //
+						"      </template>" + NL + //
+						"    </category>" + NL + //
+						"  </topic>" + NL;
 
 			}
 
@@ -311,7 +308,6 @@ class Category {
 		this.activationCnt = activationCnt;
 		matches = null;
 		this.categoryNumber = categoryCnt++;
-		// log.info("Creating "+categoryNumber+" "+inputThatTopic());
 	}
 
 	/**

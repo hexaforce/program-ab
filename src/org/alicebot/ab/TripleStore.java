@@ -47,6 +47,7 @@ public class TripleStore {
 	}
 
 	private String mapTriple(Triple triple) {
+
 		final String id = triple.id;
 		idTriple.put(id, triple);
 		String s, p, o;
@@ -62,11 +63,9 @@ public class TripleStore {
 		tripleString = tripleString.toUpperCase();
 
 		if (tripleStringId.keySet().contains(tripleString)) {
-			// log.info("Found "+tripleString+"
-			// "+tripleStringId.get(tripleString));
 			return tripleStringId.get(tripleString); // triple already exists
 		} else {
-			// log.info(tripleString+" not found");
+
 			tripleStringId.put(tripleString, id);
 
 			HashSet<String> existingTriples;
@@ -99,8 +98,10 @@ public class TripleStore {
 	}
 
 	private String unMapTriple(Triple triple) {
+
 		String id = Properties.undefined_triple;
 		String s, p, o;
+
 		s = triple.subject;
 		p = triple.predicate;
 		o = triple.object;
@@ -181,12 +182,13 @@ public class TripleStore {
 	}
 
 	private HashSet<String> getTriples(String s, String p, String o) {
+
 		Set<String> subjectSet;
 		Set<String> predicateSet;
 		Set<String> objectSet;
 		Set<String> resultSet;
 		log.debug("TripleStore: getTriples [" + idTriple.size() + "] " + s + ":" + p + ":" + o);
-		// printAllTriples();
+
 		if (s == null || s.startsWith("?")) {
 			subjectSet = allTriples();
 		} else {
@@ -224,18 +226,7 @@ public class TripleStore {
 		resultSet.retainAll(predicateSet);
 		resultSet.retainAll(objectSet);
 
-		final HashSet<String> finalResultSet = new HashSet<String>(resultSet);
-
-		// log.info("TripleStore.getTriples: "+finalResultSet.size()+"
-		// results");
-		/*
-		 * log.info("getTriples subjectSet="+subjectSet);
-		 * log.info("getTriples predicateSet="+predicateSet);
-		 * log.info("getTriples objectSet="+objectSet);
-		 * log.info("getTriples result="+resultSet);
-		 */
-
-		return finalResultSet;
+		return new HashSet<String>(resultSet);
 	}
 
 	private String getSubject(String id) {
@@ -283,23 +274,24 @@ public class TripleStore {
 		final String subj = clause.subj;
 		final String pred = clause.pred;
 		final String obj = clause.obj;
-		final Clause newClause = new Clause(clause);
+		final Boolean affirm = clause.affirm;
+		final Clause newClause = Clause.builder().subj(subj).pred(pred).obj(obj).affirm(affirm).build();
 		if (vars.contains(subj)) {
 			final String value = tuple.getValue(subj);
 			if (!value.equals(Properties.unbound_variable)) {
-				/* log.info("adjusting "+subj+" "+value); */ newClause.subj = value;
+				newClause.subj = value;
 			}
 		}
 		if (vars.contains(pred)) {
 			final String value = tuple.getValue(pred);
 			if (!value.equals(Properties.unbound_variable)) {
-				/* log.info("adjusting "+pred+" "+value); */ newClause.pred = value;
+				newClause.pred = value;
 			}
 		}
 		if (vars.contains(obj)) {
 			final String value = tuple.getValue(obj);
 			if (!value.equals(Properties.unbound_variable)) {
-				/* log.info("adjusting "+obj+" "+value); */newClause.obj = value;
+				newClause.obj = value;
 			}
 		}
 		return newClause;
@@ -321,10 +313,10 @@ public class TripleStore {
 	}
 
 	HashSet<Tuple> selectFromSingleClause(Tuple partial, Clause clause, Boolean affirm) {
+
 		final HashSet<Tuple> result = new HashSet<Tuple>();
 		final HashSet<String> triples = getTriples(clause.subj, clause.pred, clause.obj);
-		// log.info("TripleStore: selected "+triples.size()+" from single
-		// clause "+clause.subj+" "+clause.pred+" "+clause.obj);
+
 		if (affirm) {
 			for (final String triple : triples) {
 				final Tuple tuple = bindTuple(partial, triple, clause);
@@ -339,8 +331,7 @@ public class TripleStore {
 	}
 
 	private HashSet<Tuple> selectFromRemainingClauses(Tuple partial, ArrayList<Clause> clauses) {
-		// log.info("TripleStore: partial = "+partial.printTuple()+"
-		// clauses.size()=="+clauses.size());
+
 		HashSet<Tuple> result = new HashSet<Tuple>();
 		Clause clause = clauses.get(0);
 		clause = adjustClause(partial, clause);

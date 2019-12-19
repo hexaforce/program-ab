@@ -27,8 +27,6 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStreamReader;
 
-import org.alicebot.ab.utils.JapaneseUtils;
-
 import lombok.extern.slf4j.Slf4j;
 
 /**
@@ -38,12 +36,10 @@ import lombok.extern.slf4j.Slf4j;
 class Chat {
 
 	Bot bot;
-//	boolean doWrites;
 	String customerId = Properties.default_Customer_id;
 	History<History<?>> thatHistory = new History<History<?>>("that");
 	History<String> requestHistory = new History<String>("request");
 	History<String> responseHistory = new History<String>("response");
-	// History<String> repetitionHistory = new History<String>("repetition");
 	History<String> inputHistory = new History<String>("input");
 	Predicates predicates = new Predicates();
 	static String matchTrace = "";
@@ -107,6 +103,13 @@ class Chat {
 	}
 
 	/**
+	 * @param newMatchTrace
+	 */
+	static void setMatchTrace(String newMatchTrace) {
+		matchTrace = newMatchTrace;
+	}
+
+	/**
 	 * Return bot response to a single sentence input given conversation context
 	 *
 	 * @param input              client input
@@ -117,64 +120,36 @@ class Chat {
 	 * @return bot's reply
 	 */
 	private String respond(String input, String that, String topic, History<String> contextThatHistory) {
-		// Properties.trace("chat.respond(input: " + input + ", that: " + that + ",
-		// topic: " + topic + ", contextThatHistory: " + contextThatHistory + ")");
+		
 		boolean repetition = true;
-		// inputHistory.printHistory();
 		for (int i = 0; i < Properties.repetition_count; i++) {
-			// log.info(request.toUpperCase()+"=="+inputHistory.get(i)+"?
-			// "+request.toUpperCase().equals(inputHistory.get(i)));
 			if (inputHistory.get(i) == null || !input.toUpperCase().equals(inputHistory.get(i).toUpperCase())) {
 				repetition = false;
 			}
 		}
+		
 		if (input.equals(Properties.null_input)) {
 			repetition = false;
 		}
+		
 		inputHistory.add(input);
+		
 		if (repetition) {
 			input = Properties.repetition_detected;
 		}
 
 		String response = AIMLProcessor.respond(input, that, topic, this);
-		// Properties.trace("in chat.respond(), response: " + response);
-		String normResponse = bot.preProcessor.normalize(response);
-		// Properties.trace("in chat.respond(), normResponse: " + normResponse);
-
-		normResponse = JapaneseUtils.tokenizeSentence(normResponse);
-		final String sentences[] = bot.preProcessor.sentenceSplit(normResponse);
-		for (final String sentence : sentences) {
+		
+		for (final String sentence : bot.preProcessor.japaneseSentenceSplit(response)) {
 			that = sentence;
-			// log.info("That "+i+" '"+that+"'");
 			if (that.trim().equals("")) {
 				that = Properties.default_that;
 			}
 			contextThatHistory.add(that);
 		}
-		final String result = response.trim() + "  ";
-		// Properties.trace("in chat.respond(), returning: " + result);
-		return result;
+		return response.trim() + "  ";
 	}
 
-	/**
-	 * Return bot response given an input and a history of "that" for the current
-	 * conversational interaction
-	 *
-	 * @param input              client input
-	 * @param contextThatHistory history of "that" values for this request/response
-	 *                           interaction
-	 * @return bot's reply
-	 */
-	String respond(String input, History<String> contextThatHistory) {
-		final History<?> hist = thatHistory.get(0);
-		String that;
-		if (hist == null) {
-			that = Properties.default_that;
-		} else {
-			that = hist.getString(0);
-		}
-		return respond(input, that, predicates.get("topic"), contextThatHistory);
-	}
 
 	final static String NL = System.getProperty("line.separator");
 
@@ -186,33 +161,43 @@ class Chat {
 	 * @return string
 	 */
 	String multisentenceRespond(String request) {
+		
 		String response = "";
 		matchTrace = "";
+		
 		try {
-			String normalized = bot.preProcessor.normalize(request);
-			normalized = JapaneseUtils.tokenizeSentence(normalized);
-			final String sentences[] = bot.preProcessor.sentenceSplit(normalized);
+			
 			final History<String> contextThatHistory = new History<String>("contextThat");
-			for (final String sentence : sentences) {
+			
+			for (final String sentence : bot.preProcessor.japaneseSentenceSplit(request)) {
 				AIMLProcessor.trace_count = 0;
-				final String reply = respond(sentence, contextThatHistory);
+				
+				final History<?> hist = thatHistory.get(0);
+				String that;
+				if (hist == null) {
+					that = Properties.default_that;
+				} else {
+					that = hist.getString(0);
+				}
+				
+				final String reply = respond(sentence, that, predicates.get("topic"), contextThatHistory);
+				
 				response += "  " + reply;
 			}
+			
 			requestHistory.add(request);
 			responseHistory.add(response);
 			thatHistory.add(contextThatHistory);
 			response = response.replaceAll("[\n]+", NL);
 			response = response.trim();
+			
 		} catch (final Exception ex) {
 			log.error(ex.getMessage(), ex);
 			return Properties.error_bot_response;
 		}
+		
 		bot.writeIFCategories();
 		return response;
-	}
-
-	static void setMatchTrace(String newMatchTrace) {
-		matchTrace = newMatchTrace;
 	}
 
 }

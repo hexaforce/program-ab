@@ -566,7 +566,6 @@ public class AIMLProcessor {
 	 * @param ps   AIML parse state
 	 * @return client ID
 	 */
-
 	private static String id(Node node, ParseState ps) {
 		return ps.chatSession.customerId;
 	}
@@ -581,7 +580,7 @@ public class AIMLProcessor {
 	 * @return bot brain size
 	 */
 	private static String size(Node node, ParseState ps) {
-		final int size = ps.chatSession.bot.brain.getCategories().size();
+		final int size = ps.chatSession.bot.brain.getCategoriesSize();
 		return String.valueOf(size);
 	}
 
@@ -1099,7 +1098,7 @@ public class AIMLProcessor {
 		}
 
 		final Tuple partial = new Tuple(vars, visibleVars, null);
-		final Clause clause = new Clause(subj, pred, obj);
+		final Clause clause = Clause.builder().subj(subj).pred(pred).obj(obj).affirm(true).build();
 		final HashSet<Tuple> tuples = ps.chatSession.tripleStore.selectFromSingleClause(partial, clause, true);
 
 		String tupleList = "";
@@ -1162,7 +1161,7 @@ public class AIMLProcessor {
 					}
 				}
 
-				final Clause clause = new Clause(subj, pred, obj, affirm);
+				final Clause clause = Clause.builder().subj(subj).pred(pred).obj(obj).affirm(affirm).build();
 				clauses.add(clause);
 
 			}

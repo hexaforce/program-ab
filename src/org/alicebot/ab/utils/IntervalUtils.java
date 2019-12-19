@@ -14,7 +14,6 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class IntervalUtils {
 
-	// http://docs.oracle.com/javase/1.4.2/docs/api/java/text/SimpleDateFormat.html
 	public static int getHoursBetween(final String date1, final String date2, String format) {
 		try {
 			final DateTimeFormatter fmt = DateTimeFormat.forPattern(format).withChronology(LenientChronology.getInstance(GregorianChronology.getInstance()));

@@ -17,8 +17,6 @@ public class Tuple extends HashMap<String, String> {
 
 	Tuple(HashSet<String> varSet, HashSet<String> visibleVars, Tuple tuple) {
 		super();
-		// log.info("varSet="+varSet);
-		// log.info("visbileVars="+visibleVars);
 		if (visibleVars != null) {
 			this.visibleVars.addAll(visibleVars);
 		}
@@ -40,50 +38,28 @@ public class Tuple extends HashMap<String, String> {
 
 	@Override
 	public boolean equals(Object o) {
-		// log.info("Calling equals");
-		// if (this == o) return true;
-		/*
-		 * if (o == null || getClass() != o.getClass()) { log.info("unequal 1"); return
-		 * false; } if (!super.equals(o)) { log.info("unequal 2"); return false; }
-		 */
 		final Tuple tuple = (Tuple) o;
-
-		// if (!visibleVars.equals(tuple.visibleVars)) return false;
 		if (visibleVars.size() != tuple.visibleVars.size()) {
-			// log.info("Tuple: "+name+"!="+tuple.name+" because size
-			// "+visibleVars.size()+"!="+tuple.visibleVars.size());
 			return false;
 		}
-		// log.info("Tuple visibleVars = "+visibleVars+" tuple.visibleVars =
-		// "+tuple.visibleVars);
 		for (final String x : visibleVars) {
-			// log.info("Tuple:
-			// get("+x+")="+get(x)+"tuple.get("+x+")="+tuple.get(x));
 			if (!tuple.visibleVars.contains(x)) {
-				// log.info("Tuple: "+name+"!="+tuple.name+" because
-				// !tuple.visibleVars.contains("+x+")");
 				return false;
 			} else if (get(x) != null && !get(x).equals(tuple.get(x))) {
-				// log.info("Tuple: "+name+"!="+tuple.name+" because
-				// get("+x+")="+get(x)+" and tuple.get("+x+")="+tuple.get(x));
 				return false;
 			}
 		}
-		// log.info("Tuple: values = "+values());
-		// log.info("Tuple: tuple.values = "+tuple.values());
 		if (values().contains(Properties.unbound_variable)) {
 			return false;
 		}
 		if (tuple.values().contains(Properties.unbound_variable)) {
 			return false;
 		}
-		// log.info("Tuple: "+name+"="+tuple.name);
 		return true;
 	}
 
 	@Override
 	public int hashCode() {
-		// log.info("Calling hashCode");
 		int result = 1;
 		for (final String x : visibleVars) {
 			result = 31 * result + x.hashCode();
@@ -91,7 +67,6 @@ public class Tuple extends HashMap<String, String> {
 				result = 31 * result + get(x).hashCode();
 			}
 		}
-
 		return result;
 	}
 

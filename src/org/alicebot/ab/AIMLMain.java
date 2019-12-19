@@ -44,7 +44,7 @@ public class AIMLMain {
 
 		final Bot bot = new Bot(workingDirectory, botName); //
 
-		if (bot.brain.getCategories().size() < Properties.brain_print_size) {
+		if (bot.brain.getCategoriesSize() < Properties.brain_print_size) {
 			bot.brain.printgraph();
 		}
 
