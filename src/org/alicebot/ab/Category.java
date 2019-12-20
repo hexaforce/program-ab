@@ -237,8 +237,11 @@ class Category {
 				String template = "";
 				for (String t : templates) {
 					String tt = t.trim();
+
 					if ("<template>".equals(tt) || "</template>".equals(tt)) {
 						template += "    " + tt + NL;
+					} else if (tt.startsWith("<template>") || tt.endsWith("</template>")) {
+						template += tt.replace("<template>", "<template>" + NL).replace("</template>", NL + "</template>");
 					} else {
 						template += "      " + tt + NL;
 					}
@@ -261,6 +264,8 @@ class Category {
 					String tt = t.trim();
 					if ("<template>".equals(tt) || "</template>".equals(tt)) {
 						template += "      " + tt + NL;
+					} else if (tt.startsWith("<template>") || tt.endsWith("</template>")) {
+						template += tt.replace("<template>", "<template>" + NL).replace("</template>", NL + "</template>");
 					} else {
 						template += "        " + tt + NL;
 					}

@@ -5,6 +5,8 @@ import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.w3c.dom.Node;
+
 /**
  * This class is here to simulate a Contacts database for the purpose of testing
  * contactaction.aiml
@@ -68,6 +70,20 @@ class Contact {
 		return result;
 	}
 
+	static String dialNumber(Node node, ParseState ps) {
+		String id = "unknown";
+		String type = "unknown";
+		for (Node child : new IterableNodeList(node.getChildNodes())) {
+			String content = AIMLProcessor.evalTagContent(child, ps, null);
+			if (child.getNodeName().equals("id")) {
+				id = content;
+			} else if (child.getNodeName().equals("type")) {
+				type = content;
+			}
+		}
+		return Contact.dialNumber(type, id);
+	}
+
 	static String dialNumber(String type, String id) {
 		String result = "unknown";
 		final Contact c = idContactMap.get(id.toUpperCase());
@@ -80,6 +96,21 @@ class Contact {
 		return result;
 	}
 
+
+	static String emailAddress(Node node, ParseState ps) {
+		String id = "unknown";
+		String type = "unknown";
+		for (Node child : new IterableNodeList(node.getChildNodes())) {
+			String content = AIMLProcessor.evalTagContent(child, ps, null);
+			if (child.getNodeName().equals("id")) {
+				id = content;
+			} else if (child.getNodeName().equals("type")) {
+				type = content;
+			}
+		}
+		return Contact.emailAddress(type, id);
+	}
+	
 	static String emailAddress(String type, String id) {
 		String result = "unknown";
 		final Contact c = idContactMap.get(id.toUpperCase());
