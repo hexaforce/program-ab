@@ -231,21 +231,22 @@ class Category {
 
 				String thatStatement = "";
 				if (!category.getThat().equals("*")) {
-					thatStatement = "      <that>" + category.getThat() + "</that>" + NL;
+					thatStatement = "    <that>" + category.getThat() + "</that>" + NL;
 				}
 				String[] templates = category.getTemplate().split(NL);
 				String template = "";
 				for (String t : templates) {
-					template += "      " + t.trim() + NL;
+					String tt = t.trim();
+					if ("<template>".equals(tt) || "</template>".equals(tt)) {
+						template += "    " + tt + NL;
+					} else {
+						template += "      " + tt + NL;
+					}
 				}
 				result = "  <category>" + NL + //
-						"    <pattern>" + NL + //
-						"      " + pattern + NL + //
-						"    </pattern>" + NL + //
+						"    <pattern>" + pattern + "</pattern>" + NL + //
 						thatStatement + //
-						"    <template>" + NL + //
 						template + //
-						"    </template>" + NL + //
 						"  </category>" + NL;
 
 			} else {
@@ -257,20 +258,20 @@ class Category {
 				String[] templates = category.getTemplate().split(NL);
 				String template = "";
 				for (String t : templates) {
-					template += "      " + t.trim() + NL;
+					String tt = t.trim();
+					if ("<template>".equals(tt) || "</template>".equals(tt)) {
+						template += "      " + tt + NL;
+					} else {
+						template += "        " + tt + NL;
+					}
 				}
 				result = "  <topic name=\"" + category.getTopic() + "\">" + NL + //
 						"    <category>" + NL + //
-						"      <pattern>" + NL + //
-						"        " + pattern + NL + //
-						"      </pattern>" + NL + //
+						"      <pattern>" + pattern + "</pattern>" + NL + //
 						thatStatement + //
-						"      <template>" + NL + //
 						template + //
-						"      </template>" + NL + //
 						"    </category>" + NL + //
 						"  </topic>" + NL;
-
 			}
 
 		} catch (final Exception ex) {
