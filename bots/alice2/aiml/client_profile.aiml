@@ -1,21 +1,25 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <aiml version="2.1">
-<!-- File: client_profile.aiml -->
-<!-- Author: Dr. Richard S. Wallace -->
-<!-- Last modified: 12月 04, 2019 -->
-<!--  -->
-<!-- This AIML file is part of the ALICE2 0.0.5 chat bot knowledge base. -->
-<!--  -->
-<!-- The ALICE2 brain is Copyright &copy; 2019 by ALICE AI Foundation. -->
-<!--  -->
-<!-- The ALICE2 brain is released under the terms of the GNU Lesser General -->
-<!-- Public License, as published by the Free Software Foundation. -->
-<!--  -->
-<!-- This file is distributed WITHOUT ANY WARRANTY; without even the  -->
-<!-- implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.   -->
-<!--  -->
-<!-- For more information see http://www.alicebot.org -->
-<!--  -->
+<!--
+
+File: client_profile.aiml
+Author: Dr. Richard S. Wallace
+Last modified: 12月 20, 2019
+
+This AIML file is part of the ALICE2 0.0.5 chat bot knowledge base.
+
+The ALICE2 brain is Copyright &copy; 2019 by ALICE AI Foundation.
+
+The ALICE2 brain is released under the terms of the GNU Lesser General
+Public License, as published by the Free Software Foundation.
+
+This file is distributed WITHOUT ANY WARRANTY; without even the 
+implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  
+
+For more information see http://www.alicebot.org
+
+-->
+
   <category>
     <pattern>MY FAVORITE COLOR IS <set>color</set></pattern>
     <template>
@@ -45,24 +49,27 @@
   </category>
 
   <category>
-    <pattern><set>number</set></pattern><that>HOW MANY YEARS OLD ARE YOU</that>
+    <pattern><set>number</set></pattern>
+    <that>HOW MANY YEARS OLD ARE YOU</that>
     <template>
       <srai>MY AGE IS <star/></srai>
     </template>
   </category>
 
   <category>
-    <pattern>*</pattern><that>WHAT WOULD * CHANGE MY NAME TO</that>
+    <pattern>*</pattern>
+    <that>WHAT WOULD * CHANGE MY NAME TO</that>
     <template>
       <srai>YOUR NAME IS <star/></srai>
     </template>
   </category>
 
   <category>
-    <pattern>*</pattern><that>WHAT IS YOUR SIGN</that>
+    <pattern>*</pattern>
+    <that>WHAT IS YOUR SIGN</that>
     <template>
       <think><set name="sign"><star/></set></think>
-<srai>HOROSCOPE FOR <get name="sign"/></srai>
+      <srai>HOROSCOPE FOR <get name="sign"/></srai>
     </template>
   </category>
 
@@ -146,12 +153,12 @@
   <category>
     <pattern>MY SIGN IS *</pattern>
     <template>
-      I know a lot of <formal><star/></formal>s.  
-<think>
-<set name="it"><star/></set>
-<set name="sign"><star/></set>
-<set name="topic"><star/></set>
-</think>
+      I know a lot of <formal><star/></formal>s.
+      <think>
+      <set name="it"><star/></set>
+      <set name="sign"><star/></set>
+      <set name="topic"><star/></set>
+      </think>
     </template>
   </category>
 
@@ -187,11 +194,11 @@
     <pattern>MY NAME</pattern>
     <template>
       <think><set var="name"><get name="name"/></set></think>
-<condition var="name">
-<li value="unknown">I don't know your name.  What is your name?</li>
-<li value="Friend">I don't know your name.  What is your name?</li>
-<li><get var="name"/>.</li>
-</condition>
+      <condition var="name">
+      <li value="unknown">I don't know your name.  What is your name?</li>
+      <li value="Friend">I don't know your name.  What is your name?</li>
+      <li><get var="name"/>.</li>
+      </condition>
     </template>
   </category>
 
@@ -199,18 +206,18 @@
     <pattern>MY FULL NAME</pattern>
     <template>
       <condition name="firstname">
-<li value="what"/>
-<li><get name="firstname"/></li>
-</condition>
-<condition name="middlename">
-<li value="what"/>
-<li><get name="middlename"/></li>
-</condition>
-<condition name="lastname">
-<li value="what"/>
-<li><get name="lastname"/></li>
-</condition>.
-I call you <get name="name"/>.
+      <li value="what"/>
+      <li><get name="firstname"/></li>
+      </condition>
+      <condition name="middlename">
+      <li value="what"/>
+      <li><get name="middlename"/></li>
+      </condition>
+      <condition name="lastname">
+      <li value="what"/>
+      <li><get name="lastname"/></li>
+      </condition>.
+      I call you <get name="name"/>.
     </template>
   </category>
 
@@ -229,7 +236,8 @@ I call you <get name="name"/>.
   </category>
 
   <category>
-    <pattern>MY LAST *</pattern><that>* FIRST NAME OR LAST NAME</that>
+    <pattern>MY LAST *</pattern>
+    <that>* FIRST NAME OR LAST NAME</that>
     <template>
       <srai>CALL ME BY MY LAST NAME</srai>
     </template>
@@ -245,13 +253,13 @@ I call you <get name="name"/>.
   <category>
     <pattern>MY BIRTHPLACE IS *</pattern>
     <template>
-      How long did you stay there?  
-<think>
-<set name="it"><star/></set> 
-<set name="there"><star/></set> 
-<set name="topic"><star/></set> 
-<set name="birthplace"><star/></set>
-</think>
+      How long did you stay there?
+      <think>
+      <set name="it"><star/></set>
+      <set name="there"><star/></set>
+      <set name="topic"><star/></set>
+      <set name="birthplace"><star/></set>
+      </think>
     </template>
   </category>
 
@@ -259,11 +267,11 @@ I call you <get name="name"/>.
     <pattern>MY NATIONALITY IS *</pattern>
     <template>
       I've talked with a lot of <formal><star/></formal> people.
-<think>
-<set name="it"><star/></set>
-<set name="nationality"><star/></set>
-<set name="topic"><star/></set>
-</think>
+      <think>
+      <set name="it"><star/></set>
+      <set name="nationality"><star/></set>
+      <set name="topic"><star/></set>
+      </think>
     </template>
   </category>
 
@@ -432,16 +440,16 @@ I call you <get name="name"/>.
     <pattern>MY LOCATION IS *</pattern>
     <template>
       <random>
-<li>I live in the joyous present moment.</li>
-<li>Sounds like an exotic location.</li>
-<li>So that's where you call home.</li>
-<li>Tell me what you love about it</li>
-<li>What do you do there?</li>
-<li>Does it make you happy living there?</li>
-<li>Whats great about there?</li>
-</random>
-<think><set name="it"><set name="there"><set name="topic"><star/></set></set></set></think>
-<think><set name="location"><star/></set></think>
+      <li>I live in the joyous present moment.</li>
+      <li>Sounds like an exotic location.</li>
+      <li>So that's where you call home.</li>
+      <li>Tell me what you love about it</li>
+      <li>What do you do there?</li>
+      <li>Does it make you happy living there?</li>
+      <li>Whats great about there?</li>
+      </random>
+      <think><set name="it"><set name="there"><set name="topic"><star/></set></set></set></think>
+      <think><set name="location"><star/></set></think>
     </template>
   </category>
 
@@ -470,25 +478,28 @@ I call you <get name="name"/>.
     <pattern>MY <set>animal</set> S NAME IS *</pattern>
     <template>
       <think>
-<set var="animal"><star/></set>
-<set var="name"><star index="2"/></set>
-<set><name><get var="animal"/></name><get var="name"/></set>
-</think>
-What is it like having a pet <get var="animal"/>?
-<learn>
-<category>
-<pattern>MY <eval><get var="animal"/></eval></pattern>
-<template><eval><get var="name"/></eval></template>
-</category>
-<category>
-<pattern>WHO IS <eval><get var="name"/></eval></pattern>
-<template>Your <eval><get var="animal"/></eval>.</template>
-</category>
-<category>
-<pattern><eval><get var="name"/></eval></pattern>
-<template>Your <eval><get var="animal"/></eval>.</template>
-</category>
-</learn>
+      <set var="animal"><star/></set>
+      <set var="name"><star index="2"/></set>
+      <set><name><get var="animal"/></name><get var="name"/></set>
+      </think>
+      What is it like having a pet <get var="animal"/>?
+      <learn>
+      <category>
+      <pattern>MY <eval><get var="animal"/></eval></pattern>
+<template>
+<eval><get var="name"/></eval>
+</template>      </category>
+      <category>
+      <pattern>WHO IS <eval><get var="name"/></eval></pattern>
+<template>
+Your <eval><get var="animal"/></eval>.
+</template>      </category>
+      <category>
+      <pattern><eval><get var="name"/></eval></pattern>
+<template>
+Your <eval><get var="animal"/></eval>.
+</template>      </category>
+      </learn>
     </template>
   </category>
 
@@ -503,9 +514,9 @@ What is it like having a pet <get var="animal"/>?
     <pattern>MY HOROSCOPE</pattern>
     <template>
       <condition name="sign">
-<li value="which">What is your sign?</li>
-<li><srai>HOROSCOPE FOR <get name="sign"/></srai></li>
-</condition>
+      <li value="which">What is your sign?</li>
+      <li><srai>HOROSCOPE FOR <get name="sign"/></srai></li>
+      </condition>
     </template>
   </category>
 
@@ -617,11 +628,11 @@ What is it like having a pet <get var="animal"/>?
   <category>
     <pattern>MY BIRTHDATE IS <set>month</set> <set>number</set> <set>number</set></pattern>
     <template>
-      So you are <set var="age"><srai>AGE FROM <star/> <star index="2"/> <star index="3"/></srai></set>. 
-<think>
-<srai>MY AGE IS <get var="age"/></srai>
-<set name="birthdate"><star/> <star index="2"/>, <star index="3"/></set>
-</think>
+      So you are <set var="age"><srai>AGE FROM <star/> <star index="2"/> <star index="3"/></srai></set>.
+      <think>
+      <srai>MY AGE IS <get var="age"/></srai>
+      <set name="birthdate"><star/> <star index="2"/>, <star index="3"/></set>
+      </think>
     </template>
   </category>
 
@@ -636,12 +647,12 @@ What is it like having a pet <get var="animal"/>?
     <pattern>MY AGE IS * *</pattern>
     <template>
       <think>
-<set name="isanumber"><srai>ISANUMBER <star/></srai></set> 
-</think>
-<condition name="isanumber">
-<li value="true"><srai>MY AGE IS <star/></srai> <srai><star index="2"/></srai></li>
-<li>How many years old are you?</li>
-</condition>
+      <set name="isanumber"><srai>ISANUMBER <star/></srai></set>
+      </think>
+      <condition name="isanumber">
+      <li value="true"><srai>MY AGE IS <star/></srai> <srai><star index="2"/></srai></li>
+      <li>How many years old are you?</li>
+      </condition>
     </template>
   </category>
 
@@ -649,18 +660,18 @@ What is it like having a pet <get var="animal"/>?
     <pattern>MY AGE IS *</pattern>
     <template>
       <think>
-<set name="isanumber"><srai>ISANUMBER <star/></srai></set> 
-</think>
-<condition name="isanumber">
-<li value="false">How many years old are you?</li>
-<li><think><set name="age"><star/></set></think>
-<random>
-<li>Age is an issue of mind over matter. If you don't mind, it doesn't matter.</li>
-<li>Age considers; youth ventures.</li>
-<li>Age is a very high price to pay for maturity. </li>
-</random>
-</li>
-</condition>
+      <set name="isanumber"><srai>ISANUMBER <star/></srai></set>
+      </think>
+      <condition name="isanumber">
+      <li value="false">How many years old are you?</li>
+      <li><think><set name="age"><star/></set></think>
+      <random>
+      <li>Age is an issue of mind over matter. If you don't mind, it doesn't matter.</li>
+      <li>Age considers; youth ventures.</li>
+      <li>Age is a very high price to pay for maturity. </li>
+      </random>
+      </li>
+      </condition>
     </template>
   </category>
 
@@ -696,10 +707,10 @@ What is it like having a pet <get var="animal"/>?
     <pattern>MY GENDER</pattern>
     <template>
       <think><set var="gender"><get name="gender"/></set></think>
-<condition var="gender">
-<li value="unknown">I don't know your gender.  Are you a man or a woman?</li>
-<li>You are <get var="gender"/>.</li>
-</condition>
+      <condition var="gender">
+      <li value="unknown">I don't know your gender.  Are you a man or a woman?</li>
+      <li>You are <get var="gender"/>.</li>
+      </condition>
     </template>
   </category>
 
@@ -753,7 +764,8 @@ What is it like having a pet <get var="animal"/>?
   </category>
 
   <category>
-    <pattern>MY FIRST *</pattern><that>* FIRST NAME OR LAST NAME</that>
+    <pattern>MY FIRST *</pattern>
+    <that>* FIRST NAME OR LAST NAME</that>
     <template>
       <srai>CALL ME BY MY FIRST NAME</srai>
     </template>
@@ -854,11 +866,11 @@ What is it like having a pet <get var="animal"/>?
     <pattern>CALL ME *</pattern>
     <template>
       <srai>RANDOM INTRO</srai> <formal><star/></formal>.
-<think>
-<srai>SET GENDER FROM NAME <star/></srai>
-<set name="name"><formal><star/></formal></set>.
-<set name="firstname"><get name="name"/></set>
-</think>
+      <think>
+      <srai>SET GENDER FROM NAME <star/></srai>
+      <set name="name"><formal><star/></formal></set>.
+      <set name="firstname"><get name="name"/></set>
+      </think>
     </template>
   </category>
 
@@ -866,12 +878,12 @@ What is it like having a pet <get var="animal"/>?
     <pattern>CALL ME * *</pattern>
     <template>
       <srai>RANDOM INTRO</srai> <formal><star/></formal>.
-<think>
-<srai>SET GENDER FROM NAME <star/></srai>
-<set name="name"><formal><star/> <star index="2"/></formal></set>.
-<set name="firstname"><formal><star/></formal></set>
-<set name="lastname"><formal><star index="2"/></formal></set>
-</think>
+      <think>
+      <srai>SET GENDER FROM NAME <star/></srai>
+      <set name="name"><formal><star/> <star index="2"/></formal></set>.
+      <set name="firstname"><formal><star/></formal></set>
+      <set name="lastname"><formal><star index="2"/></formal></set>
+      </think>
     </template>
   </category>
 
@@ -879,13 +891,13 @@ What is it like having a pet <get var="animal"/>?
     <pattern>CALL ME * * *</pattern>
     <template>
       <srai>RANDOM INTRO</srai> <star/>.
-<think>
-<srai>SET GENDER FROM NAME <star/></srai>
-<set name="name"><formal><star/> <star index="2"/> <star index="3"/></formal></set>.
-<set name="firstname"><formal><star/></formal></set>
-<set name="middlename"><formal><star index="2"/></formal></set>
-<set name="lastname"><formal><star index="3"/></formal></set>
-</think>
+      <think>
+      <srai>SET GENDER FROM NAME <star/></srai>
+      <set name="name"><formal><star/> <star index="2"/> <star index="3"/></formal></set>.
+      <set name="firstname"><formal><star/></formal></set>
+      <set name="middlename"><formal><star index="2"/></formal></set>
+      <set name="lastname"><formal><star index="3"/></formal></set>
+      </think>
     </template>
   </category>
 
@@ -900,11 +912,11 @@ What is it like having a pet <get var="animal"/>?
     <pattern>THE TOPIC IS *</pattern>
     <template>
       <random>
-<li>Sure, <person/> is a good topic.</li>
-<li>You start.</li>
-<li>Tell me about it.</li>
-</random>
-<think><set name="topic"><star/></set></think>
+      <li>Sure, <person/> is a good topic.</li>
+      <li>You start.</li>
+      <li>Tell me about it.</li>
+      </random>
+      <think><set name="topic"><star/></set></think>
     </template>
   </category>
 
@@ -919,26 +931,26 @@ What is it like having a pet <get var="animal"/>?
     <pattern>RANDOM INTRO</pattern>
     <template>
       <random>
-  <li>Hey</li>
-  <li>Hi,</li>
-  <li>Hi there</li>
-  <li>What's up,</li>
-  <li>How are you,</li>
-  <li>Glad to see you,</li>
-  <li>Nice to meet you,</li>
-  <li>Glad to know you,</li>
-  <li>How can I help you,</li>
-  <li>How are you doing,</li>
-  <li>OK I will call you</li>
-  <li>Pleased to meet you,</li>
-  <li>It's good to see you,</li>
-  <li>It's good to meet you,</li>
-  <li>That's a very nice name,</li>
-  <li>I am very pleased to meet you</li>
-  <li>I am always glad to make new friends,</li>
-  <li>I'm pleased to introduce myself to you,</li>
-  <li>It is a pleasure to introduce myself to you,</li>
-</random>
+      <li>Hey</li>
+      <li>Hi,</li>
+      <li>Hi there</li>
+      <li>What's up,</li>
+      <li>How are you,</li>
+      <li>Glad to see you,</li>
+      <li>Nice to meet you,</li>
+      <li>Glad to know you,</li>
+      <li>How can I help you,</li>
+      <li>How are you doing,</li>
+      <li>OK I will call you</li>
+      <li>Pleased to meet you,</li>
+      <li>It's good to see you,</li>
+      <li>It's good to meet you,</li>
+      <li>That's a very nice name,</li>
+      <li>I am very pleased to meet you</li>
+      <li>I am always glad to make new friends,</li>
+      <li>I'm pleased to introduce myself to you,</li>
+      <li>It is a pleasure to introduce myself to you,</li>
+      </random>
     </template>
   </category>
 
@@ -953,12 +965,12 @@ What is it like having a pet <get var="animal"/>?
     <pattern>SET GENDER FROM NAME *</pattern>
     <template>
       <think>
-<set name="gendername"><srai>GENDERNAME <star/></srai></set>
-<condition name="gendername">
-<li value="M"><set name="gender">male</set></li>
-<li value="F"><set name="gender">female</set></li>
-</condition>
-</think>
+      <set name="gendername"><srai>GENDERNAME <star/></srai></set>
+      <condition name="gendername">
+      <li value="M"><set name="gender">male</set></li>
+      <li value="F"><set name="gender">female</set></li>
+      </condition>
+      </think>
     </template>
   </category>
 
@@ -977,7 +989,8 @@ What is it like having a pet <get var="animal"/>?
   </category>
 
   <category>
-    <pattern>FIRST NAME</pattern><that>* FIRST NAME OR LAST NAME</that>
+    <pattern>FIRST NAME</pattern>
+    <that>* FIRST NAME OR LAST NAME</that>
     <template>
       <srai>CALL ME BY MY FIRST NAME</srai>
     </template>
@@ -1054,7 +1067,8 @@ What is it like having a pet <get var="animal"/>?
   </category>
 
   <category>
-    <pattern>LAST NAME</pattern><that>* FIRST NAME OR LAST NAME</that>
+    <pattern>LAST NAME</pattern>
+    <that>* FIRST NAME OR LAST NAME</that>
     <template>
       <srai>CALL ME BY MY LAST NAME</srai>
     </template>
@@ -1064,71 +1078,71 @@ What is it like having a pet <get var="animal"/>?
     <pattern>CLIENT PROFILE</pattern>
     <template>
       <condition name="address"><li value="where"/><li>address: <get name="address"/>.</li></condition>
-<condition name="age"><li value="how many"/><li>age: <get name="age"/>.</li></condition>
-<condition name="bestfriend"><li value="who"/><li>bestfriend: <get name="bestfriend"/>.</li></condition>
-<condition name="birthday"><li value="when"/><li>birthday: <get name="birthday"/>.</li></condition>
-<condition name="birthplace"><li value="where"/><li>birthplace: <get name="birthplace"/>.</li></condition>
-<condition name="boyfriend"><li value="who"/><li>boyfriend: <get name="boyfriend"/>.</li></condition>
-<condition name="brother"><li value="who"/><li>brother: <get name="brother"/>.</li></condition>
-<condition name="cat"><li value="what"/><li>cat: <get name="cat"/>.</li></condition>
-<condition name="city"><li value="which"/><li>city: <get name="city"/>.</li></condition>
-<condition name="country"><li value="which"/><li>country: <get name="country"/>.</li></condition>
-<condition name="county"><li value="which"/><li>county: <get name="county"/>.</li></condition>
-<condition name="customname"><li value="unknown"/><li>customname: <get name="customname"/>.</li></condition>
-<condition name="daughter"><li value="who"/><li>daughter: <get name="daughter"/>.</li></condition>
-<condition name="dog"><li value="who"/><li>dog: <get name="dog"/>.</li></condition>
-<condition name="email"><li value="what"/><li>email: <get name="email"/>.</li></condition>
-<condition name="employer"><li value="who"/><li>employer: <get name="employer"/>.</li></condition>
-<condition name="father"><li value="who"/><li>father: <get name="father"/>.</li></condition>
-<condition name="favoriteactor"><li value="who"/><li>favoriteactor: <get name="favoriteactor"/>.</li></condition>
-<condition name="favoriteactress"><li value="who"/><li>favoriteactress: <get name="favoriteactress"/>.</li></condition>
-<condition name="favoriteband"><li value="who"/><li>favoriteband: <get name="favoriteband"/>.</li></condition>
-<condition name="favoritebook"><li value="what"/><li>favoritebook: <get name="favoritebook"/>.</li></condition>
-<condition name="favoritecar"><li value="what"/><li>favoritecar: <get name="favoritecar"/>.</li></condition>
-<condition name="favoritecolor"><li value="what"/><li>favoritecolor: <get name="favoritecolor"/>.</li></condition>
-<condition name="favoritedrink"><li value="what"/><li>favoritedrink: <get name="favoritedrink"/>.</li></condition>
-<condition name="favoritefood"><li value="what"/><li>favoritefood: <get name="favoritefood"/>.</li></condition>
-<condition name="favoriteicecream"><li value="what"/><li>favoriteicecream: <get name="favoriteicecream"/>.</li></condition>
-<condition name="favoritemovie"><li value="what"/><li>favoritemovie: <get name="favoritemovie"/>.</li></condition>
-<condition name="favoritesong"><li value="what"/><li>favoritesong: <get name="favoritesong"/>.</li></condition>
-<condition name="favoritesport"><li value="what"/><li>favoritesport: <get name="favoritesport"/>.</li></condition>
-<condition name="favoritetvshow"><li value="what"/><li>favoritetvshow: <get name="favoritetvshow"/>.</li></condition>
-<condition name="firstname"><li value="what"/><li>firstname: <get name="firstname"/>.</li></condition>
-<condition name="friend"><li value="who"/><li>friend: <get name="friend"/>.</li></condition>
-<condition name="gender"><li value="unknown"/><li>gender: <get name="gender"/>.</li></condition>
-<condition name="girlfriend"><li value="who"/><li>girlfriend: <get name="girlfriend"/>.</li></condition>
-<condition name="hair"><li value="what"/><li>hair: <get name="hair"/>.</li></condition>
-<condition name="has"><li value="what"/><li>has: <get name="has"/>.</li></condition>
-<condition name="he"><li value="who"/><li>he: <get name="he"/>.</li></condition>
-<condition name="husband"><li value="who"/><li>husband: <get name="husband"/>.</li></condition>
-<condition name="it"><li value="what"/><li>it: <get name="it"/>.</li></condition>
-<condition name="lastname"><li value="what"/><li>lastname: <get name="lastname"/>.</li></condition>
-<condition name="latitude"><li value="which"/><li>latitude: <get name="latitude"/>.</li></condition>
-<condition name="likes"><li value="what"/><li>likes: <get name="likes"/>.</li></condition>
-<condition name="location"><li value="where"/><li>location: <get name="location"/>.</li></condition>
-<condition name="longitute"><li value="which"/><li>longitute: <get name="longitute"/>.</li></condition>
-<condition name="middlename"><li value="what"/><li>middlename: <get name="middlename"/>.</li></condition>
-<condition name="mother"><li value="who"/><li>mother: <get name="mother"/>.</li></condition>
-<condition name="name"><li value="Friend"/><li>name: <get name="name"/>.</li></condition>
-<condition name="orientation"><li value="unknown"/><li>orientation: <get name="orientation"/>.</li></condition>
-<condition name="phonenumber"><li value="unknown"/><li>phonenumber: <get name="phonenumber"/>.</li></condition>
-<condition name="province"><li value="which"/><li>province: <get name="province"/>.</li></condition>
-<condition name="religion"><li value="unknown"/><li>religion: <get name="religion"/>.</li></condition>
-<condition name="residence"><li value="where"/><li>residence: <get name="residence"/>.</li></condition>
-<condition name="road"><li value="which"/><li>road: <get name="road"/>.</li></condition>
-<condition name="she"><li value="who"/><li>she: <get name="she"/>.</li></condition>
-<condition name="sign"><li value="which"/><li>sign: <get name="sign"/>.</li></condition>
-<condition name="sister"><li value="who"/><li>sister: <get name="sister"/>.</li></condition>
-<condition name="state"><li value="which"/><li>state: <get name="state"/>.</li></condition>
-<condition name="status"><li value="what"/><li>status: <get name="status"/>.</li></condition>
-<condition name="street"><li value="which"/><li>street: <get name="street"/>.</li></condition>
-<condition name="there"><li value="where"/><li>there: <get name="there"/>.</li></condition>
-<condition name="them"><li value="who"/><li>them: <get name="them"/>.</li></condition>
-<condition name="topic"><li value="unknown"/><li>topic: <get name="topic"/>.</li></condition>
-<condition name="town"><li value="which"/><li>town: <get name="town"/>.</li></condition>
-<condition name="voicemailnumber"><li value="unknown"/><li>voicemailnumber: <get name="voicemailnumber"/>.</li></condition>
-<condition name="we"><li value="who"/><li>we: <get name="we"/>.</li></condition>
-<condition name="wife"><li value="who"/><li>wife: <get name="wife"/>.</li></condition>
+      <condition name="age"><li value="how many"/><li>age: <get name="age"/>.</li></condition>
+      <condition name="bestfriend"><li value="who"/><li>bestfriend: <get name="bestfriend"/>.</li></condition>
+      <condition name="birthday"><li value="when"/><li>birthday: <get name="birthday"/>.</li></condition>
+      <condition name="birthplace"><li value="where"/><li>birthplace: <get name="birthplace"/>.</li></condition>
+      <condition name="boyfriend"><li value="who"/><li>boyfriend: <get name="boyfriend"/>.</li></condition>
+      <condition name="brother"><li value="who"/><li>brother: <get name="brother"/>.</li></condition>
+      <condition name="cat"><li value="what"/><li>cat: <get name="cat"/>.</li></condition>
+      <condition name="city"><li value="which"/><li>city: <get name="city"/>.</li></condition>
+      <condition name="country"><li value="which"/><li>country: <get name="country"/>.</li></condition>
+      <condition name="county"><li value="which"/><li>county: <get name="county"/>.</li></condition>
+      <condition name="customname"><li value="unknown"/><li>customname: <get name="customname"/>.</li></condition>
+      <condition name="daughter"><li value="who"/><li>daughter: <get name="daughter"/>.</li></condition>
+      <condition name="dog"><li value="who"/><li>dog: <get name="dog"/>.</li></condition>
+      <condition name="email"><li value="what"/><li>email: <get name="email"/>.</li></condition>
+      <condition name="employer"><li value="who"/><li>employer: <get name="employer"/>.</li></condition>
+      <condition name="father"><li value="who"/><li>father: <get name="father"/>.</li></condition>
+      <condition name="favoriteactor"><li value="who"/><li>favoriteactor: <get name="favoriteactor"/>.</li></condition>
+      <condition name="favoriteactress"><li value="who"/><li>favoriteactress: <get name="favoriteactress"/>.</li></condition>
+      <condition name="favoriteband"><li value="who"/><li>favoriteband: <get name="favoriteband"/>.</li></condition>
+      <condition name="favoritebook"><li value="what"/><li>favoritebook: <get name="favoritebook"/>.</li></condition>
+      <condition name="favoritecar"><li value="what"/><li>favoritecar: <get name="favoritecar"/>.</li></condition>
+      <condition name="favoritecolor"><li value="what"/><li>favoritecolor: <get name="favoritecolor"/>.</li></condition>
+      <condition name="favoritedrink"><li value="what"/><li>favoritedrink: <get name="favoritedrink"/>.</li></condition>
+      <condition name="favoritefood"><li value="what"/><li>favoritefood: <get name="favoritefood"/>.</li></condition>
+      <condition name="favoriteicecream"><li value="what"/><li>favoriteicecream: <get name="favoriteicecream"/>.</li></condition>
+      <condition name="favoritemovie"><li value="what"/><li>favoritemovie: <get name="favoritemovie"/>.</li></condition>
+      <condition name="favoritesong"><li value="what"/><li>favoritesong: <get name="favoritesong"/>.</li></condition>
+      <condition name="favoritesport"><li value="what"/><li>favoritesport: <get name="favoritesport"/>.</li></condition>
+      <condition name="favoritetvshow"><li value="what"/><li>favoritetvshow: <get name="favoritetvshow"/>.</li></condition>
+      <condition name="firstname"><li value="what"/><li>firstname: <get name="firstname"/>.</li></condition>
+      <condition name="friend"><li value="who"/><li>friend: <get name="friend"/>.</li></condition>
+      <condition name="gender"><li value="unknown"/><li>gender: <get name="gender"/>.</li></condition>
+      <condition name="girlfriend"><li value="who"/><li>girlfriend: <get name="girlfriend"/>.</li></condition>
+      <condition name="hair"><li value="what"/><li>hair: <get name="hair"/>.</li></condition>
+      <condition name="has"><li value="what"/><li>has: <get name="has"/>.</li></condition>
+      <condition name="he"><li value="who"/><li>he: <get name="he"/>.</li></condition>
+      <condition name="husband"><li value="who"/><li>husband: <get name="husband"/>.</li></condition>
+      <condition name="it"><li value="what"/><li>it: <get name="it"/>.</li></condition>
+      <condition name="lastname"><li value="what"/><li>lastname: <get name="lastname"/>.</li></condition>
+      <condition name="latitude"><li value="which"/><li>latitude: <get name="latitude"/>.</li></condition>
+      <condition name="likes"><li value="what"/><li>likes: <get name="likes"/>.</li></condition>
+      <condition name="location"><li value="where"/><li>location: <get name="location"/>.</li></condition>
+      <condition name="longitute"><li value="which"/><li>longitute: <get name="longitute"/>.</li></condition>
+      <condition name="middlename"><li value="what"/><li>middlename: <get name="middlename"/>.</li></condition>
+      <condition name="mother"><li value="who"/><li>mother: <get name="mother"/>.</li></condition>
+      <condition name="name"><li value="Friend"/><li>name: <get name="name"/>.</li></condition>
+      <condition name="orientation"><li value="unknown"/><li>orientation: <get name="orientation"/>.</li></condition>
+      <condition name="phonenumber"><li value="unknown"/><li>phonenumber: <get name="phonenumber"/>.</li></condition>
+      <condition name="province"><li value="which"/><li>province: <get name="province"/>.</li></condition>
+      <condition name="religion"><li value="unknown"/><li>religion: <get name="religion"/>.</li></condition>
+      <condition name="residence"><li value="where"/><li>residence: <get name="residence"/>.</li></condition>
+      <condition name="road"><li value="which"/><li>road: <get name="road"/>.</li></condition>
+      <condition name="she"><li value="who"/><li>she: <get name="she"/>.</li></condition>
+      <condition name="sign"><li value="which"/><li>sign: <get name="sign"/>.</li></condition>
+      <condition name="sister"><li value="who"/><li>sister: <get name="sister"/>.</li></condition>
+      <condition name="state"><li value="which"/><li>state: <get name="state"/>.</li></condition>
+      <condition name="status"><li value="what"/><li>status: <get name="status"/>.</li></condition>
+      <condition name="street"><li value="which"/><li>street: <get name="street"/>.</li></condition>
+      <condition name="there"><li value="where"/><li>there: <get name="there"/>.</li></condition>
+      <condition name="them"><li value="who"/><li>them: <get name="them"/>.</li></condition>
+      <condition name="topic"><li value="unknown"/><li>topic: <get name="topic"/>.</li></condition>
+      <condition name="town"><li value="which"/><li>town: <get name="town"/>.</li></condition>
+      <condition name="voicemailnumber"><li value="unknown"/><li>voicemailnumber: <get name="voicemailnumber"/>.</li></condition>
+      <condition name="we"><li value="who"/><li>we: <get name="we"/>.</li></condition>
+      <condition name="wife"><li value="who"/><li>wife: <get name="wife"/>.</li></condition>
     </template>
   </category>
 
@@ -1136,7 +1150,7 @@ What is it like having a pet <get var="animal"/>?
     <pattern>YOUR NAME IS *</pattern>
     <template>
       OK, from now on you can call me <star/>.
-<think><set name="customname"><star/></set></think>
+      <think><set name="customname"><star/></set></think>
     </template>
   </category>
 

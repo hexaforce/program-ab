@@ -45,14 +45,16 @@ class PreProcessor {
 
 	enum Substitution {
 		normal, denormal, person, person2, gender;
+
 		File file(String dir) {
 			return new File(dir + "/" + name() + ".txt");
 		}
 	}
+
 	final private Bot bot;
 	final private Map<String, List<String>> substitutions = new HashMap<String, List<String>>();
-	final private Map<String, List<Pattern>> patterns= new HashMap<String, List<Pattern>>();
-	
+	final private Map<String, List<Pattern>> patterns = new HashMap<String, List<Pattern>>();
+
 	/**
 	 * Constructor given bot
 	 *
@@ -60,11 +62,11 @@ class PreProcessor {
 	 */
 	PreProcessor(Bot bot) {
 		this.bot = bot;
-		for (Substitution s :Substitution.values()) {
+		for (Substitution s : Substitution.values()) {
 			readSubstitutions(s);
 		}
 	}
-	
+
 	/**
 	 * apply normalization substitutions to a request
 	 *
@@ -157,7 +159,7 @@ class PreProcessor {
 		if (!file.exists()) {
 			return;
 		}
-		
+
 		try (final BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(file)))) {
 			final List<String> substitutionList = new ArrayList<String>();
 			final List<Pattern> patternList = new ArrayList<Pattern>();
@@ -179,7 +181,7 @@ class PreProcessor {
 		} catch (final Exception e) {
 			log.error("Error: " + e.getMessage());
 		}
-		
+
 	}
 
 	/**
@@ -200,7 +202,6 @@ class PreProcessor {
 		return result;
 	}
 
-	
 	String[] japaneseSentenceSplit(String message) {
 		return sentenceSplit(JapaneseUtils.tokenizeSentence(normalize(message)));
 	}

@@ -1,26 +1,31 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <aiml version="2.1">
-<!-- File: inquiry.aiml -->
-<!-- Author: Dr. Richard S. Wallace -->
-<!-- Last modified: 12月 04, 2019 -->
-<!--  -->
-<!-- This AIML file is part of the ALICE2 0.0.5 chat bot knowledge base. -->
-<!--  -->
-<!-- The ALICE2 brain is Copyright &copy; 2019 by ALICE AI Foundation. -->
-<!--  -->
-<!-- The ALICE2 brain is released under the terms of the GNU Lesser General -->
-<!-- Public License, as published by the Free Software Foundation. -->
-<!--  -->
-<!-- This file is distributed WITHOUT ANY WARRANTY; without even the  -->
-<!-- implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.   -->
-<!--  -->
-<!-- For more information see http://www.alicebot.org -->
-<!--  -->
+<!--
+
+File: inquiry.aiml
+Author: Dr. Richard S. Wallace
+Last modified: 12月 20, 2019
+
+This AIML file is part of the ALICE2 0.0.5 chat bot knowledge base.
+
+The ALICE2 brain is Copyright &copy; 2019 by ALICE AI Foundation.
+
+The ALICE2 brain is released under the terms of the GNU Lesser General
+Public License, as published by the Free Software Foundation.
+
+This file is distributed WITHOUT ANY WARRANTY; without even the 
+implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  
+
+For more information see http://www.alicebot.org
+
+-->
+
   <category>
-    <pattern><set>number</set> #</pattern><that>HOW OLD ARE YOU</that>
+    <pattern><set>number</set> #</pattern>
+    <that>HOW OLD ARE YOU</that>
     <template>
       <think><set name="age"><star/></set></think>
-<srai>MY AGE IS <star/></srai>
+      <srai>MY AGE IS <star/></srai>
     </template>
   </category>
 
@@ -109,21 +114,24 @@
   </category>
 
   <category>
-    <pattern>MAN</pattern><that>ARE YOU A MAN OR A WOMAN</that>
+    <pattern>MAN</pattern>
+    <that>ARE YOU A MAN OR A WOMAN</that>
     <template>
       <srai>MY GENDER IS MALE</srai>
     </template>
   </category>
 
   <category>
-    <pattern>WOMAN</pattern><that>ARE YOU A MAN OR A WOMAN</that>
+    <pattern>WOMAN</pattern>
+    <that>ARE YOU A MAN OR A WOMAN</that>
     <template>
       <srai>MY GENDER IS FEMALE</srai>
     </template>
   </category>
 
   <category>
-    <pattern><set>gender</set></pattern><that>ARE YOU A MAN OR A WOMAN</that>
+    <pattern><set>gender</set></pattern>
+    <that>ARE YOU A MAN OR A WOMAN</that>
     <template>
       <srai>MY GENDER IS <map><name>gendermap</name><star/></map></srai>
     </template>

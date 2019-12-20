@@ -1,21 +1,25 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <aiml version="2.1">
-<!-- File: inappropriate.aiml -->
-<!-- Author: Dr. Richard S. Wallace -->
-<!-- Last modified: 12月 04, 2019 -->
-<!--  -->
-<!-- This AIML file is part of the ALICE2 0.0.5 chat bot knowledge base. -->
-<!--  -->
-<!-- The ALICE2 brain is Copyright &copy; 2019 by ALICE AI Foundation. -->
-<!--  -->
-<!-- The ALICE2 brain is released under the terms of the GNU Lesser General -->
-<!-- Public License, as published by the Free Software Foundation. -->
-<!--  -->
-<!-- This file is distributed WITHOUT ANY WARRANTY; without even the  -->
-<!-- implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.   -->
-<!--  -->
-<!-- For more information see http://www.alicebot.org -->
-<!--  -->
+<!--
+
+File: inappropriate.aiml
+Author: Dr. Richard S. Wallace
+Last modified: 12月 20, 2019
+
+This AIML file is part of the ALICE2 0.0.5 chat bot knowledge base.
+
+The ALICE2 brain is Copyright &copy; 2019 by ALICE AI Foundation.
+
+The ALICE2 brain is released under the terms of the GNU Lesser General
+Public License, as published by the Free Software Foundation.
+
+This file is distributed WITHOUT ANY WARRANTY; without even the 
+implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  
+
+For more information see http://www.alicebot.org
+
+-->
+
   <category>
     <pattern># DO YOU WANT TO HAVE SEX #</pattern>
     <template>
@@ -1606,7 +1610,7 @@
   </category>
 
   <category>
-    <pattern># BI-SEXUAL #</pattern>
+    <pattern># BI - SEXUAL #</pattern>
     <template>
       <srai>FILTER INAPPROPRIATE</srai>
     </template>
@@ -1949,7 +1953,7 @@
   </category>
 
   <category>
-    <pattern># BUTT-BANG #</pattern>
+    <pattern># BUTT - BANG #</pattern>
     <template>
       <srai>FILTER INAPPROPRIATE</srai>
     </template>
@@ -1977,7 +1981,7 @@
   </category>
 
   <category>
-    <pattern># BUTT-FUCKER #</pattern>
+    <pattern># BUTT - FUCKER #</pattern>
     <template>
       <srai>FILTER INAPPROPRIATE</srai>
     </template>
@@ -1991,7 +1995,7 @@
   </category>
 
   <category>
-    <pattern># BUTT-FUCKERS #</pattern>
+    <pattern># BUTT - FUCKERS #</pattern>
     <template>
       <srai>FILTER INAPPROPRIATE</srai>
     </template>
@@ -3419,13 +3423,6 @@
   </category>
 
   <category>
-    <pattern># FOUR 20 #</pattern>
-    <template>
-      <srai>FILTER INAPPROPRIATE</srai>
-    </template>
-  </category>
-
-  <category>
     <pattern># FOUR TWENTY #</pattern>
     <template>
       <srai>FILTER INAPPROPRIATE</srai>
@@ -3433,7 +3430,7 @@
   </category>
 
   <category>
-    <pattern># FOUR20 #</pattern>
+    <pattern># FOUR 20 #</pattern>
     <template>
       <srai>FILTER INAPPROPRIATE</srai>
     </template>
@@ -3986,7 +3983,7 @@
   </category>
 
   <category>
-    <pattern># GOT2HAVEIT #</pattern>
+    <pattern># GOT 2 HAVEIT #</pattern>
     <template>
       <srai>FILTER INAPPROPRIATE</srai>
     </template>
@@ -4343,7 +4340,7 @@
   </category>
 
   <category>
-    <pattern># HOT2TROT #</pattern>
+    <pattern># HOT 2 TROT #</pattern>
     <template>
       <srai>FILTER INAPPROPRIATE</srai>
     </template>
@@ -4385,7 +4382,7 @@
   </category>
 
   <category>
-    <pattern># ID10T #</pattern>
+    <pattern># ID 10 T #</pattern>
     <template>
       <srai>FILTER INAPPROPRIATE</srai>
     </template>
@@ -5568,7 +5565,7 @@
   </category>
 
   <category>
-    <pattern># OICU812 #</pattern>
+    <pattern># OICU 812 #</pattern>
     <template>
       <srai>FILTER INAPPROPRIATE</srai>
     </template>
@@ -5603,7 +5600,7 @@
   </category>
 
   <category>
-    <pattern># OU812 #</pattern>
+    <pattern># OU 812 #</pattern>
     <template>
       <srai>FILTER INAPPROPRIATE</srai>
     </template>
@@ -6625,7 +6622,7 @@
   </category>
 
   <category>
-    <pattern># SEXY-SLIM #</pattern>
+    <pattern># SEXY - SLIM #</pattern>
     <template>
       <srai>FILTER INAPPROPRIATE</srai>
     </template>
@@ -6730,7 +6727,7 @@
   </category>
 
   <category>
-    <pattern># SHIT4BRAINS #</pattern>
+    <pattern># SHIT 4 BRAINS #</pattern>
     <template>
       <srai>FILTER INAPPROPRIATE</srai>
     </template>
@@ -6877,13 +6874,6 @@
   </category>
 
   <category>
-    <pattern># SIXTY 9 #</pattern>
-    <template>
-      <srai>FILTER INAPPROPRIATE</srai>
-    </template>
-  </category>
-
-  <category>
     <pattern># SIXTY NINE #</pattern>
     <template>
       <srai>FILTER INAPPROPRIATE</srai>
@@ -6891,7 +6881,7 @@
   </category>
 
   <category>
-    <pattern># SIXTY9 #</pattern>
+    <pattern># SIXTY 9 #</pattern>
     <template>
       <srai>FILTER INAPPROPRIATE</srai>
     </template>

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<aiml version="2.1">
+<!--
+ Free software (c) 2011 ALICE A.I. Foundation. 
+ This program is open source code released under the terms of the 
+ GNU General Public License as published by the Free Software Foundation. 
+ Complies with AIML 1.0 Tag Set Specification as adopted by the ALICE A.I. Foundation.
+-->
+
+  <category>
+    <pattern>PROGRAM VERSION</pattern>
+      Program AB 0.0.6.26 beta -- AI Foundation Reference AIML 2.1 implementation
+  </category>
+
+  <category>
+    <pattern>BRAIN BUILD</pattern>
+      Fri Dec 20 21:59:34 JST 2019
+  </category>
+
+</aiml>

@@ -52,19 +52,6 @@ public class AIMLProcessor {
 	/**
 	 * generate a bot response to a single sentence input.
 	 *
-	 * @param input       the input sentence.
-	 * @param that        the bot's last sentence.
-	 * @param topic       current topic.
-	 * @param chatSession current client session.
-	 * @return bot's response.
-	 */
-	static String respond(String input, String that, String topic, Chat chatSession) {
-		return respond(input, that, topic, chatSession, 0);
-	}
-
-	/**
-	 * generate a bot response to a single sentence input.
-	 *
 	 * @param input       input statement.
 	 * @param that        bot's last reply.
 	 * @param topic       current topic.
@@ -72,7 +59,7 @@ public class AIMLProcessor {
 	 * @param srCnt       number of {@code <srai>} activations.
 	 * @return bot's reply.
 	 */
-	private static String respond(String input, String that, String topic, Chat chatSession, int srCnt) {
+	static String respond(String input, String that, String topic, Chat chatSession, int srCnt) {
 		log.trace("input: " + input + ", that: " + that + ", topic: " + topic + ", chatSession: " + chatSession + ", srCnt: " + srCnt);
 		String response;
 		if (input == null || input.length() == 0) {

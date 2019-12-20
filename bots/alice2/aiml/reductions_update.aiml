@@ -1,21 +1,25 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <aiml version="2.1">
-<!-- File: reductions_update.aiml -->
-<!-- Author: Dr. Richard S. Wallace -->
-<!-- Last modified: 12月 04, 2019 -->
-<!--  -->
-<!-- This AIML file is part of the ALICE2 0.0.5 chat bot knowledge base. -->
-<!--  -->
-<!-- The ALICE2 brain is Copyright &copy; 2019 by ALICE AI Foundation. -->
-<!--  -->
-<!-- The ALICE2 brain is released under the terms of the GNU Lesser General -->
-<!-- Public License, as published by the Free Software Foundation. -->
-<!--  -->
-<!-- This file is distributed WITHOUT ANY WARRANTY; without even the  -->
-<!-- implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.   -->
-<!--  -->
-<!-- For more information see http://www.alicebot.org -->
-<!--  -->
+<!--
+
+File: reductions_update.aiml
+Author: Dr. Richard S. Wallace
+Last modified: 12月 20, 2019
+
+This AIML file is part of the ALICE2 0.0.5 chat bot knowledge base.
+
+The ALICE2 brain is Copyright &copy; 2019 by ALICE AI Foundation.
+
+The ALICE2 brain is released under the terms of the GNU Lesser General
+Public License, as published by the Free Software Foundation.
+
+This file is distributed WITHOUT ANY WARRANTY; without even the 
+implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  
+
+For more information see http://www.alicebot.org
+
+-->
+
   <category>
     <pattern>WHAT THE *</pattern>
     <template>
@@ -188,10 +192,10 @@
     <pattern>MY PARENTS ARE <set>name</set> AND <set>name</set></pattern>
     <template>
       <think><set var="gender"><srai>GENDERNAME <star/></srai></set></think>
-<condition var="gender">
-<li value="F"><srai>MY MOTHER IS <star/></srai> <srai>MY FATHER IS <star index="2"/></srai></li>
-<li><srai>MY FATHER IS <star/></srai> <srai>MY MOTHER IS <star index="2"/></srai></li>
-</condition>
+      <condition var="gender">
+      <li value="F"><srai>MY MOTHER IS <star/></srai> <srai>MY FATHER IS <star index="2"/></srai></li>
+      <li><srai>MY FATHER IS <star/></srai> <srai>MY MOTHER IS <star index="2"/></srai></li>
+      </condition>
     </template>
   </category>
 
@@ -311,7 +315,7 @@
     <pattern><set>name</set> IS <set>erup</set> THAN <set>name</set> BUT <set>erdown</set> THAN <set>name</set></pattern>
     <template>
       <srai><star/> IS <star index="2"/> THAN <star index="3"/></srai>
-<srai><star index="5"/> IS <star index="2"/> THAN <star/></srai>
+      <srai><star index="5"/> IS <star index="2"/> THAN <star/></srai>
     </template>
   </category>
 
@@ -1793,7 +1797,7 @@
   </category>
 
   <category>
-    <pattern>WHEN WAS Y2K</pattern>
+    <pattern>WHEN WAS Y 2 K</pattern>
     <template>
       <srai>DEFINE Y2K</srai>
     </template>
@@ -1803,9 +1807,9 @@
     <pattern>IS _ <set>article</set> * OR *</pattern>
     <template>
       Is <star/> <star index="2"/> <star index="3"/>?
-<srai>IS <star/> <star index="2"/> <star index="3"/></srai>
-Is <star/> <star index="4"/>?
-<srai>IS <star/> <star index="4"/></srai>
+      <srai>IS <star/> <star index="2"/> <star index="3"/></srai>
+      Is <star/> <star index="4"/>?
+      <srai>IS <star/> <star index="4"/></srai>
     </template>
   </category>
 
@@ -1974,7 +1978,7 @@ Is <star/> <star index="4"/>?
     <pattern><set>name</set> IS _ BUT <set>name</set> IS *</pattern>
     <template>
       <srai><star/> IS <star index="2"/></srai>
-<srai><star index="3"/> IS <star index="4"/></srai>
+      <srai><star index="3"/> IS <star index="4"/></srai>
     </template>
   </category>
 
@@ -1996,7 +2000,7 @@ Is <star/> <star index="4"/>?
     <pattern><set>name</set> IS _ AND <set>name</set> IS *</pattern>
     <template>
       <srai><star/> IS <star index="2"/></srai>
-<srai><star index="3"/> IS <star index="4"/></srai>
+      <srai><star index="3"/> IS <star index="4"/></srai>
     </template>
   </category>
 
@@ -2508,7 +2512,7 @@ Is <star/> <star index="4"/>?
     <pattern><set>name</set> IS TALLER THAN * AND * IS TALLER THAN *</pattern>
     <template>
       <srai><star/> IS TALLER THAN <star index="2"/></srai>
-<srai><star index="3"/> IS TALLER THAN <star index="4"/></srai>
+      <srai><star index="3"/> IS TALLER THAN <star index="4"/></srai>
     </template>
   </category>
 
@@ -6338,7 +6342,7 @@ Is <star/> <star index="4"/>?
     <pattern>WHAT IS <set>estdown</set></pattern>
     <template>
       <think><set var="whowhat">what</set></think>
-<srai>WHICH IS <map><name>est2er</name><star/></map></srai>
+      <srai>WHICH IS <map><name>est2er</name><star/></map></srai>
     </template>
   </category>
 
@@ -6346,7 +6350,7 @@ Is <star/> <star index="4"/>?
     <pattern>WHAT IS <set>estup</set></pattern>
     <template>
       <think><set var="whowhat">who</set></think>
-<srai>WHICH IS <map><name>est2er</name><star/></map></srai>
+      <srai>WHICH IS <map><name>est2er</name><star/></map></srai>
     </template>
   </category>
 
@@ -6354,7 +6358,7 @@ Is <star/> <star index="4"/>?
     <pattern>WHO IS <set>estdown</set></pattern>
     <template>
       <think><set var="whowhat">who</set></think>
-<srai>WHICH IS <map><name>est2er</name><star/></map></srai>
+      <srai>WHICH IS <map><name>est2er</name><star/></map></srai>
     </template>
   </category>
 

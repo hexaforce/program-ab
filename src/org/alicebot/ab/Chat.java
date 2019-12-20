@@ -138,7 +138,7 @@ class Chat {
 			input = Properties.repetition_detected;
 		}
 
-		String response = AIMLProcessor.respond(input, that, topic, this);
+		String response = AIMLProcessor.respond(input, that, topic, this, 0);
 		
 		for (final String sentence : bot.preProcessor.japaneseSentenceSplit(response)) {
 			that = sentence;

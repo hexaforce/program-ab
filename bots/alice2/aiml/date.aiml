@@ -1,41 +1,45 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <aiml version="2.1">
-<!-- File: date.aiml -->
-<!-- Author: Dr. Richard S. Wallace -->
-<!-- Last modified: 12月 04, 2019 -->
-<!--  -->
-<!-- This AIML file is part of the ALICE2 0.0.5 chat bot knowledge base. -->
-<!--  -->
-<!-- The ALICE2 brain is Copyright &copy; 2019 by ALICE AI Foundation. -->
-<!--  -->
-<!-- The ALICE2 brain is released under the terms of the GNU Lesser General -->
-<!-- Public License, as published by the Free Software Foundation. -->
-<!--  -->
-<!-- This file is distributed WITHOUT ANY WARRANTY; without even the  -->
-<!-- implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.   -->
-<!--  -->
-<!-- For more information see http://www.alicebot.org -->
-<!--  -->
+<!--
+
+File: date.aiml
+Author: Dr. Richard S. Wallace
+Last modified: 12月 20, 2019
+
+This AIML file is part of the ALICE2 0.0.5 chat bot knowledge base.
+
+The ALICE2 brain is Copyright &copy; 2019 by ALICE AI Foundation.
+
+The ALICE2 brain is released under the terms of the GNU Lesser General
+Public License, as published by the Free Software Foundation.
+
+This file is distributed WITHOUT ANY WARRANTY; without even the 
+implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  
+
+For more information see http://www.alicebot.org
+
+-->
+
   <category>
     <pattern>SEASON</pattern>
     <template>
       <think><set var="month"><date format="%B" jformat="MMMMMMMMM"/></set>
-</think>
-<condition var="month">
-<li><value>January</value>Winter</li>
-<li><value>February</value>Winter</li>
-<li><value>March</value>Winter</li>
-<li><value>April</value>Spring</li>
-<li><value>May</value>Spring</li>
-<li><value>June</value>Summer</li>
-<li><value>July</value>Summer</li>
-<li><value>August</value>Summer</li>
-<li><value>September</value>Fall</li>
-<li><value>October</value>Fall</li>
-<li><value>November</value>Winter</li>
-<li><value>December</value>Winter</li>
-<li>unknown</li>
-</condition>
+      </think>
+      <condition var="month">
+      <li><value>January</value>Winter</li>
+      <li><value>February</value>Winter</li>
+      <li><value>March</value>Winter</li>
+      <li><value>April</value>Spring</li>
+      <li><value>May</value>Spring</li>
+      <li><value>June</value>Summer</li>
+      <li><value>July</value>Summer</li>
+      <li><value>August</value>Summer</li>
+      <li><value>September</value>Fall</li>
+      <li><value>October</value>Fall</li>
+      <li><value>November</value>Winter</li>
+      <li><value>December</value>Winter</li>
+      <li>unknown</li>
+      </condition>
     </template>
   </category>
 
@@ -50,7 +54,7 @@
     <pattern>TOMORROW ^</pattern>
     <template>
       <think><set var="today"><date format="%A" jformat="EEEEEEEEEE"/></set></think>
-<map name="tomorrow"><get var="today"/></map>
+      <map name="tomorrow"><get var="today"/></map>
     </template>
   </category>
 
@@ -100,23 +104,23 @@
     <pattern>DAY PHASE</pattern>
     <template>
       <think>
-<set var="hour"><date format="%I" jformat="h"/></set>
-<set var="ampm"><date format="%p" jformat="a"/></set>
-</think>
-<condition>
-<li value="AM" var="ampm">Morning</li>
-<li><condition var="hour">
-    <li value="12">Noon</li>
-    <li value="1">Afternoon</li>
-    <li value="2">Afternoon</li>
-    <li value="3">Afternoon</li>
-    <li value="4">Afternoon</li>
-    <li value="5">Afternoon</li>
-    <li value="6">Afternoon</li>
-    <li>Night</li>
-  </condition>
-</li>
-</condition>
+      <set var="hour"><date format="%I" jformat="h"/></set>
+      <set var="ampm"><date format="%p" jformat="a"/></set>
+      </think>
+      <condition>
+      <li value="AM" var="ampm">Morning</li>
+      <li><condition var="hour">
+      <li value="12">Noon</li>
+      <li value="1">Afternoon</li>
+      <li value="2">Afternoon</li>
+      <li value="3">Afternoon</li>
+      <li value="4">Afternoon</li>
+      <li value="5">Afternoon</li>
+      <li value="6">Afternoon</li>
+      <li>Night</li>
+      </condition>
+      </li>
+      </condition>
     </template>
   </category>
 
@@ -131,10 +135,10 @@
     <pattern>DAYS UNTIL CHRISTMAS</pattern>
     <template>
       <interval format="%B %d" jformat="MMMMMMMMM dd">
-<style>days</style>
-<from><date format="%B %d" jformat="MMMMMMMMM dd"/></from>
-<to>December 25</to>
-</interval> days until Christmas.
+      <style>days</style>
+      <from><date format="%B %d" jformat="MMMMMMMMM dd"/></from>
+      <to>December 25</to>
+      </interval> days until Christmas.
     </template>
   </category>
 
@@ -142,10 +146,10 @@
     <pattern>DAYS UNTIL <set>month</set> <set>number</set> <set>number</set></pattern>
     <template>
       <interval format="%B %d %Y" jformat="MMMMMMMMM dd yyyy">
-<style>days</style>
-<from><date format="%B %d %Y" jformat="MMMMMMMMM dd yyyy"/></from>
-<to><star/> <star index="2"/> <star index="3"/></to>
-</interval> days.
+      <style>days</style>
+      <from><date format="%B %d %Y" jformat="MMMMMMMMM dd yyyy"/></from>
+      <to><star/> <star index="2"/> <star index="3"/></to>
+      </interval> days.
     </template>
   </category>
 
@@ -153,10 +157,10 @@
     <pattern>DAYS UNTIL <set>month</set> <set>number</set></pattern>
     <template>
       <interval format="%B %d %Y" jformat="MMMMMMMMM dd yyyy">
-<style>days</style>
-<from><date format="%B %d %Y" jformat="MMMMMMMMM dd yyyy"/></from>
-<to><star/> <star index="2"/> <date format="%Y" jformat="yyyy"/></to>
-</interval> days.
+      <style>days</style>
+      <from><date format="%B %d %Y" jformat="MMMMMMMMM dd yyyy"/></from>
+      <to><star/> <star index="2"/> <date format="%Y" jformat="yyyy"/></to>
+      </interval> days.
     </template>
   </category>
 
@@ -325,12 +329,12 @@
     <pattern>DATE IN <set>number</set> DAYS</pattern>
     <template>
       <think><set var="days"><star/></set>
-<set var="date"><date format="%B %d %Y" jformat="MMMMMMMMM dd yyyy"/></set>
-</think>
-<condition var="days">
-<li value="0"><get var="date"/></li>
-<li><think><set var="date"><srai>TOMORROWDATE <get var="date"/></srai></set> <set var="days"><map name="predecessor"><get var="days"/></map></set></think> <loop/></li>
-</condition>
+      <set var="date"><date format="%B %d %Y" jformat="MMMMMMMMM dd yyyy"/></set>
+      </think>
+      <condition var="days">
+      <li value="0"><get var="date"/></li>
+      <li><think><set var="date"><srai>TOMORROWDATE <get var="date"/></srai></set> <set var="days"><map name="predecessor"><get var="days"/></map></set></think> <loop/></li>
+      </condition>
     </template>
   </category>
 
@@ -338,13 +342,13 @@
     <pattern>DAYS UNTIL <set>weekday</set></pattern>
     <template>
       <think>
-<set var="day"><star/></set>
-<set var="today"><date format="%A" jformat="EEEEEEEEEE"/></set>
-<set var="days">0</set></think>
-<condition var="today">
-<li><value><get var="day"/></value><get var="days"/></li>
-<li><think><set var="today"><map name="tomorrow"><get var="today"/></map></set> <set var="days"><map name="successor"><get var="days"/></map></set></think> <loop/></li>
-</condition>
+      <set var="day"><star/></set>
+      <set var="today"><date format="%A" jformat="EEEEEEEEEE"/></set>
+      <set var="days">0</set></think>
+      <condition var="today">
+      <li><value><get var="day"/></value><get var="days"/></li>
+      <li><think><set var="today"><map name="tomorrow"><get var="today"/></map></set> <set var="days"><map name="successor"><get var="days"/></map></set></think> <loop/></li>
+      </condition>
     </template>
   </category>
 
@@ -365,23 +369,23 @@
   <category>
     <pattern>DATE A WEEK FROM <set>weekday</set></pattern>
     <template>
-      <srai>DATE IN 
-<srai>SUCCESSOR 
-<srai>SUCCESSOR 
-<srai>SUCCESSOR 
-<srai>SUCCESSOR 
-<srai>SUCCESSOR 
-<srai>SUCCESSOR 
-<srai>SUCCESSOR 
-<srai>DAYS UNTIL <star/></srai>
-</srai>
-</srai>
-</srai>
-</srai>
-</srai>
-</srai>
-</srai>
-DAYS</srai>
+      <srai>DATE IN
+      <srai>SUCCESSOR
+      <srai>SUCCESSOR
+      <srai>SUCCESSOR
+      <srai>SUCCESSOR
+      <srai>SUCCESSOR
+      <srai>SUCCESSOR
+      <srai>SUCCESSOR
+      <srai>DAYS UNTIL <star/></srai>
+      </srai>
+      </srai>
+      </srai>
+      </srai>
+      </srai>
+      </srai>
+      </srai>
+      DAYS</srai>
     </template>
   </category>
 
@@ -389,14 +393,14 @@ DAYS</srai>
     <pattern>WEEKDAY IN <set>number</set> DAYS</pattern>
     <template>
       <think>
-<set var="days"><star/></set>
-<set var="day"><date format="%A" jformat="EEEEEEEEEE"/></set>
-</think>
-<condition var="days">
-<li value="0"><get var="day"/></li>
-<li><think><set var="day"><map name="tomorrow"><get var="day"/></map></set>
-<set var="days"><map name="predecessor"><get var="days"/></map></set></think> <loop/></li>
-</condition>
+      <set var="days"><star/></set>
+      <set var="day"><date format="%A" jformat="EEEEEEEEEE"/></set>
+      </think>
+      <condition var="days">
+      <li value="0"><get var="day"/></li>
+      <li><think><set var="day"><map name="tomorrow"><get var="day"/></map></set>
+      <set var="days"><map name="predecessor"><get var="days"/></map></set></think> <loop/></li>
+      </condition>
     </template>
   </category>
 

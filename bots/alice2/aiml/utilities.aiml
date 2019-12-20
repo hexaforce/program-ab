@@ -1,36 +1,40 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <aiml version="2.1">
-<!-- File: utilities.aiml -->
-<!-- Author: Dr. Richard S. Wallace -->
-<!-- Last modified: 12月 04, 2019 -->
-<!--  -->
-<!-- This AIML file is part of the ALICE2 0.0.5 chat bot knowledge base. -->
-<!--  -->
-<!-- The ALICE2 brain is Copyright &copy; 2019 by ALICE AI Foundation. -->
-<!--  -->
-<!-- The ALICE2 brain is released under the terms of the GNU Lesser General -->
-<!-- Public License, as published by the Free Software Foundation. -->
-<!--  -->
-<!-- This file is distributed WITHOUT ANY WARRANTY; without even the  -->
-<!-- implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.   -->
-<!--  -->
-<!-- For more information see http://www.alicebot.org -->
-<!--  -->
+<!--
+
+File: utilities.aiml
+Author: Dr. Richard S. Wallace
+Last modified: 12月 20, 2019
+
+This AIML file is part of the ALICE2 0.0.5 chat bot knowledge base.
+
+The ALICE2 brain is Copyright &copy; 2019 by ALICE AI Foundation.
+
+The ALICE2 brain is released under the terms of the GNU Lesser General
+Public License, as published by the Free Software Foundation.
+
+This file is distributed WITHOUT ANY WARRANTY; without even the 
+implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  
+
+For more information see http://www.alicebot.org
+
+-->
+
   <category>
     <pattern>ACRONYM *</pattern>
     <template>
       <think><set var="list"><star/></set>
-<set var="acronym"/>
-</think>
-<condition var="list">
-<li value="NIL"><uppercase><get var="acronym"/></uppercase></li>
-<li><think><set var="word"><first><get var="list"/></first></set>
-<set var="list"><rest><get var="list"/></rest></set>
-<set var="acronym"><get var="acronym"/> <srai>FIRSTLETTER <explode><get var="word"/></explode></srai></set>
-</think>
-<loop/> </li>
-
-</condition>
+      <set var="acronym"/>
+      </think>
+      <condition var="list">
+      <li value="NIL"><uppercase><get var="acronym"/></uppercase></li>
+      <li><think><set var="word"><first><get var="list"/></first></set>
+      <set var="list"><rest><get var="list"/></rest></set>
+      <set var="acronym"><get var="acronym"/> <srai>FIRSTLETTER <explode><get var="word"/></explode></srai></set>
+      </think>
+      <loop/> </li>
+      
+      </condition>
     </template>
   </category>
 
@@ -38,17 +42,17 @@
     <pattern>ANAGRAMWORDS *</pattern>
     <template>
       <think><set var="list"><srai>ANAGRAM <star/></srai></set></think>
-<condition var="list">
-<li value="too long">I can only do anagrams up to 8 letters.</li>
-<li><condition var="list">
-    <li value="NIL"/>
-    <li><think><set var="word"><first><get var="list"/></first></set>
-        <set var="list"><rest><get var="list"/></rest></set>
-        <set var="def"><sraix bot="drwallace/wndef" botid="f038d2f99e345a95" host="callmom.pandorabots.com">WNDEF <get var="word"/></sraix></set>
+      <condition var="list">
+      <li value="too long">I can only do anagrams up to 8 letters.</li>
+      <li><condition var="list">
+      <li value="NIL"/>
+      <li><think><set var="word"><first><get var="list"/></first></set>
+      <set var="list"><rest><get var="list"/></rest></set>
+      <set var="def"><sraix bot="drwallace/wndef" botid="f038d2f99e345a95" host="callmom.pandorabots.com">WNDEF <get var="word"/></sraix></set>
       </think> <condition var="def"><li value="unknown"/><li><get var="word"/> </li></condition> <loop/></li>
-    </condition>
-</li>
-</condition>
+      </condition>
+      </li>
+      </condition>
     </template>
   </category>
 
@@ -56,11 +60,11 @@
     <pattern>JSTEST *</pattern>
     <template>
       <javascript>
-function foo() {
-if (0 &lt; 1) return "true";
-}
-foo();
-</javascript>
+      function foo() {
+      if (0 &lt; 1) return "true";
+      }
+      foo();
+      </javascript>
     </template>
   </category>
 
@@ -68,34 +72,34 @@ foo();
     <pattern>ANAGRAM *</pattern>
     <template>
       <javascript>
-function permutator (input) {
-  var set =[];
-  function permute (arr, data) {
-    var cur, memo = data || [];
-
-    for (var i = 0; i != arr.length; i++) {
-       cur = arr.splice(i, 1)[0];
-       if (arr.length === 0) {
-         var result = memo.concat([cur]);
-         list = list + result.join('')+' ';
-         set.push(result);
-       }
-       permute(arr.slice(), memo.concat([cur]));
-       arr.splice(i, 0, cur);
-    }
-    return list;
-  }
-  return permute(input);
-}
-
-function anagram(str) {
-if (str.length &gt; 8) return ('too long');
-list = '';
-permutator(str.split(''));
-return list;
-}
-anagram("<star/>");
-</javascript>
+      function permutator (input) {
+      var set =[];
+      function permute (arr, data) {
+      var cur, memo = data || [];
+      
+      for (var i = 0; i != arr.length; i++) {
+      cur = arr.splice(i, 1)[0];
+      if (arr.length === 0) {
+      var result = memo.concat([cur]);
+      list = list + result.join('')+' ';
+      set.push(result);
+      }
+      permute(arr.slice(), memo.concat([cur]));
+      arr.splice(i, 0, cur);
+      }
+      return list;
+      }
+      return permute(input);
+      }
+      
+      function anagram(str) {
+      if (str.length &gt; 8) return ('too long');
+      list = '';
+      permutator(str.split(''));
+      return list;
+      }
+      anagram("<star/>");
+      </javascript>
     </template>
   </category>
 
@@ -117,18 +121,18 @@ anagram("<star/>");
     <pattern>SUBSTRINGEXPLODE <set>number</set> <set>number</set> *</pattern>
     <template>
       <think>
-<set var="count">0</set>
-<set var="start"><star/></set>
-<set var="end"><star index="2"/></set>
-<set var="list"><star index="3"/></set>
-<set var="print">false</set>
-</think>
-<condition var="list">
-  <li value="NIL"/>
-  <li><think><condition var="count"><value><get var="start"/></value><set var="print">true</set></condition>
-<condition var="count"><value><get var="end"/></value><set var="print">false</set></condition>
-</think><condition value="true" var="print"><first><get var="list"/></first></condition> <think><set var="list"><rest><get var="list"/></rest></set><set var="count"><map name="successor"><get var="count"/></map></set></think> <loop/></li>
-</condition>
+      <set var="count">0</set>
+      <set var="start"><star/></set>
+      <set var="end"><star index="2"/></set>
+      <set var="list"><star index="3"/></set>
+      <set var="print">false</set>
+      </think>
+      <condition var="list">
+      <li value="NIL"/>
+      <li><think><condition var="count"><value><get var="start"/></value><set var="print">true</set></condition>
+      <condition var="count"><value><get var="end"/></value><set var="print">false</set></condition>
+      </think><condition value="true" var="print"><first><get var="list"/></first></condition> <think><set var="list"><rest><get var="list"/></rest></set><set var="count"><map name="successor"><get var="count"/></map></set></think> <loop/></li>
+      </condition>
     </template>
   </category>
 
@@ -241,15 +245,15 @@ anagram("<star/>");
     <pattern>JSTEST</pattern>
     <template>
       <script type="text/javascript">
-
-var a = document.createElement('a');
-var linkText = document.createTextNode("my title text");
-a.appendChild(linkText);
-a.title = "my title text";
-a.href = "http://example.com";
-document.body.appendChild(a);
-
-</script>
+      
+      var a = document.createElement('a');
+      var linkText = document.createTextNode("my title text");
+      a.appendChild(linkText);
+      a.title = "my title text";
+      a.href = "http://example.com";
+      document.body.appendChild(a);
+      
+      </script>
     </template>
   </category>
 
@@ -278,11 +282,11 @@ document.body.appendChild(a);
     <pattern>ODDEVEN <set>number</set></pattern>
     <template>
       <think><set var="number"><star/></set></think>
-<condition var="number">
-<li value="0"><star/> is even.</li>
-<li value="1"><star/> is odd.</li>
-<li><think><set var="number"><map><name>predecessor</name><get var="number"/></map></set><set var="number"><map><name>predecessor</name><get var="number"/></map></set></think><loop/></li>
-</condition>
+      <condition var="number">
+      <li value="0"><star/> is even.</li>
+      <li value="1"><star/> is odd.</li>
+      <li><think><set var="number"><map><name>predecessor</name><get var="number"/></map></set><set var="number"><map><name>predecessor</name><get var="number"/></map></set></think><loop/></li>
+      </condition>
     </template>
   </category>
 
@@ -290,25 +294,25 @@ document.body.appendChild(a);
     <pattern>PICK A NUMBER # <set>number</set> # <set>number</set></pattern>
     <template>
       <think>
-lower = <set var="lower"><srai>SMALLEROF <star index="2"/> <star index="4"/></srai></set>
-upper = <set var="upper"><srai>LARGEROF <star index="2"/> <star index="4"/></srai></set>
-<set var="lilist">
-<condition var="lower">
-  <li><value><get var="upper"/></value> <li><get var="upper"/></li></li>
-  <li><li><get var="lower"/></li> <think><set var="lower"><map name="successor"><get var="lower"/></map></set></think> <loop/></li>
-</condition>
-</set>
-</think>
-
-<learn>
-<category>
-<pattern>PICKNUMBER</pattern>
-<template><random><eval><get var="lilist"/></eval></random>
-</template>
-</category>
-</learn>
-
-<set name="pick"><srai>PICKNUMBER</srai></set>
+      lower = <set var="lower"><srai>SMALLEROF <star index="2"/> <star index="4"/></srai></set>
+      upper = <set var="upper"><srai>LARGEROF <star index="2"/> <star index="4"/></srai></set>
+      <set var="lilist">
+      <condition var="lower">
+      <li><value><get var="upper"/></value> <li><get var="upper"/></li></li>
+      <li><li><get var="lower"/></li> <think><set var="lower"><map name="successor"><get var="lower"/></map></set></think> <loop/></li>
+      </condition>
+      </set>
+      </think>
+      
+      <learn>
+      <category>
+      <pattern>PICKNUMBER</pattern>
+<template>
+<random><eval><get var="lilist"/></eval></random>    </template>
+      </category>
+      </learn>
+      
+      <set name="pick"><srai>PICKNUMBER</srai></set>
     </template>
   </category>
 
@@ -316,9 +320,9 @@ upper = <set var="upper"><srai>LARGEROF <star index="2"/> <star index="4"/></sra
     <pattern>WHAT NUMBER DID YOU *</pattern>
     <template>
       <condition name="pick">
-<li value="unknown">I haven't picked on yet.</li>
-<li>I picked <get var="pick"/>.</li>
-</condition>
+      <li value="unknown">I haven't picked on yet.</li>
+      <li>I picked <get var="pick"/>.</li>
+      </condition>
     </template>
   </category>
 
@@ -326,14 +330,14 @@ upper = <set var="upper"><srai>LARGEROF <star index="2"/> <star index="4"/></sra
     <pattern>SETHESHE *</pattern>
     <template>
       <think>
-<set var="gender"><srai>GENDERNAME <star/></srai></set>
-<set name="pronoun">he</set>
-<condition var="gender">
-<li value="M"><set name="he"><star/></set></li>
-<li value="F"><set name="she"><star/></set><set name="pronoun">she</set></li>
-<li><set name="he"><star/></set></li>
-</condition>
-</think>
+      <set var="gender"><srai>GENDERNAME <star/></srai></set>
+      <set name="pronoun">he</set>
+      <condition var="gender">
+      <li value="M"><set name="he"><star/></set></li>
+      <li value="F"><set name="she"><star/></set><set name="pronoun">she</set></li>
+      <li><set name="he"><star/></set></li>
+      </condition>
+      </think>
     </template>
   </category>
 
@@ -341,26 +345,26 @@ upper = <set var="upper"><srai>LARGEROF <star index="2"/> <star index="4"/></sra
     <pattern>AGE FROM <set>month</set> <set>number</set> <set>number</set></pattern>
     <template>
       <think>
-<set var="from"><set var="m"><star/></set> <set var="d"><star index="2"/></set>, <set var="y"><star index="3"/></set></set>
-<set var="years">
-<interval format="%B %d, %Y" jformat="MMMMMMMMM dd, yyyy">
-<style>years</style>
-<from><get var="from"/></from>
-<to><date format="%B %d, %Y" jformat="MMMMMMMMM dd, yyyy"/></to>
-</interval>
-</set>
-<set var="months">
-<interval format="%B %d, %Y" jformat="MMMMMMMMM dd, yyyy">
-<style>months</style>
-<from><get var="from"/></from>
-<to><date format="%B %d, %Y" jformat="MMMMMMMMM dd, yyyy"/></to>
-</interval>
-</set>
-</think>
-<condition var="years">
-<li value="0"><get var="months"/> months old</li>
-<li><get var="years"/> years old</li>
-</condition>
+      <set var="from"><set var="m"><star/></set> <set var="d"><star index="2"/></set>, <set var="y"><star index="3"/></set></set>
+      <set var="years">
+      <interval format="%B %d, %Y" jformat="MMMMMMMMM dd, yyyy">
+      <style>years</style>
+      <from><get var="from"/></from>
+      <to><date format="%B %d, %Y" jformat="MMMMMMMMM dd, yyyy"/></to>
+      </interval>
+      </set>
+      <set var="months">
+      <interval format="%B %d, %Y" jformat="MMMMMMMMM dd, yyyy">
+      <style>months</style>
+      <from><get var="from"/></from>
+      <to><date format="%B %d, %Y" jformat="MMMMMMMMM dd, yyyy"/></to>
+      </interval>
+      </set>
+      </think>
+      <condition var="years">
+      <li value="0"><get var="months"/> months old</li>
+      <li><get var="years"/> years old</li>
+      </condition>
     </template>
   </category>
 
@@ -424,11 +428,11 @@ upper = <set var="upper"><srai>LARGEROF <star index="2"/> <star index="4"/></sra
     <pattern>ATOMICLISTMEMBER * *</pattern>
     <template>
       <think><set name="isequalto"><srai>IS <star/> EQUALTO <star index="2"/></srai></set>
-</think>
-<condition name="isequalto">
-<li value="true">true</li>
-<li>false</li>
-</condition>
+      </think>
+      <condition name="isequalto">
+      <li value="true">true</li>
+      <li>false</li>
+      </condition>
     </template>
   </category>
 
@@ -436,11 +440,11 @@ upper = <set var="upper"><srai>LARGEROF <star index="2"/> <star index="4"/></sra
     <pattern>ATOMICLISTMEMBER * * *</pattern>
     <template>
       <think><set name="isequalto"><srai>IS <star/> EQUALTO <star index="2"/></srai></set>
-</think>
-<condition name="isequalto">
-<li value="true">true</li>
-<li><srai>ATOMICLISTMEMBER <star/> <star index="3"/></srai></li>
-</condition>
+      </think>
+      <condition name="isequalto">
+      <li value="true">true</li>
+      <li><srai>ATOMICLISTMEMBER <star/> <star index="3"/></srai></li>
+      </condition>
     </template>
   </category>
 
@@ -448,11 +452,11 @@ upper = <set var="upper"><srai>LARGEROF <star index="2"/> <star index="4"/></sra
     <pattern>COUNT TO <set>number</set></pattern>
     <template>
       <think><set name="count">0</set>
-</think>
-<condition name="count">
-<li><value><star/></value></li>
-<li><set name="count"><map><name>successor</name><get name="count"/></map></set> <loop/></li>
-</condition>
+      </think>
+      <condition name="count">
+      <li><value><star/></value></li>
+      <li><set name="count"><map><name>successor</name><get name="count"/></map></set> <loop/></li>
+      </condition>
     </template>
   </category>
 
@@ -467,15 +471,15 @@ upper = <set var="upper"><srai>LARGEROF <star index="2"/> <star index="4"/></sra
     <pattern>COUNTLETTERS *</pattern>
     <template>
       <think>
-<set var="letters"><explode><star/></explode> end</set>
-<set var="count">0</set>
-</think>
-<condition>
-<li><var>letters</var><value>end</value> <get var="count"/></li>
-<li><think>
-<set var="letters"><srai>REMAININGWORDS <get var="letters"/></srai></set>
-<set var="count"><map><name>successor</name><get var="count"/></map></set></think> <loop/></li>
-</condition>
+      <set var="letters"><explode><star/></explode> end</set>
+      <set var="count">0</set>
+      </think>
+      <condition>
+      <li><var>letters</var><value>end</value> <get var="count"/></li>
+      <li><think>
+      <set var="letters"><srai>REMAININGWORDS <get var="letters"/></srai></set>
+      <set var="count"><map><name>successor</name><get var="count"/></map></set></think> <loop/></li>
+      </condition>
     </template>
   </category>
 
@@ -483,11 +487,12 @@ upper = <set var="upper"><srai>LARGEROF <star index="2"/> <star index="4"/></sra
     <pattern>DELETE MY * LIST</pattern>
     <template>
       Deleting your list.
-<learn>
-<category><pattern>MY <eval><star/></eval> LIST</pattern>
-<template>NIL</template>
-</category>
-</learn>
+      <learn>
+      <category><pattern>MY <eval><star/></eval> LIST</pattern>
+<template>
+NIL
+</template>      </category>
+      </learn>
     </template>
   </category>
 
@@ -495,11 +500,12 @@ upper = <set var="upper"><srai>LARGEROF <star index="2"/> <star index="4"/></sra
     <pattern>DELETE MY LIST</pattern>
     <template>
       Deleting your list.
-<learn>
-<category><pattern>MYLIST</pattern>
-<template>NIL</template>
-</category>
-</learn>
+      <learn>
+      <category><pattern>MYLIST</pattern>
+<template>
+NIL
+</template>      </category>
+      </learn>
     </template>
   </category>
 
@@ -528,15 +534,15 @@ upper = <set var="upper"><srai>LARGEROF <star index="2"/> <star index="4"/></sra
     <pattern>FORMATPHONENUMBER * *</pattern>
     <template>
       <think>
-<set name="firstword"><lowercase><star/></lowercase></set>
-</think>
-<condition name="firstword">
-<li value="dash">-<srai>FORMATPHONENUMBER <star index="2"/></srai></li>
-<li value="plus">+<srai>FORMATPHONENUMBER <star index="2"/></srai></li>
-<li value="lparen">(<srai>FORMATPHONENUMBER <star index="2"/></srai></li>
-<li value="rparen">(<srai>FORMATPHONENUMBER <star index="2"/></srai></li>
-<li><star/><srai>FORMATPHONENUMBER <star index="2"/></srai></li>
-</condition>
+      <set name="firstword"><lowercase><star/></lowercase></set>
+      </think>
+      <condition name="firstword">
+      <li value="dash">-<srai>FORMATPHONENUMBER <star index="2"/></srai></li>
+      <li value="plus">+<srai>FORMATPHONENUMBER <star index="2"/></srai></li>
+      <li value="lparen">(<srai>FORMATPHONENUMBER <star index="2"/></srai></li>
+      <li value="rparen">(<srai>FORMATPHONENUMBER <star index="2"/></srai></li>
+      <li><star/><srai>FORMATPHONENUMBER <star index="2"/></srai></li>
+      </condition>
     </template>
   </category>
 
@@ -796,19 +802,22 @@ upper = <set var="upper"><srai>LARGEROF <star index="2"/> <star index="4"/></sra
     <pattern>LEARNEQUAL * EQUALTO *</pattern>
     <template>
       <learn>
-<category>
-<pattern>TESTEQUAL <eval><star/></eval> EQUALTO <eval><star/></eval></pattern>
-<template>true</template>
-</category>
-<category>
-<pattern>TESTEQUAL <eval><star/></eval> EQUALTO *</pattern>
-<template>false</template>
-</category>
-<category>
-<pattern>TESTEQUAL * EQUALTO <eval><star/></eval></pattern>
-<template>false</template>
-</category>
-</learn>
+      <category>
+      <pattern>TESTEQUAL <eval><star/></eval> EQUALTO <eval><star/></eval></pattern>
+<template>
+true
+</template>      </category>
+      <category>
+      <pattern>TESTEQUAL <eval><star/></eval> EQUALTO *</pattern>
+<template>
+false
+</template>      </category>
+      <category>
+      <pattern>TESTEQUAL * EQUALTO <eval><star/></eval></pattern>
+<template>
+false
+</template>      </category>
+      </learn>
     </template>
   </category>
 
@@ -879,19 +888,19 @@ upper = <set var="upper"><srai>LARGEROF <star index="2"/> <star index="4"/></sra
     <pattern>NTH <set>number</set> *</pattern>
     <template>
       <think>
-<set var="nth"><star/></set>
-<set var="count">1</set>
-<set var="letters"><explode><star index="2"/></explode> end</set>
-</think>
-<condition>
-<li><var>letters</var><value>end</value> <star index="2"/> has only <map><name>predecessor</name><get var="count"/></map> letters.</li>
-<li><var>count</var><value><get var="nth"/></value> 
-The <map><name>number2ordinal</name><get var="nth"/></map> letter of "<star index="2"/>" is <srai>FIRSTLETTER <get var="letters"/></srai></li>
-<li><think>
-<set var="letters"><srai>REMAININGWORDS <get var="letters"/></srai></set>
-<set var="count"><map><name>successor</name><get var="count"/></map></set>
-</think> <loop/></li>
-</condition>
+      <set var="nth"><star/></set>
+      <set var="count">1</set>
+      <set var="letters"><explode><star index="2"/></explode> end</set>
+      </think>
+      <condition>
+      <li><var>letters</var><value>end</value> <star index="2"/> has only <map><name>predecessor</name><get var="count"/></map> letters.</li>
+      <li><var>count</var><value><get var="nth"/></value>
+      The <map><name>number2ordinal</name><get var="nth"/></map> letter of "<star index="2"/>" is <srai>FIRSTLETTER <get var="letters"/></srai></li>
+      <li><think>
+      <set var="letters"><srai>REMAININGWORDS <get var="letters"/></srai></set>
+      <set var="count"><map><name>successor</name><get var="count"/></map></set>
+      </think> <loop/></li>
+      </condition>
     </template>
   </category>
 
@@ -920,49 +929,49 @@ The <map><name>number2ordinal</name><get var="nth"/></map> letter of "<star inde
     <pattern>RANDOMCHAR</pattern>
     <template>
       <think><set name="randomchar">
-<random>
-<li>0</li>
-<li>1</li>
-<li>2</li>
-<li>3</li>
-<li>4</li>
-<li>5</li>
-<li>6</li>
-<li>7</li>
-<li>8</li>
-<li>9</li>
-<li>A</li>
-<li>B</li>
-<li>C</li>
-<li>D</li>
-<li>E</li>
-<li>F</li>
-<li>G</li>
-<li>H</li>
-<li>I</li>
-<li>J</li>
-<li>K</li>
-<li>L</li>
-<li>M</li>
-<li>N</li>
-<li>O</li>
-<li>P</li>
-<li>Q</li>
-<li>R</li>
-<li>S</li>
-<li>T</li>
-<li>U</li>
-<li>V</li>
-<li>W</li>
-<li>X</li>
-<li>Y</li>
-<li>Z</li>
-</random>
-</set>
-</think>
-<random><li><lowercase><get name="randomchar"/></lowercase></li>
-<li><uppercase><get name="randomchar"/></uppercase></li>
-</random>
+      <random>
+      <li>0</li>
+      <li>1</li>
+      <li>2</li>
+      <li>3</li>
+      <li>4</li>
+      <li>5</li>
+      <li>6</li>
+      <li>7</li>
+      <li>8</li>
+      <li>9</li>
+      <li>A</li>
+      <li>B</li>
+      <li>C</li>
+      <li>D</li>
+      <li>E</li>
+      <li>F</li>
+      <li>G</li>
+      <li>H</li>
+      <li>I</li>
+      <li>J</li>
+      <li>K</li>
+      <li>L</li>
+      <li>M</li>
+      <li>N</li>
+      <li>O</li>
+      <li>P</li>
+      <li>Q</li>
+      <li>R</li>
+      <li>S</li>
+      <li>T</li>
+      <li>U</li>
+      <li>V</li>
+      <li>W</li>
+      <li>X</li>
+      <li>Y</li>
+      <li>Z</li>
+      </random>
+      </set>
+      </think>
+      <random><li><lowercase><get name="randomchar"/></lowercase></li>
+      <li><uppercase><get name="randomchar"/></uppercase></li>
+      </random>
     </template>
   </category>
 
@@ -970,33 +979,33 @@ The <map><name>number2ordinal</name><get var="nth"/></map> letter of "<star inde
     <pattern>RANDOMLETTER</pattern>
     <template>
       <random>
-<li>A</li>
-<li>B</li>
-<li>C</li>
-<li>D</li>
-<li>E</li>
-<li>F</li>
-<li>G</li>
-<li>H</li>
-<li>I</li>
-<li>J</li>
-<li>K</li>
-<li>L</li>
-<li>M</li>
-<li>N</li>
-<li>O</li>
-<li>P</li>
-<li>Q</li>
-<li>R</li>
-<li>S</li>
-<li>T</li>
-<li>U</li>
-<li>V</li>
-<li>W</li>
-<li>X</li>
-<li>Y</li>
-<li>Z</li>
-</random>
+      <li>A</li>
+      <li>B</li>
+      <li>C</li>
+      <li>D</li>
+      <li>E</li>
+      <li>F</li>
+      <li>G</li>
+      <li>H</li>
+      <li>I</li>
+      <li>J</li>
+      <li>K</li>
+      <li>L</li>
+      <li>M</li>
+      <li>N</li>
+      <li>O</li>
+      <li>P</li>
+      <li>Q</li>
+      <li>R</li>
+      <li>S</li>
+      <li>T</li>
+      <li>U</li>
+      <li>V</li>
+      <li>W</li>
+      <li>X</li>
+      <li>Y</li>
+      <li>Z</li>
+      </random>
     </template>
   </category>
 
@@ -1235,17 +1244,17 @@ The <map><name>number2ordinal</name><get var="nth"/></map> letter of "<star inde
     <pattern>WHAT IS THE SQUARE ROOT OF *</pattern>
     <template>
       <think>
-<set var="formula"><srai>MATHFORMULA <star/></srai></set>
-</think>
-<condition var="formula">
-<li value="NOT A MATH FORMULA">I'm not sure how to take the square root of <person/>.</li>
-<li>
-<condition name="jsenabled">
-<li value="true"><javascript>Math.sqrt(<get var="formula"/>)</javascript></li>
-<li><sraix service="pannous">WHAT IS THE SQUARE ROOT OF <star/></sraix></li>
-</condition>
-</li>
-</condition>
+      <set var="formula"><srai>MATHFORMULA <star/></srai></set>
+      </think>
+      <condition var="formula">
+      <li value="NOT A MATH FORMULA">I'm not sure how to take the square root of <person/>.</li>
+      <li>
+      <condition name="jsenabled">
+      <li value="true"><javascript>Math.sqrt(<get var="formula"/>)</javascript></li>
+      <li><sraix service="pannous">WHAT IS THE SQUARE ROOT OF <star/></sraix></li>
+      </condition>
+      </li>
+      </condition>
     </template>
   </category>
 
@@ -1351,18 +1360,18 @@ The <map><name>number2ordinal</name><get var="nth"/></map> letter of "<star inde
     <pattern>MATHFORMULA _ UPARROW *</pattern>
     <template>
       <think>
-<set var="f1"><srai>MATHFORMULA <star/></srai></set>
-<set var="f2"><srai>MATHFORMULA <star index="2"/></srai></set>
-</think>
-<condition var="f1">
-<li value="NOT A MATH FORMULA">NOT A MATH FORMULA</li>
-<li>
-  <condition var="f2">
-  <li value="NOT A MATH FORMULA">NOT A MATH FORMULA</li>
-  <li>Math.pow(<get var="f1"/>,<get var="f2"/>)</li>
-  </condition>
-</li>
-</condition>
+      <set var="f1"><srai>MATHFORMULA <star/></srai></set>
+      <set var="f2"><srai>MATHFORMULA <star index="2"/></srai></set>
+      </think>
+      <condition var="f1">
+      <li value="NOT A MATH FORMULA">NOT A MATH FORMULA</li>
+      <li>
+      <condition var="f2">
+      <li value="NOT A MATH FORMULA">NOT A MATH FORMULA</li>
+      <li>Math.pow(<get var="f1"/>,<get var="f2"/>)</li>
+      </condition>
+      </li>
+      </condition>
     </template>
   </category>
 
@@ -1370,22 +1379,22 @@ The <map><name>number2ordinal</name><get var="nth"/></map> letter of "<star inde
     <pattern>MATHFORMULA *</pattern>
     <template>
       <think>
-<set var="list"><star/> END</set>
-<set var="result"/>
-</think>
-<condition var="list">
-<li value="END"><get var="result"/></li>
-<li>
-<think><set var="head"><srai>FIRSTWORD <get var="list"/></srai></set>
-<set var="list"><srai>REMAININGWORDS <get var="list"/></srai></set>
-<set var="term"><srai>MATHTERM <get var="head"/></srai></set>
-<condition var="term">
-<li value="NOT A MATH TERM">
-<set var="list">END</set><set var="result">NOT A MATH FORMULA</set>
-</li>
-<li><set var="result"><get var="result"/><get var="term"/></set></li>
-</condition></think><loop/></li>
-</condition>
+      <set var="list"><star/> END</set>
+      <set var="result"/>
+      </think>
+      <condition var="list">
+      <li value="END"><get var="result"/></li>
+      <li>
+      <think><set var="head"><srai>FIRSTWORD <get var="list"/></srai></set>
+      <set var="list"><srai>REMAININGWORDS <get var="list"/></srai></set>
+      <set var="term"><srai>MATHTERM <get var="head"/></srai></set>
+      <condition var="term">
+      <li value="NOT A MATH TERM">
+      <set var="list">END</set><set var="result">NOT A MATH FORMULA</set>
+      </li>
+      <li><set var="result"><get var="result"/><get var="term"/></set></li>
+      </condition></think><loop/></li>
+      </condition>
     </template>
   </category>
 

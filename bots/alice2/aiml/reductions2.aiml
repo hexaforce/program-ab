@@ -1,21 +1,25 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <aiml version="2.1">
-<!-- File: reductions2.aiml -->
-<!-- Author: Dr. Richard S. Wallace -->
-<!-- Last modified: 12月 04, 2019 -->
-<!--  -->
-<!-- This AIML file is part of the ALICE2 0.0.5 chat bot knowledge base. -->
-<!--  -->
-<!-- The ALICE2 brain is Copyright &copy; 2019 by ALICE AI Foundation. -->
-<!--  -->
-<!-- The ALICE2 brain is released under the terms of the GNU Lesser General -->
-<!-- Public License, as published by the Free Software Foundation. -->
-<!--  -->
-<!-- This file is distributed WITHOUT ANY WARRANTY; without even the  -->
-<!-- implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.   -->
-<!--  -->
-<!-- For more information see http://www.alicebot.org -->
-<!--  -->
+<!--
+
+File: reductions2.aiml
+Author: Dr. Richard S. Wallace
+Last modified: 12月 20, 2019
+
+This AIML file is part of the ALICE2 0.0.5 chat bot knowledge base.
+
+The ALICE2 brain is Copyright &copy; 2019 by ALICE AI Foundation.
+
+The ALICE2 brain is released under the terms of the GNU Lesser General
+Public License, as published by the Free Software Foundation.
+
+This file is distributed WITHOUT ANY WARRANTY; without even the 
+implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  
+
+For more information see http://www.alicebot.org
+
+-->
+
   <category>
     <pattern>HAVE YOU <set>been</set> A GOOD * LATELY</pattern>
     <template>
@@ -125,13 +129,13 @@
     <pattern>WHICH IS SMALLER * OR *</pattern>
     <template>
       <think>
-<set var="smaller"><srai>SMALLEROF <star/> AND <star index="2"/></srai></set>
-</think>
-<condition var="smaller">
-<li value="unknown">I can't tell which one is smaller.</li>
-<li value="same">They are about the same size.</li>
-<li><formal><get var="smaller"/></formal> is smaller.</li>
-</condition>
+      <set var="smaller"><srai>SMALLEROF <star/> AND <star index="2"/></srai></set>
+      </think>
+      <condition var="smaller">
+      <li value="unknown">I can't tell which one is smaller.</li>
+      <li value="same">They are about the same size.</li>
+      <li><formal><get var="smaller"/></formal> is smaller.</li>
+      </condition>
     </template>
   </category>
 
@@ -6207,8 +6211,9 @@
   <category>
     <pattern>I WAS BORN IN *</pattern>
     <template>
-      <template><think><set name="isanumber"><srai>ISANUMBER <star/></srai></set></think> <condition name="isanumber"><li value="true"><srai>MY BIRTHDATE IS <star/></srai></li><li><srai>MY BIRTHPLACE IS <star/></srai></li></condition></template>
-    </template>
+<template>
+<think><set name="isanumber"><srai>ISANUMBER <star/></srai></set></think> <condition name="isanumber"><li value="true"><srai>MY BIRTHDATE IS <star/></srai></li><li><srai>MY BIRTHPLACE IS <star/></srai></li></condition>
+</template>    </template>
   </category>
 
   <category>

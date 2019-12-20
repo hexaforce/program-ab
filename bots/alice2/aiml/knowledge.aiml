@@ -1,31 +1,35 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <aiml version="2.1">
-<!-- File: knowledge.aiml -->
-<!-- Author: Dr. Richard S. Wallace -->
-<!-- Last modified: 12月 04, 2019 -->
-<!--  -->
-<!-- This AIML file is part of the ALICE2 0.0.5 chat bot knowledge base. -->
-<!--  -->
-<!-- The ALICE2 brain is Copyright &copy; 2019 by ALICE AI Foundation. -->
-<!--  -->
-<!-- The ALICE2 brain is released under the terms of the GNU Lesser General -->
-<!-- Public License, as published by the Free Software Foundation. -->
-<!--  -->
-<!-- This file is distributed WITHOUT ANY WARRANTY; without even the  -->
-<!-- implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.   -->
-<!--  -->
-<!-- For more information see http://www.alicebot.org -->
-<!--  -->
+<!--
+
+File: knowledge.aiml
+Author: Dr. Richard S. Wallace
+Last modified: 12月 20, 2019
+
+This AIML file is part of the ALICE2 0.0.5 chat bot knowledge base.
+
+The ALICE2 brain is Copyright &copy; 2019 by ALICE AI Foundation.
+
+The ALICE2 brain is released under the terms of the GNU Lesser General
+Public License, as published by the Free Software Foundation.
+
+This file is distributed WITHOUT ANY WARRANTY; without even the 
+implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  
+
+For more information see http://www.alicebot.org
+
+-->
+
   <category>
     <pattern>RHYME *</pattern>
     <template>
       <think>
-<set var="rhyme"><map name="rhyme"><star/></map></set>
-</think>
-<condition var="rhyme">
-<li value="unknown">anti-<star/></li>
-<li><get var="rhyme"/></li>
-</condition>
+      <set var="rhyme"><map name="rhyme"><star/></map></set>
+      </think>
+      <condition var="rhyme">
+      <li value="unknown">anti-<star/></li>
+      <li><get var="rhyme"/></li>
+      </condition>
     </template>
   </category>
 
@@ -170,7 +174,7 @@
   </category>
 
   <category>
-    <pattern>WHAT IS THE 1ST MONTH *</pattern>
+    <pattern>WHAT IS THE 1 ST MONTH *</pattern>
     <template>
       January.
     </template>
@@ -397,9 +401,9 @@
     <pattern>NAME <set>quantifier</set> *</pattern>
     <template>
       <random><li>A good name would be</li>
-<li>I would choose the name</li>
-<li>Let's call it</li>
-</random> <random><li>Fred</li><li>Larry</li><li>Jenny</li></random>
+      <li>I would choose the name</li>
+      <li>Let's call it</li>
+      </random> <random><li>Fred</li><li>Larry</li><li>Jenny</li></random>
     </template>
   </category>
 

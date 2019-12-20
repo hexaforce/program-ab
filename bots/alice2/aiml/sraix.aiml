@@ -1,21 +1,25 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <aiml version="2.1">
-<!-- File: sraix.aiml -->
-<!-- Author: Dr. Richard S. Wallace -->
-<!-- Last modified: 12月 04, 2019 -->
-<!--  -->
-<!-- This AIML file is part of the ALICE2 0.0.5 chat bot knowledge base. -->
-<!--  -->
-<!-- The ALICE2 brain is Copyright &copy; 2019 by ALICE AI Foundation. -->
-<!--  -->
-<!-- The ALICE2 brain is released under the terms of the GNU Lesser General -->
-<!-- Public License, as published by the Free Software Foundation. -->
-<!--  -->
-<!-- This file is distributed WITHOUT ANY WARRANTY; without even the  -->
-<!-- implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.   -->
-<!--  -->
-<!-- For more information see http://www.alicebot.org -->
-<!--  -->
+<!--
+
+File: sraix.aiml
+Author: Dr. Richard S. Wallace
+Last modified: 12月 20, 2019
+
+This AIML file is part of the ALICE2 0.0.5 chat bot knowledge base.
+
+The ALICE2 brain is Copyright &copy; 2019 by ALICE AI Foundation.
+
+The ALICE2 brain is released under the terms of the GNU Lesser General
+Public License, as published by the Free Software Foundation.
+
+This file is distributed WITHOUT ANY WARRANTY; without even the 
+implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  
+
+For more information see http://www.alicebot.org
+
+-->
+
   <category>
     <pattern>WHAT DO YOU KNOW ABOUT *</pattern>
     <template>
@@ -41,17 +45,17 @@
     <pattern>HOW MUCH IS *</pattern>
     <template>
       <think>
-<set var="formula"><srai>MATHFORMULA <star/></srai></set>
-</think>
-<condition var="formula">
-<li value="NOT A MATH FORMULA"><sraix service="pannous">HOW MUCH IS <star/></sraix></li>
-<li>
-<condition name="jsenabled">
-<li value="true"><javascript><get var="formula"/></javascript></li>
-<li><sraix service="pannous">HOW MUCH IS <star/></sraix></li>
-</condition>
-</li>
-</condition>
+      <set var="formula"><srai>MATHFORMULA <star/></srai></set>
+      </think>
+      <condition var="formula">
+      <li value="NOT A MATH FORMULA"><sraix service="pannous">HOW MUCH IS <star/></sraix></li>
+      <li>
+      <condition name="jsenabled">
+      <li value="true"><javascript><get var="formula"/></javascript></li>
+      <li><sraix service="pannous">HOW MUCH IS <star/></sraix></li>
+      </condition>
+      </li>
+      </condition>
     </template>
   </category>
 
@@ -59,10 +63,10 @@
     <pattern>WHAT IS <set>article</set> *</pattern>
     <template>
       <think><set var="wndef"><srai>DEFINE <star index="2"/></srai></set></think>
-<condition var="wndef">
-<li value="unknown"><sraix service="pannous">WHAT IS <star/> <star index="2"/></sraix></li>
-<li><get var="wndef"/></li>
-</condition>
+      <condition var="wndef">
+      <li value="unknown"><sraix service="pannous">WHAT IS <star/> <star index="2"/></sraix></li>
+      <li><get var="wndef"/></li>
+      </condition>
     </template>
   </category>
 
@@ -70,23 +74,23 @@
     <pattern>WHAT IS *</pattern>
     <template>
       <think>
-<set var="formula"><srai>MATHFORMULA <star/></srai></set>
-</think>
-<condition var="formula">
-<li value="NOT A MATH FORMULA">
-<think><set var="wndef"><srai>DEFINE <star/></srai></set></think>
-<condition var="wndef">
-<li value="unknown"><sraix service="pannous">WHAT IS <star/></sraix></li>
-<li><get var="wndef"/></li>
-</condition>
-</li>
-<li>
-<condition name="jsenabled">
-<li value="true"><javascript><get var="formula"/></javascript></li>
-<li><sraix service="pannous">WHAT IS <star/></sraix></li>
-</condition>
-</li>
-</condition>
+      <set var="formula"><srai>MATHFORMULA <star/></srai></set>
+      </think>
+      <condition var="formula">
+      <li value="NOT A MATH FORMULA">
+      <think><set var="wndef"><srai>DEFINE <star/></srai></set></think>
+      <condition var="wndef">
+      <li value="unknown"><sraix service="pannous">WHAT IS <star/></sraix></li>
+      <li><get var="wndef"/></li>
+      </condition>
+      </li>
+      <li>
+      <condition name="jsenabled">
+      <li value="true"><javascript><get var="formula"/></javascript></li>
+      <li><sraix service="pannous">WHAT IS <star/></sraix></li>
+      </condition>
+      </li>
+      </condition>
     </template>
   </category>
 
@@ -94,11 +98,11 @@
     <pattern>SCHEDULEDESCRIPTION * SCHEDULEREQUEST *</pattern>
     <template>
       <think><set name="sraix"><sraix default="SCHEDULEFAILED" hint="event" service="pannous"><star index="2"/></sraix></set></think>
-<condition name="sraix">
-<li value="SCHEDULEFAILED">I'm unable to schedule that event from this device.</li>
-<li>I'll put that event on your calendar.
-<oob><schedule><title><star/></title><description><lowercase><star index="2"/></lowercase></description><get name="sraix"/></schedule></oob></li>
-</condition>
+      <condition name="sraix">
+      <li value="SCHEDULEFAILED">I'm unable to schedule that event from this device.</li>
+      <li>I'll put that event on your calendar.
+      <oob><schedule><title><star/></title><description><lowercase><star index="2"/></lowercase></description><get name="sraix"/></schedule></oob></li>
+      </condition>
     </template>
   </category>
 
@@ -106,11 +110,11 @@
     <pattern>ALARMMESSAGE * ALARMREQUEST *</pattern>
     <template>
       <think><set name="sraix"><sraix default="ALARMFAILED" hint="event" service="pannous"><star index="2"/></sraix></set></think>
-<condition name="sraix">
-<li value="ALARMFAILED">I'm unable to set an alarm on this device.</li>
-<li>I'll <lowercase><person><star index="2"/></person></lowercase>.
-<oob><alarm><message><star/></message><get name="sraix"/></alarm></oob></li>
-</condition>
+      <condition name="sraix">
+      <li value="ALARMFAILED">I'm unable to set an alarm on this device.</li>
+      <li>I'll <lowercase><person><star index="2"/></person></lowercase>.
+      <oob><alarm><message><star/></message><get name="sraix"/></alarm></oob></li>
+      </condition>
     </template>
   </category>
 
@@ -517,12 +521,12 @@
     <pattern>WHERE CAN I BUY *</pattern>
     <template>
       <random>
-<li>Let's look on Amazon.</li>
-<li>Online shopping is good.</li>
-<li>I'm looking at online shopping sites.</li>
-<li>I assume you mean online?</li>
-</random>
-<sraix hint="shopping" service="pannous">WHERE CAN I BUY <star/></sraix>
+      <li>Let's look on Amazon.</li>
+      <li>Online shopping is good.</li>
+      <li>I'm looking at online shopping sites.</li>
+      <li>I assume you mean online?</li>
+      </random>
+      <sraix hint="shopping" service="pannous">WHERE CAN I BUY <star/></sraix>
     </template>
   </category>
 
@@ -1181,12 +1185,12 @@
     <pattern>WHO IS *</pattern>
     <template>
       <think><set var="name"><star/></set></think>
-<condition var="name">
-<li><value><get name="name"/></value>You are <star/>.</li>
-<li><value><normalize><bot name="name"/></normalize></value>I am <star/>.</li>
-<li><value><first><normalize><bot name="name"/></normalize></first></value>I am <star/>.</li>
-<li><sraix service="pannous">WHO IS <star/></sraix></li>
-</condition>
+      <condition var="name">
+      <li><value><get name="name"/></value>You are <star/>.</li>
+      <li><value><normalize><bot name="name"/></normalize></value>I am <star/>.</li>
+      <li><value><first><normalize><bot name="name"/></normalize></first></value>I am <star/>.</li>
+      <li><sraix service="pannous">WHO IS <star/></sraix></li>
+      </condition>
     </template>
   </category>
 
@@ -1474,11 +1478,11 @@
     <pattern>ADD * *</pattern>
     <template>
       <think><set name="isaname"><srai>ISANAME <star/></srai></set>
-</think>
-<condition name="isaname">
-<li value="true"><srai>NEW CONTACT <star/> <star index="2"/></srai></li>
-<li><sraix service="pannous">ADD <star/> <star index="2"/></sraix></li>
-</condition>
+      </think>
+      <condition name="isaname">
+      <li value="true"><srai>NEW CONTACT <star/> <star index="2"/></srai></li>
+      <li><sraix service="pannous">ADD <star/> <star index="2"/></sraix></li>
+      </condition>
     </template>
   </category>
 
