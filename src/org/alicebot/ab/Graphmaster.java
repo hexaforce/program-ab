@@ -35,14 +35,9 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 class Graphmaster {
 
-	Bot bot;
-	String name;
-	final Nodemapper root;
-	int matchCount = 0;
-	int upgradeCnt = 0;
-	HashSet<String> vocabulary;
-	String resultNote = "";
-	int categoryCnt = 0;
+	private final Bot bot;
+	private final Nodemapper root;
+	private HashSet<String> vocabulary;
 	private boolean ENABLE_SHORT_CUTS = true;
 
 	/**
@@ -53,7 +48,6 @@ class Graphmaster {
 	Graphmaster(Bot bot, String name) {
 		root = new Nodemapper();
 		this.bot = bot;
-		this.name = name;
 		vocabulary = new HashSet<String>();
 	}
 
@@ -92,10 +86,7 @@ class Graphmaster {
 
 	void addCategory(Category category) {
 		String inputThatTopic = inputThatTopic(category.getPattern(), category.getThat(), category.getTopic());
-		inputThatTopic = replaceBotProperties(inputThatTopic);
-		final Path p = Path.sentenceToPath(inputThatTopic);
-		addPath(root, p, category);
-		categoryCnt++;
+		addPath(root, Path.sentenceToPath(replaceBotProperties(inputThatTopic)), category);
 	}
 
 	private boolean thatStarTopicStar(Path path) {
@@ -150,7 +141,7 @@ class Graphmaster {
 			}
 			if (node.key != null) {
 				NodemapperOperator.upgrade(node);
-				upgradeCnt++;
+//				upgradeCnt++;
 			}
 			NodemapperOperator.put(node, path.word, nextNode);
 			addPath(nextNode, path.next, category);
@@ -203,39 +194,10 @@ class Graphmaster {
 	 * @return matching leaf node or null if no match is found
 	 */
 	final Nodemapper match(String input, String that, String topic) {
-		Nodemapper n = null;
-		try {
-			final String inputThatTopic = inputThatTopic(input, that, topic);
-			final Path p = Path.sentenceToPath(inputThatTopic);
-			n = match(p, inputThatTopic);
-			if (log.isDebugEnabled()) {
-				if (n != null) {
-					log.debug("Matched: " + n.category.inputThatTopic() + " " + n.category.getFilename());
-				} else {
-					log.debug("No match.");
-				}
-			}
-		} catch (final Exception ex) {
-			log.error(ex.getMessage(), ex);
-			n = null;
-		}
-		if (log.isDebugEnabled() && Chat.matchTrace.length() < Properties.max_trace_length) {
-			if (n != null) {
-				Chat.setMatchTrace(Chat.matchTrace + n.category.inputThatTopic() + NL);
-			}
-		}
-		return n;
-	}
-
-	/**
-	 * Find the matching leaf node given a path of the form
-	 * "{@code input <THAT> that <TOPIC> topic}"
-	 * 
-	 * @param path
-	 * @param inputThatTopic
-	 * @return matching leaf node or null if no match is found
-	 */
-	private final Nodemapper match(Path path, String inputThatTopic) {
+		
+		final String inputThatTopic = inputThatTopic(input, that, topic);
+		final Path path = Path.sentenceToPath(inputThatTopic);
+		
 		try {
 			final String[] inputStars = new String[Properties.max_stars];
 			final String[] thatStars = new String[Properties.max_stars];
@@ -288,7 +250,6 @@ class Graphmaster {
 	 */
 	private final Nodemapper match(Path path, Nodemapper node, String inputThatTopic, String starState, int starIndex, String[] inputStars, String[] thatStars, String[] topicStars, String matchTrace) {
 		Nodemapper matchedNode;
-		matchCount++;
 		if ((matchedNode = nullMatch(path, node, matchTrace)) != null) {
 			return matchedNode;
 		} else if (path.length < node.height) {
@@ -573,41 +534,12 @@ class Graphmaster {
 		}
 	}
 
-	private int leafCnt;
-	private int nodeCnt;
-	private long nodeSize;
-	private int singletonCnt;
-	private int shortCutCnt;
-	private int naryCnt;
-
 	void nodeStats() {
-		leafCnt = 0;
-		nodeCnt = 0;
-		nodeSize = 0;
-		singletonCnt = 0;
-		shortCutCnt = 0;
-		naryCnt = 0;
 		nodeStatsGraph(root);
-		resultNote = bot.botName + " (" + name + "): " + getCategoriesSize() + " categories " + nodeCnt + " nodes " + singletonCnt + " singletons " + leafCnt + " leaves " + shortCutCnt + " shortcuts " + naryCnt + " n-ary " + nodeSize + " branches " + (float) nodeSize / (float) nodeCnt + " average branching ";
-		log.debug(resultNote);
 	}
 
 	private void nodeStatsGraph(Nodemapper node) {
 		if (node != null) {
-			nodeCnt++;
-			nodeSize += NodemapperOperator.size(node);
-			if (NodemapperOperator.size(node) == 1) {
-				singletonCnt += 1;
-			}
-			if (NodemapperOperator.isLeaf(node) && !node.shortCut) {
-				leafCnt++;
-			}
-			if (NodemapperOperator.size(node) > 1) {
-				naryCnt += 1;
-			}
-			if (node.shortCut) {
-				shortCutCnt += 1;
-			}
 			for (final String key : NodemapperOperator.keySet(node)) {
 				nodeStatsGraph(NodemapperOperator.get(node, key));
 			}
