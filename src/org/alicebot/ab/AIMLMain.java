@@ -44,9 +44,9 @@ public class AIMLMain {
 
 		final Bot bot = new Bot(workingDirectory, botName); //
 
-		if (bot.brain.getCategoriesSize() < Properties.brain_print_size) {
-			bot.brain.printgraph();
-		}
+//		if (bot.brain.getCategoriesSize() < Properties.brain_print_size) {
+//			bot.brain.printgraph();
+//		}
 
 		final Chat chatSession = new Chat(bot, "0");
 

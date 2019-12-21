@@ -170,7 +170,6 @@ class Chat {
 			final History<String> contextThatHistory = new History<String>("contextThat");
 			
 			for (final String sentence : bot.preProcessor.japaneseSentenceSplit(request)) {
-				AIMLProcessor.trace_count = 0;
 				
 				final History<?> hist = thatHistory.get(0);
 				String that;

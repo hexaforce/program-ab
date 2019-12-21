@@ -94,9 +94,9 @@ public class Bot {
 		this.maps_path = new File(currentDirectory + "/maps");
 
 //		setAllPaths(path, name);
-		this.brain = new Graphmaster(this, "brain");
-		this.learnfGraph = new Graphmaster(this, "learnf");
-		this.learnGraph = new Graphmaster(this, "learn");
+		this.brain = new Graphmaster(this);
+		this.learnfGraph = new Graphmaster(this);
+		this.learnGraph = new Graphmaster(this);
 		// this.unfinishedGraph = new Graphmaster(this);
 		// this.categories = new ArrayList<Category>();
 
@@ -433,7 +433,7 @@ public class Bot {
 				n.category = null;
 			}
 		}
-		learnfGraph = new Graphmaster(this, "brain");
+		learnfGraph = new Graphmaster(this);
 	}
 
 	void deleteLearnCategories() {
@@ -445,7 +445,7 @@ public class Bot {
 				n.category = null;
 			}
 		}
-		learnGraph = new Graphmaster(this, "brain");
+		learnGraph = new Graphmaster(this);
 	}
 
 }
